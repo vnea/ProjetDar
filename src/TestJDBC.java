@@ -4,7 +4,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
+
+import utils.JsonUtils;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
@@ -26,11 +29,24 @@ public class TestJDBC {
     	Connection connexion = null;
     	Statement statement = null;
         ResultSet resultat = null;
-    	String dbName = System.getProperty("RDS_DB_NAME");
-        String userName = System.getProperty("RDS_USERNAME");
-        String password = System.getProperty("RDS_PASSWORD");
-        String hostname = System.getProperty("RDS_HOSTNAME");
-        String port = System.getProperty("RDS_PORT");
+        
+        // USE THIS CODE FOR THE FINAL DEPLOY
+//    	String dbName = System.getProperty("RDS_DB_NAME");
+//      String userName = System.getProperty("RDS_USERNAME");
+//      String password = System.getProperty("RDS_PASSWORD");
+//      String hostname = System.getProperty("RDS_HOSTNAME");
+//      String port = System.getProperty("RDS_PORT");
+        
+        // Temporary code until final deploy (BEGIN)
+        JsonObject jsonObjectConfig = JsonUtils.loadJsonObject("database-config.json");
+
+        String dbName = jsonObjectConfig.getString("dbName");
+        String userName = jsonObjectConfig.getString("userName");
+        String password = jsonObjectConfig.getString("password");
+        String hostname = jsonObjectConfig.getString("hostname");
+        String port = jsonObjectConfig.getString("port");
+        // Temporary code until final deploy (END)
+        
         String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
         /*try {
 			connexion = (Connection) DriverManager.getConnection(jdbcUrl);

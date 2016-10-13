@@ -8,7 +8,7 @@
         <link type="text/css" rel="stylesheet" href="<c:url value="/inc/form.css"/>" />
     </head>
     <body>
-        <h1>Tests JDBC</h1>
+        <h1>Tests JDBC config</h1>
 
         <c:forEach items="${ messages }" var="message" varStatus="boucle">
             <p>${ boucle.count }. ${ message }</p>
