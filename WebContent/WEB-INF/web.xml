@@ -6,18 +6,18 @@
     <servlet-name>Test</servlet-name>
     <servlet-class>test.Test</servlet-class>
   </servlet>
-  <servlet>
-    <description></description>
-    <display-name>Sign</display-name>
-    <servlet-name>Sign</servlet-name>
-    <servlet-class>servlets.SignIn</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Sign</servlet-name>
-    <url-pattern>/Sign</url-pattern>
-  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Test</servlet-name>
     <url-pattern>/Test</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SignIn</display-name>
+    <servlet-name>SignIn</servlet-name>
+    <servlet-class>servlets.SignIn</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SignIn</servlet-name>
+    <url-pattern>/SignIn</url-pattern>
   </servlet-mapping>
 </web-app>
