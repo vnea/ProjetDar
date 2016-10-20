@@ -1,3 +1,4 @@
+package test;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,20 +49,18 @@ public class TestJDBC {
         // Temporary code until final deploy (END)
         
         String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
-        /*try {
+/*        try {
 			connexion = (Connection) DriverManager.getConnection(jdbcUrl);
 			
-			 Création de l'objet gérant les requêtes 
+			
 	        statement = (Statement) ((java.sql.Connection) connexion).createStatement();
 	        messages.add( "Objet requête créé !" );
 	        
-	        String createTable = "CREATE TABLE Beanstalk (Resource char(50));";
-	        String insertRow1 = "INSERT INTO Beanstalk (Resource) VALUES ('EC2 Instance');";
-	        String insertRow2 = "INSERT INTO Beanstalk (Resource) VALUES ('RDS Instance');";
+	        String createTable = "CREATE TABLE `Profiles` (`idProfile` int(10) unsigned NOT NULL AUTO_INCREMENT,`email` varchar(100) NOT NULL,`login` varchar(30) NOT NULL,`lastname` varchar(50) NOT NULL,`firstname` varchar(45) NOT NULL,`age` int(11) NOT NULL,`address` varchar(120) DEFAULT NULL,`postcode` int(11) DEFAULT NULL,`phoneNumber` int(11) DEFAULT NULL,`password` varchar(45) NOT NULL,`sex` enum('H','F') NOT NULL,PRIMARY KEY (`idProfile`),UNIQUE KEY `idProfiles_UNIQUE` (`idProfile`),UNIQUE KEY `email_UNIQUE` (`email`),UNIQUE KEY `login_UNIQUE` (`login`));";
+	        String insert = "INSERT INTO Profiles VALUES (1, 'morvanlassauzay@msn.com', 'morvan', 'Lassauzay', 'morvan', '22', 'mon adresse', '75000', '0909090909', 'morvan', 'H');";
 	        
-	        statement.addBatch(createTable);
-	        statement.addBatch(insertRow1);
-	        statement.addBatch(insertRow2);
+	        statement.addBatch(insert);
+	     
 	        statement.executeBatch();
 	        statement.close();
 		} catch (SQLException e) {
@@ -82,12 +81,7 @@ public class TestJDBC {
             connexion = (Connection) DriverManager.getConnection(jdbcUrl);
             
             readStatement = (Statement) ((java.sql.Connection) connexion).createStatement();
-            resultSet = readStatement.executeQuery("SELECT * FROM Beanstalk;");
-
-            resultSet.first();
-            results = resultSet.getString("Resource");
-            resultSet.next();
-            results += ", " + resultSet.getString("Resource");
+            resultSet = readStatement.executeQuery("SELECT * FROM Profiles;");
             
             messages.add(results);
             resultSet.close();
