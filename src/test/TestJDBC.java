@@ -8,8 +8,6 @@ import java.util.List;
 import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 
-import utils.JsonUtils;
-
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
@@ -48,7 +46,7 @@ public class TestJDBC {
         String port = jsonObjectConfig.getString("port");
         // Temporary code until final deploy (END)
         
-        String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
+        String jdbcUrl = "jdbc:mysql://aaq4zua6v6ccvz.cortfl8tkfmv.us-west-2.rds.amazonaws.com:3306/ebdb?user=root&password=dar-2016-aws";
 /*        try {
 			connexion = (Connection) DriverManager.getConnection(jdbcUrl);
 			
@@ -82,11 +80,9 @@ public class TestJDBC {
             
             readStatement = (Statement) ((java.sql.Connection) connexion).createStatement();
             resultSet = readStatement.executeQuery("SELECT * FROM Profiles;");
+            			// readStatement.executeUpdate pour INSERT, UPDATE, DELETE, etc
             
             messages.add(results);
-            resultSet.close();
-            readStatement.close();
-            connexion.close();
 
           } catch (SQLException ex) {
             // Handle any errors
@@ -94,8 +90,27 @@ public class TestJDBC {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
           } finally {
-               System.out.println("Closing the connection.");
-              if (connexion != null) try { connexion.close(); } catch (SQLException ignore) {}
+        	    if ( resultSet != null ) {
+        	        try {
+        	            /* On commence par fermer le ResultSet */
+        	            resultat.close();
+        	        } catch ( SQLException ignore ) {
+        	        }
+        	    }
+        	    if ( readStatement != null ) {
+        	        try {
+        	            /* Puis on ferme le Statement */
+        	            statement.close();
+        	        } catch ( SQLException ignore ) {
+        	        }
+        	    }
+        	    if ( connexion != null ) {
+        	        try {
+        	            /* Et enfin on ferme la connexion */
+        	            connexion.close();
+        	        } catch ( SQLException ignore ) {
+        	        }
+        	    }
           }
         
 
