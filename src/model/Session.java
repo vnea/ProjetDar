@@ -27,11 +27,11 @@ public class Session {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer idSession;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false, cascade = CascadeType.ALL)
     @JoinColumn(name = "idPlayer")
 	private Player root;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Player> players = new ArrayList<Player>();
 	
 	@Basic(optional=false)
@@ -40,6 +40,7 @@ public class Session {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date; 
 		
+	
 	// Getters/Setters 
 	public Integer getIdSession() {
 		return idSession;

@@ -35,14 +35,13 @@ public class Player {
 	private String lastname;
 	@Basic(optional=false)
 	private String firstname;
+	@Basic(optional=false)
+	private Integer age;
 	
 	public enum Sex {H, F};
 	@Basic(optional=false)
 	private Sex sex;
 	
-	@Basic(optional=false)
-	private Integer age;
-
 	private Integer phoneNumber;
 	private String address;
 	private Integer postCode;
@@ -54,7 +53,7 @@ public class Player {
 	@ElementCollection
 	private List<String> games = new ArrayList<String>();
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@ManyToMany(cascade = CascadeType.ALL)
     private List<Player> friends = new ArrayList<Player>();
 	 
 	 
