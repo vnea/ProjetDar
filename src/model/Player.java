@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,8 +27,10 @@ public class Player {
 	private Integer idPlayer;
 	
 	@Basic(optional=false)
+	@Column(unique = true)
 	private String email;
 	@Basic(optional=false)
+	@Column(unique = true)
 	private String username;
 	@Basic(optional=false)
 	private String password;
@@ -42,16 +45,16 @@ public class Player {
 	@Basic(optional=false)
 	private Sex sex;
 	
-	private Integer phoneNumber;
+	private String phoneNumber;
 	private String address;
 	private Integer postCode;
 	
 	@ElementCollection
-	private List<String> platforms = new ArrayList<String>();
+	private List<String> platforms;
 	@ElementCollection
-	private List<String> gameTypes = new ArrayList<String>();
+	private List<String> gamesType;
 	@ElementCollection
-	private List<String> games = new ArrayList<String>();
+	private List<String> games;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
     private List<Player> friends = new ArrayList<Player>();
@@ -122,10 +125,10 @@ public class Player {
 		this.address = address;
 	}
 	
-	public Integer getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
-	public void setPhoneNumber(Integer phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 	
@@ -143,11 +146,11 @@ public class Player {
 		this.platforms = platforms;
 	}
 	
-	public List<String> getGameTypes() {
-		return gameTypes;
+	public List<String> getGamesType() {
+		return gamesType;
 	}
-	public void setGameTypes(List<String> gameTypes) {
-		this.gameTypes = gameTypes;
+	public void setGamesType(List<String> gamesType) {
+		this.gamesType = gamesType;
 	}
 	
 	public List<String> getGames() {

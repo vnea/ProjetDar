@@ -1,19 +1,18 @@
-package servlets;
+package test;
+
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
 import dao.PlayerDaoImpl;
 import model.Player;
 import model.PlayerDao;
-import utils.HibernateUtils;
-
  
 
 /**
@@ -48,8 +47,13 @@ public class SignIn extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
-		this.playerDao.CreatePlayer();
+//		this.playerDao.CreatePlayer("jamesBond@mail.com", "007", "toto", "Bond", "James", 35, Player.Sex.H, "0707070707", 
+//									"adresseSecrete", 70007, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>()); 
 		
+		Player agentSecret = this.playerDao.getPlayer("007","toto");
+		
+		PrintWriter out = response.getWriter();
+        out.println("<h1>" + agentSecret.getFirstname() + "tests</h1>");
 	}
 
 	/**

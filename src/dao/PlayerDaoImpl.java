@@ -1,5 +1,9 @@
 package dao;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -13,33 +17,39 @@ public class PlayerDaoImpl implements PlayerDao{
 	public PlayerDaoImpl (){
 	}
 	
-	public void CreatePlayer(){
-		// Récupération d'une session Hibernate
+	public void CreatePlayer(String email, String username, String password, String lastname, String firstname, 
+							int age, Player.Sex sex, String phoneNumber, String address, int postCode, 
+							List<String> games, List<String> gamesType, List<String> platforms){
+		
         Session s = HibernateUtils.getSession();
- 
-        // Début de la transaction
         Transaction t = s.beginTransaction();
- 
-        // Création d'un objet Event
+        
         Player p = new Player();
-        p.setEmail("email@test.com");
-        p.setUsername("morvan");
-        p.setPassword("toto");
-        p.setLastname("Lassauzay");
-        p.setFirstname("morvan");
-        p.setAddress("monadresse");
-        p.setAge(22);
-        p.setSex(Player.Sex.H);
+        p.setEmail(email);
+        p.setUsername(username);
+        p.setPassword(password);
+        p.setLastname(lastname);
+        p.setFirstname(firstname);
+        p.setAge(age);
+        p.setSex(sex);
+        p.setAddress(address);
+        p.setPostCode(postCode);
+        p.setGames(games);
+        p.setGamesType(gamesType);
+        p.setPlatforms(platforms);
         
-        
- 
-        // Enregistrement de l'event
         s.save(p);
- 
-        // Fin de la transaction
         t.commit();
- 
-        // Fermeture de la session Hibernate
         s.close();
+	}
+	
+	public Player getPlayer(String username, String password){
+		Session s = HibernateUtils.getSession();
+		
+		List<Player> players = (List<Player>) s.createQuery(
+			    "select p from Player p where p.username like :name and p.password like :pass" )
+							.setParameter( "name", username ).setParameter("pass", password).getResultList();
+		
+		return players.get(0);
 	}
 }

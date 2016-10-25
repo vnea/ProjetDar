@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,7 +29,6 @@ public class Session {
 	private Integer idSession;
 	
 	@ManyToOne(optional=false, cascade = CascadeType.ALL)
-    @JoinColumn(name = "idPlayer")
 	private Player root;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -38,6 +38,7 @@ public class Session {
 	private String address;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@Basic(optional=false)
 	private Date date; 
 		
 	
@@ -48,10 +49,10 @@ public class Session {
 	public void setIdSession(Integer idSession) {
 		this.idSession = idSession;
 	}
-	public Player getIdPlayer() {
+	public Player getRoot() {
 		return root;
 	}
-	public void setIdPlayer(Player root) {
+	public void setRoot(Player root) {
 		this.root = root;
 	}
 	public String getAddress() {
