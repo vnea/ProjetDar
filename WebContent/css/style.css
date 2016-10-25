@@ -1,0 +1,127 @@
+/* GLOBAL */
+
+@font-face {
+	font-family: customFont;
+	src: url("../AldotheApache.ttf");
+}
+
+html {
+	height: 100%;
+	font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+	padding-top: 50px;
+	background: url('../fond.jpg') no-repeat;
+	background-size: 100%;
+	background-attachment: fixed;
+}
+
+.starter-template {
+	padding: 50px 15px;
+	text-align: center;
+}
+
+/* BARRE DE NAVIGATION */
+
+.navbar {
+	background-color: #cccccc;
+	border-width: 0;
+}
+
+.navbar-brand {
+	font-family: customFont;
+	font-size: 30px;
+}
+
+.navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover {
+    color: #4CAF50;
+}
+
+.navbar-inverse .navbar-brand:focus, .navbar-inverse .navbar-brand:hover {
+    color: #4CAF50;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+	font-size: 18px;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 1300px;
+   }
+}
+
+/* ECRAN DE CREATION DE COMPTE / ACCUEIL */
+#home_content {
+	padding-top: 80px;
+	display: flex;
+	width: 70%;
+	margin: auto;
+}
+
+#container_presentation {
+	width: 60%;
+	padding-right: 40px;
+	font-size: 22px;
+	color: white;
+}
+
+#container_presentation p {
+	margin-top: 10px;
+}
+
+#container_presentation p:first-child {
+	margin-top: 0px;
+}
+
+.icon_line {
+	text-align: center;
+}
+
+#container_subscription_form {
+	margin-top: 70px;
+	width: 40%;
+	float: right;
+	font-size: 18px;
+}
+
+#container_subscription_form form {
+	margin-bottom: 20px;
+}
+
+#container_subscription_form input {
+	font-family: "Segoe UI", Arial, sans-serif;
+    width: 100%;
+    padding: 8px 20px;
+    display: inline-block;
+    border-bottom: 1px solid #ccc;
+}
+
+#container_subscription_form input:first-child {
+	border-radius: 6px 6px 0px 0px;
+}
+
+#container_subscription_form #last_input {
+	border-radius: 0px 0px 6px 6px;
+}
+
+#container_subscription_form input[type=submit] {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 20px;
+    margin: 3px 0;
+    border: none;
+    cursor: pointer;
+    font-family: "Segoe UI", Arial, sans-serif;
+    border-radius: 6px;
+    height: 45px;
+    margin-top: 20px;
+    background: linear-gradient(90deg, #4CAF50, rgb(78, 194, 56));
+}
+
+
+
+
+

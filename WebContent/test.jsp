@@ -50,9 +50,9 @@
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="#">Héberger</a></li>
-					<li><a href="#about">Rechercher</a></li>
-					<li><a href="#contact">Déconnexion</a></li>
+					<li><a>Héberger</a></li>
+					<li><a>Rechercher</a></li>
+					<li><a>Déconnexion</a></li>
 					<li>
 						<form class="navbar-form navbar-right">
 							<div class="form-group">
@@ -73,36 +73,36 @@
 	</nav>
 
 	<div class="container">
-		<div id="contenu_accueil">
+		<div id="home_content">
 			<div id="container_presentation">
-				<div class="ligne_icone" id="icone_amitie"><img src="amitie_icone.png"></div>
+				<div class="icon_line" id="friendship_icon"><img src="amitie_icone.png"></div>
 				<p>
 					PTP est une communauté de joueurs d'Ile de France, pour organiser des sessions de jeux vidéos ! 
 				</p>
 				<br>
-				<div class="ligne_icone" id="icone_maison"><img src="maison_icone.png"></div>
+				<div class="icon_line" id="home_icon"><img src="maison_icone.png"></div>
 				<p>
 					Héberge une partie chez toi avec tes amis, ou rejoins une partie en IDF et fais toi de nouveaux amis !
 				</p>
 				<br>
-				<div class="ligne_icone" id="icone_manette"><img src="manette_icone.png"></div>
+				<div class="icon_line" id="joystick_icon"><img src="manette_icone.png"></div>
 				<p>
 					Ne joue plus jamais seul à tes jeux de sport ou de combat favoris et passe des soirées super fun !
 				</p>
 				<br>
 			</div>
-			<div id="container_formulaire_inscription">
+			<div id="container_subscription_form">
 				<form action="CreerCompte" method="POST">
-					<input type="text" name="pseudo" placeholder="Pseudo">
+					<input id="subscription_pseudo" type="text" name="pseudo" placeholder="Pseudo">
 					<input type="email" name="email" placeholder="Email">
 					<br>
-					<input id="adresseAutocomplete" type="text" name="adresse">
+					<input id="autocompleteAddress" type="text" name="address">
 					<br>
 					<input type="number" min="12" max="99" placeholder="Age">
 					<br>
-					<input type="password" name="mot_passe" placeholder="Mot de passe">
+					<input type="password" name="password" placeholder="Mot de passe">
 					<br>
-					<input id="dernier_input" type="password" name="mot_passe" placeholder="Confirmation du mot de passe">
+					<input id="last_input" type="password" placeholder="Confirmation du mot de passe">
 					<br>
 					<input type="submit" value="Créer un compte">
 				</form>
@@ -111,7 +111,6 @@
 	</div>
 	<!-- /.container -->
 
-
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -119,28 +118,7 @@
 	<script src="js/bootstrap.min.js"></script>
 	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="js/ie10-viewport-bug-workaround.js"></script>
-	<script>
-
-		var autocomplete, adresseEntree = false;
-		var composantsAdresse = {
-			numero_rue : 'short_name',
-			voie : 'long_name',
-			ville : 'long_name',
-			code_postal : 'short_name'
-		};
-		function initialiseAutocomplete() {
-			autocomplete = new google.maps.places.Autocomplete(document.getElementById('adresseAutocomplete'), {
-				types : [ 'geocode' ],
-				componentRestrictions : {
-					country : 'fr'
-				}
-			});
-			autocomplete.addListener('place_changed', function() {
-				adresseEntree = true;
-			});
-		}
-		
-	</script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGDRi-9N24b6zcOyRLaYzsgGPkYZVR6i0&libraries=places&callback=initialiseAutocomplete"></script>
+	<script src="js/script.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGDRi-9N24b6zcOyRLaYzsgGPkYZVR6i0&libraries=places&callback=autocompleteInitialise"></script>
 </body>
 </html>
