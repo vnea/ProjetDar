@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import beans.Player;
-import dao.PlayerDao;
 import dao.PlayerDaoImpl;
+import model.Player;
+import model.PlayerDao;
 import utils.HibernateUtils;
 
  

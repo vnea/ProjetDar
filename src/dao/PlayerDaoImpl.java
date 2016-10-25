@@ -3,7 +3,8 @@ package dao;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import beans.Player;
+import model.Player;
+import model.PlayerDao;
 import utils.HibernateUtils;
 
 
