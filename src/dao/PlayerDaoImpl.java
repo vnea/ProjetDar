@@ -17,7 +17,7 @@ public class PlayerDaoImpl implements PlayerDao{
 	public PlayerDaoImpl (){
 	}
 	
-	public void CreatePlayer(Player p){
+	public void insertPlayer(Player p){
 		
         Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();

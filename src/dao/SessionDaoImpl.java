@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,19 +15,23 @@ public class SessionDaoImpl implements SessionDao{
 	public SessionDaoImpl (){
 	}
 
-	public void createSession(Player root, String address, Date date) {
+	public void insertSession(model.Session session) {
 		Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
- 
-        model.Session session = new model.Session();
-        session.setRoot(root);
-        session.setAddress(address);
-        session.setDate(date);
-   
-        
+
         s.save(session);
         t.commit();
         s.close();
+	}
+	
+	public model.Session getSessionByRoot(Player p){
+		Session s = HibernateUtils.getSession();
+		
+		List<model.Session> sessions = (List<model.Session>) s.createQuery(
+			    "select s from Session s where s.root like :root" )
+							.setParameter( "root", p ).getResultList();
+		
+		return sessions.get(0);
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface PlayerDao {
 	
-	public void CreatePlayer(Player p);
+	public void insertPlayer(Player p);
 	
 	public Player getPlayer(String username, String password);
 	

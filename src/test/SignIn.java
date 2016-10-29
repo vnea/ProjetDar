@@ -4,6 +4,7 @@ package test;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.PlayerDaoImpl;
 import model.Player;
 import model.PlayerDao;
+import model.SessionDao;
  
 
 /**
@@ -31,6 +33,7 @@ public class SignIn extends HttpServlet {
     
     
     private PlayerDao playerDao;
+    private SessionDao sessionDao;
     
     /** 
      * @see HttpServlet#doInit
@@ -47,7 +50,7 @@ public class SignIn extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	
-		
+		// Creation d'un Player
 		Player p = new Player();
         p.setEmail("jamesBond@mail.com");
         p.setUsername("007");
@@ -62,12 +65,26 @@ public class SignIn extends HttpServlet {
         p.setGames(new ArrayList<String>());
         p.setGamesType(new ArrayList<String>());
         p.setPlatforms(new ArrayList<String>());
-        
-        this.playerDao.CreatePlayer(p);
+      
+        // Insertion dans la base de données 
+ //       this.playerDao.insertPlayer(p);
+
+		
+        // Selection d'un Player par username + pass
 		Player agentSecret = this.playerDao.getPlayer("007","toto");
 		
 		PrintWriter out = response.getWriter();
-        out.println("<h1>" + agentSecret.getFirstname() + "tests</h1>");
+        out.println("<h1>" + agentSecret.getFirstname() + "testsPlayer</h1>");
+
+		
+		model.Session session = new model.Session();
+        session.setRoot(p);
+        session.setAddress("address session");
+        session.setDate(new Date(233333));
+        
+        this.sessionDao.insertSession(session);
+//        model.Session sess = this.sessionDao.getSessionByRoot(agentSecret);
+//        out.println("<h1>" + sess.getRoot().getUsername() + "testsSession</h1>");
 	}
 
 	/**

@@ -4,5 +4,8 @@ import java.util.Date;
 
 public interface SessionDao {
 
-		public void createSession(Player root, String address, Date date);
+		public void insertSession(Session session);
+		
+		public Session getSessionByRoot(Player p);
+		
 }
