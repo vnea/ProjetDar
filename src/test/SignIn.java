@@ -46,10 +46,24 @@ public class SignIn extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+	
 		
-//		this.playerDao.CreatePlayer("jamesBond@mail.com", "007", "toto", "Bond", "James", 35, Player.Sex.H, "0707070707", 
-//									"adresseSecrete", 70007, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>()); 
-		
+		Player p = new Player();
+        p.setEmail("jamesBond@mail.com");
+        p.setUsername("007");
+        p.setPassword("toto");
+        p.setLastname("Bond");
+        p.setFirstname("James");
+        p.setAge(35);
+        p.setSex(Player.Sex.H);
+        p.setPhoneNumber("0707070707");
+        p.setAddress("adresseSecrete");
+        p.setPostCode(70007);
+        p.setGames(new ArrayList<String>());
+        p.setGamesType(new ArrayList<String>());
+        p.setPlatforms(new ArrayList<String>());
+        
+        this.playerDao.CreatePlayer(p);
 		Player agentSecret = this.playerDao.getPlayer("007","toto");
 		
 		PrintWriter out = response.getWriter();
