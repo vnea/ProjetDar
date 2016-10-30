@@ -15,7 +15,7 @@
 
         <!-- Fichiers à mapper -->
         <mapping class="model.Player" />
-        <mapping class="model.Session" />
+        <mapping class="model.GameSession" />
 
         <!-- Affiche les logs SQL -->
 <!--        <property name="show_sql">true</property>-->

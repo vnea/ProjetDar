@@ -5,13 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -20,18 +17,20 @@ import javax.persistence.TemporalType;
 
 
 @Entity
-@Table(name="Sessions")
-public class Session {
+@Table(name="GameSessions")
+public class GameSession {
+	
+	public GameSession(){}
 	
 	// Properties 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer idSession;
 	
-	@ManyToOne(optional=false, cascade = CascadeType.ALL)
+	@ManyToOne(optional=false)
 	private Player root;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	private List<Player> players = new ArrayList<Player>();
 	
 	@Basic(optional=false)

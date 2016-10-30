@@ -18,11 +18,28 @@ public class PlayerDaoImpl implements PlayerDao{
 	}
 	
 	public void insertPlayer(Player p){
-		
         Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
        
         s.save(p);
+        t.commit();
+        s.close();
+	}
+	
+	public void deletePlayer(Player p){
+		Session s = HibernateUtils.getSession();
+        Transaction t = s.beginTransaction();
+       
+        s.delete(p);
+        t.commit();
+        s.close();
+	}
+	
+	public void updatePlayer(Player p){
+		Session s = HibernateUtils.getSession();
+        Transaction t = s.beginTransaction();
+       
+        s.update(p);
         t.commit();
         s.close();
 	}
@@ -34,6 +51,7 @@ public class PlayerDaoImpl implements PlayerDao{
 			    "select p from Player p where p.username like :name and p.password like :pass" )
 							.setParameter( "name", username ).setParameter("pass", password).getResultList();
 		
+		s.close();
 		return players.get(0);
 	}
 }

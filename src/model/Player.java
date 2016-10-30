@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -56,9 +55,8 @@ public class Player {
 	@ElementCollection
 	private List<String> games;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
     private List<Player> friends = new ArrayList<Player>();
-	 
 	 
 	 
 	// Getters/Setters
