@@ -10,9 +10,10 @@ import model.GameSession;
 import model.GameSessionDao;
 import utils.HibernateUtils;
 
-public class GameSessionDaoImpl implements GameSessionDao{
+
+public class GameSessionDaoImpl implements GameSessionDao {
 	
-	public GameSessionDaoImpl (){
+	public GameSessionDaoImpl() {
 	}
 
 	public void insertGameSession(GameSession session) {
@@ -24,7 +25,7 @@ public class GameSessionDaoImpl implements GameSessionDao{
         s.close();
 	}
 	
-	public void deleteGameSession(GameSession session){
+	public void deleteGameSession(GameSession session) {
 		Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
 
@@ -33,7 +34,7 @@ public class GameSessionDaoImpl implements GameSessionDao{
         s.close();
 	}
 	
-	public void updateGameSession(GameSession session){
+	public void updateGameSession(GameSession session) {
 		Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
 
@@ -42,12 +43,11 @@ public class GameSessionDaoImpl implements GameSessionDao{
         s.close();
 	}
 	
-	public List<GameSession> getGameSessionByRoot(Player p){
+	public List<GameSession> getGameSessionByRoot(Player p) {
 		Session s = HibernateUtils.getSession();
-		
-		List<GameSession> sessions = (List<GameSession>) s.createQuery(
-			    "select s from GameSession s where s.root like :root" )
-							.setParameter( "root", p ).getResultList();
+		List<GameSession> sessions = s.createQuery("select s from GameSession s where s.root like :root", GameSession.class)
+							          .setParameter("root", p )
+							          .getResultList();
 		
 		s.close();
 		return sessions;
