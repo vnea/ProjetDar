@@ -2,7 +2,7 @@
 
 @font-face {
 	font-family: customFont;
-	src: url("../AldotheApache.ttf");
+	src: url("../fonts/AldotheApache.ttf");
 }
 
 html {
@@ -12,7 +12,7 @@ html {
 
 body {
 	padding-top: 50px;
-	background: url('../fond.jpg') no-repeat;
+	background: url('../images/fond.jpg') no-repeat;
 	background-size: 100%;
 	background-attachment: fixed;
 }

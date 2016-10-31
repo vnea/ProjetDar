@@ -11,7 +11,7 @@
 
 @font-face {
 	font-family: customFont;
-	src: url("AldotheApache.ttf");
+	src: url("assets/fonts/AldotheApache.ttf");
 }
 html, body {
     font-size: 18px;
@@ -196,17 +196,17 @@ input[type=password] {
 <div id="accueil">
 	<div id="contenu_accueil">
 		<div id="presentation">
-			<div class="ligne_icone" id="icone_amitie"><img src="amitie_icone.png"></div>
+			<div class="ligne_icone" id="icone_amitie"><img src="assets/images/amitie_icone.png"></div>
 			<p>
 				PTP est une communauté de joueurs d'Ile de France, pour organiser des sessions de jeux vidéos ! 
 			</p>
 			<br>
-			<div class="ligne_icone" id="icone_maison"><img src="maison_icone.png"></div>
+			<div class="ligne_icone" id="icone_maison"><img src="assets/images/maison_icone.png"></div>
 			<p>
 				Héberge une partie chez toi avec tes amis, ou rejoins une partie en IDF et fais toi de nouveaux amis !
 			</p>
 			<br>
-			<div class="ligne_icone" id="icone_manette"><img src="manette_icone.png"></div>
+			<div class="ligne_icone" id="icone_manette"><img src="assets/images/manette_icone.png"></div>
 			<p>
 				Ne joue plus jamais seul à tes jeux de sport ou de combat favoris et passe des soirées super fun !
 			</p>
@@ -249,7 +249,7 @@ input[type=password] {
 		       return false;
 		    }
 	}
-	
+	</script>
 			
 	
 </body>
