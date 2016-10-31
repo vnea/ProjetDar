@@ -1,6 +1,7 @@
 package enums;
 
 public enum PageTitle {
+    HOME("Accueil"),
     HOST("Héberger"),
     SEARCH("Rechercher"),
     DISCONNECTION("Déconnexion");

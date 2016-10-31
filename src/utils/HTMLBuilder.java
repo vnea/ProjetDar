@@ -33,7 +33,7 @@ public class HTMLBuilder {
         return head;
     }
     
-    public static String createMenu() {
+    public static String createTopMenuConnexion() {
         String menu;
         menu = "<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n";
             menu += "<div class=\"container\">\n";
@@ -48,29 +48,16 @@ public class HTMLBuilder {
                 menu += "</div>\n\n";
                 
                 menu += "<div id=\"navbar\" class=\"collapse navbar-collapse\">\n";
-                    menu += "<ul class=\"nav navbar-nav\">\n";
-                        // Create titles
-                        StringBuilder sb = new StringBuilder();
-                        for (PageTitle pageTitle : PageTitle.values()) {
-                            sb.append("<li><a href=\"#\">\n");
-                                sb.append(pageTitle.toString());
-                            sb.append("\n</a></li>");
-                        }
-                        menu += sb.toString();
-                    
-                        // Create login form
-                        menu += "<li>\n";
-                            menu += "<form class=\"navbar-form navbar-right\">\n";
-                                menu += "<div class=\"form-group\">\n";
-                                    menu += "<input type=\"text\" placeholder=\"Pseudo\" class=\"form-control\">\n";
-                                menu += "</div>\n";
-                                menu += "<div class=\"form-group\">\n";
-                                    menu += "<input type=\"password\" placeholder=\"Mot de passe\" class=\"form-control\">\n";
-                                menu += "</div>\n";
-                                menu += "<button type=\"submit\" class=\"btn btn-success\">Connexion</button>\n";
-                            menu += "</form>\n";
-                        menu += "</li>\n";
-                    menu += "</ul>\n";
+                    // Create login form
+                    menu += "<form class=\"navbar-form navbar-right\">\n";
+                        menu += "<div class=\"form-group\">\n";
+                            menu += "<input type=\"text\" placeholder=\"Pseudo\" class=\"form-control\">\n";
+                        menu += "</div>\n";
+                        menu += "<div class=\"form-group\">\n";
+                            menu += "<input type=\"password\" placeholder=\"Mot de passe\" class=\"form-control\">\n";
+                        menu += "</div>\n";
+                        menu += "<button type=\"submit\" class=\"btn btn-success\">Connexion</button>\n";
+                    menu += "</form>\n";
                 menu += "</div>\n";
             menu += "</div>\n";
             
