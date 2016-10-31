@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  
+  
   <servlet>
     <description></description>
     <display-name>Test</display-name>
@@ -20,19 +22,8 @@
     <servlet-name>SignIn</servlet-name>
     <url-pattern>/test/SignIn</url-pattern>
   </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>CreerCompte</display-name>
-    <servlet-name>CreerCompte</servlet-name>
-    <servlet-class>servlets.CreerCompte</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>CreerCompte</servlet-name>
-    <url-pattern>/CreerCompte</url-pattern>
-  </servlet-mapping>
-  <listener>
-    <listener-class>servlets.Init</listener-class>
-  </listener>
+
+  
   <servlet>
     <description></description>
     <display-name>SigninSignup</display-name>
