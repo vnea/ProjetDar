@@ -13,7 +13,7 @@ public class HTMLBuilder {
             head += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n";
             
             head += "<link rel=\"icon\" href=\"assets/images/favicon.ico\">\n";
-            head += "<title>" + pageTitle.toString() +"</title>\n\n";
+            head += "<title>" + pageTitle +"</title>\n\n";
             
             // CSS
             head += "<link href=\"assets/css/bootstrap.css\" rel=\"stylesheet\">\n";
