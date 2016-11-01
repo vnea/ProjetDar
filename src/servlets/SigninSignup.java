@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.Player;
 import model.PlayerDao;
@@ -18,6 +19,7 @@ import utils.HTMLBuilder;
 import utils.StringUtils;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
+import enums.SessionData;
 
 /**
  * Servlet implementation class Home
@@ -102,6 +104,13 @@ public class SigninSignup extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    // If session exists redirect to main page
+        HttpSession session = request.getSession();
+        String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
+        if (playerUsername != null) {
+            response.sendRedirect("MainPage");
+        }
+	    
         processRequest(request, response);
 	}
 
@@ -109,6 +118,13 @@ public class SigninSignup extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    // If session exists redirect to main page
+        HttpSession session = request.getSession();
+        String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
+        if (playerUsername != null) {
+            response.sendRedirect("MainPage");
+        }
+	    
 	    // Reset error message
 	    errorMessageSignup = null;
 	    request.setCharacterEncoding("UTF-8");
@@ -164,8 +180,8 @@ public class SigninSignup extends HttpServlet {
 	            playerDao.insertPlayer(player);
 	            
 	            // Create session and redirect to MainPage
-//	            HttpSession session = request.getSession();
-//	            session.setAttribute("player", player);
+	            session.setAttribute(SessionData.PLAYER_USERNAME.toString(), player.getUsername());
+	            response.sendRedirect("MainPage");
 	        }
 	    }
 	    
