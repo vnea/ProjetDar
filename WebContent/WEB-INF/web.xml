@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-  
-  
   <servlet>
     <description></description>
     <display-name>Test</display-name>
@@ -22,8 +20,6 @@
     <servlet-name>SignIn</servlet-name>
     <url-pattern>/test/SignIn</url-pattern>
   </servlet-mapping>
-
-  
   <servlet>
     <description></description>
     <display-name>SigninSignup</display-name>
@@ -33,5 +29,65 @@
   <servlet-mapping>
     <servlet-name>SigninSignup</servlet-name>
     <url-pattern></url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>MainPage</display-name>
+    <servlet-name>MainPage</servlet-name>
+    <servlet-class>servlets.MainPage</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MainPage</servlet-name>
+    <url-pattern>/MainPage</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>MyGames</display-name>
+    <servlet-name>MyGames</servlet-name>
+    <servlet-class>servlets.MyGames</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MyGames</servlet-name>
+    <url-pattern>/MyGames</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>MyGameTypes</display-name>
+    <servlet-name>MyGameTypes</servlet-name>
+    <servlet-class>servlets.MyGameTypes</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MyGameTypes</servlet-name>
+    <url-pattern>/MyGameTypes</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>MyPlatforms</display-name>
+    <servlet-name>MyPlatforms</servlet-name>
+    <servlet-class>servlets.MyPlatforms</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MyPlatforms</servlet-name>
+    <url-pattern>/MyPlatforms</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>MyFriends</display-name>
+    <servlet-name>MyFriends</servlet-name>
+    <servlet-class>servlets.MyFriends</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MyFriends</servlet-name>
+    <url-pattern>/MyFriends</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>MyGameSessions</display-name>
+    <servlet-name>MyGameSessions</servlet-name>
+    <servlet-class>servlets.MyGameSessions</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MyGameSessions</servlet-name>
+    <url-pattern>/MyGameSessions</url-pattern>
   </servlet-mapping>
 </web-app>

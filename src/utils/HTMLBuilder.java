@@ -108,7 +108,7 @@ public class HTMLBuilder {
             menu += "<li><a href=\"MyGameSessions\">Mes parties</a></li>\n";
             menu += "<li><a href=\"MyGames\">Mes jeux</a></li>\n";
             menu += "<li><a href=\"MyPlatforms\">Mes platformes</a></li>\n";
-            menu += "<li><a href=\"MyTypes\">Mes genres</a></li>\n";
+            menu += "<li><a href=\"MyGameTypes\">Mes genres</a></li>\n";
             menu += "<li><a href=\"MyFriends\">Mes amis</a></li>\n";
             menu += "<form class=\"navbar-form navbar-right inline-form\">\n";
                 menu += "<div class=\"form-group\">\n";
