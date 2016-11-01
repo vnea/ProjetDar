@@ -10,4 +10,6 @@ public interface PlayerDao {
 	
 	public Player getPlayer(String username, String password);
 	
+	public Player getPlayer(String username);
+	
 }
