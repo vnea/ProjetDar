@@ -5,7 +5,7 @@ import enums.PageTitle;
 public class HTMLBuilder {
 
     public static String createHeadTag(PageTitle pageTitle) {
-        String head;
+        String
         head = "<head>\n";
             // The below 3 meta tags *must* come first in the head; any other head content must come *after* these tags
             head += "<meta charset=\"utf-8\">\n";
@@ -26,48 +26,14 @@ public class HTMLBuilder {
             head += "<!--[if lt IE 9]>\n";
                 head += "<script src=\"assets/js/html5shiv.min.js\"></script>\n";
                 head += "<script src=\"assets/js/respond.min.js\"></script>\n";
-            head += "<![endif]-->\n";    
-                
+            head += "<![endif]-->\n";
         head += "</head>";
         
         return head;
     }
     
-    public static String createTopMenuConnexion() {
-        String menu;
-        menu = "<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n";
-            menu += "<div class=\"container\">\n";
-                menu += "<div class=\"navbar-header\">\n";
-                    menu += "<button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n";
-                        menu += "<span class=\"sr-only\">Toggle navigation</span>\n";
-                        menu += "<span class=\"icon-bar\"></span>\n";
-                        menu += "<span class=\"icon-bar\"></span>\n";
-                        menu += "<span class=\"icon-bar\"></span>\n";
-                    menu += "</button>\n";
-                    menu += "<a class=\"navbar-brand\" href=\"#\">PlayersToPlayers</a>\n";
-                menu += "</div>\n\n";
-                
-                menu += "<div id=\"navbar\" class=\"collapse navbar-collapse\">\n";
-                    // Create login form
-                    menu += "<form class=\"navbar-form navbar-right\">\n";
-                        menu += "<div class=\"form-group\">\n";
-                            menu += "<input type=\"text\" placeholder=\"Pseudo\" class=\"form-control\">\n";
-                        menu += "</div>\n";
-                        menu += "<div class=\"form-group\">\n";
-                            menu += "<input type=\"password\" placeholder=\"Mot de passe\" class=\"form-control\">\n";
-                        menu += "</div>\n";
-                        menu += "<button type=\"submit\" class=\"btn btn-success\">Connexion</button>\n";
-                    menu += "</form>\n";
-                menu += "</div>\n";
-            menu += "</div>\n";
-            
-        menu += "</nav>";
-        
-        return menu;
-    }
-    
     public static String createScriptsTags() {
-        String scripts;
+        String
         
         // Bootstrap core JavaScript
         scripts = "<script src=\"assets/js/jquery-3.1.1.min.js\"></script>\n";
@@ -78,5 +44,83 @@ public class HTMLBuilder {
         scripts += "<script src=\"assets/js/script.js\"></script>\n";
         
         return scripts;
+    }
+    
+    public static String createTopMenu(String content) {
+        String
+        menu = "<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n";
+            menu += "<div class=\"container\">\n";
+                menu += "<div class=\"navbar-header\">\n";
+                    menu += "<button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n";
+                        menu += "<span class=\"sr-only\">Toggle navigation</span>\n";
+                        menu += "<span class=\"icon-bar\"></span>\n";
+                        menu += "<span class=\"icon-bar\"></span>\n";
+                        menu += "<span class=\"icon-bar\"></span>\n";
+                    menu += "</button>\n";
+                    menu += "<a class=\"navbar-brand\" href=\"MainPage/\">PlayersToPlayers</a>\n";
+                menu += "</div>\n\n";
+                
+                menu += "<div id=\"navbar\" class=\"collapse navbar-collapse\">\n";
+                    menu += content;
+                menu += "</div>\n";
+            menu += "</div>\n";
+        menu += "</nav>";
+        
+        return menu;
+    }
+    
+    public static String createTopMenuConnection(String inputNameLogin, String inputNamePassword, String btnName) {
+        String
+        formConnection = "<form class=\"navbar-form navbar-right\" method=\"post\">\n";
+            // Login
+            formConnection += "<div class=\"form-group\">\n";
+                formConnection += "<input type=\"text\" name=\"" + inputNameLogin + "\" placeholder=\"Pseudo\" class=\"form-control\">\n";
+            formConnection += "</div>\n";
+            
+            // Password
+            formConnection += "<div class=\"form-group\">\n";
+                formConnection += "<input type=\"password\" name=\"" + inputNamePassword + "\" placeholder=\"Mot de passe\" class=\"form-control\">\n";
+            formConnection += "</div>\n";
+            
+            // Connection
+            formConnection += "<button type=\"submit\" name=\"" + btnName + "\" class=\"btn btn-success\">Connexion</button>\n";
+        formConnection += "</form>\n";
+        
+        return HTMLBuilder.createTopMenu(formConnection);
+    }
+    
+    public static String createTopMenu() {
+        String
+        menu = "<ul class=\"nav navbar-nav navbar-right\">\n";
+            menu += "<li>\n";
+                menu += "<a href=\"#\">\n";
+                    menu += "Deconnexion";
+                menu += "</a>\n";
+            menu += "</li>\n";
+        menu += "</ul>\n";
+        
+        return HTMLBuilder.createTopMenu(menu);
+    }
+    
+    public static String createTabsMenu() {
+        String
+        menu = "<ul class=\"nav nav-pills\">\n";
+            menu += "<li><a href=\"MyGameSessions\">Mes parties</a></li>\n";
+            menu += "<li><a href=\"MyGames\">Mes jeux</a></li>\n";
+            menu += "<li><a href=\"MyPlatforms\">Mes platformes</a></li>\n";
+            menu += "<li><a href=\"MyTypes\">Mes genres</a></li>\n";
+            menu += "<li><a href=\"MyFriends\">Mes amis</a></li>\n";
+            menu += "<form class=\"navbar-form navbar-right inline-form\">\n";
+                menu += "<div class=\"form-group\">\n";
+                    menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"jeux\">\n";
+                    menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
+                        menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
+                        menu += "Rechercher";
+                    menu += "</button>\n";
+                menu += "</div>\n";
+            menu += "</form>\n";
+        menu += "</ul>\n";
+        
+        return menu;
     }
 }

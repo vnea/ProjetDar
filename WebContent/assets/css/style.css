@@ -12,8 +12,8 @@ html {
 
 body {
 	padding-top: 50px;
-	background: url('../images/fond.jpg') no-repeat;
-	background-size: 100%;
+	background: url('../images/background.jpg') no-repeat;
+	background-size: cover;
 	background-attachment: fixed;
 }
 
@@ -53,44 +53,44 @@ body {
 }
 
 /* ECRAN DE CREATION DE COMPTE / ACCUEIL */
-#home_content {
+#home-content {
 	padding-top: 80px;
 	display: flex;
 	width: 70%;
 	margin: auto;
 }
 
-#container_presentation {
+#container-presentation {
 	width: 60%;
 	padding-right: 40px;
 	font-size: 22px;
 	color: white;
 }
 
-#container_presentation p {
+#container-presentation p {
 	margin-top: 10px;
 }
 
-#container_presentation p:first-child {
+#container-presentation p:first-child {
 	margin-top: 0px;
 }
 
-.icon_line {
+.icon-line {
 	text-align: center;
 }
 
-#container_subscription_form {
+#container-subscription-form {
 	margin-top: 70px;
 	width: 40%;
 	float: right;
 	font-size: 18px;
 }
 
-#container_subscription_form form {
+#container-subscription-form form {
 	margin-bottom: 20px;
 }
 
-#container_subscription_form input {
+#container-subscription-form input {
 	font-family: "Segoe UI", Arial, sans-serif;
     width: 100%;
     padding: 8px 20px;
@@ -98,15 +98,15 @@ body {
     border-bottom: 1px solid #ccc;
 }
 
-#container_subscription_form input:first-child {
+#container-subscription-form input:first-child {
 	border-radius: 6px 6px 0px 0px;
 }
 
-#container_subscription_form #last_input {
+#container-subscription-form .last-input {
 	border-radius: 0px 0px 6px 6px;
 }
 
-#container_subscription_form input[type=submit] {
+#container-subscription-form input[type=submit] {
     width: 100%;
     background-color: #4CAF50;
     color: white;
@@ -121,7 +121,9 @@ body {
     background: linear-gradient(90deg, #4CAF50, rgb(78, 194, 56));
 }
 
-
+.invalidField {
+	color: red
+}
 
 
 
