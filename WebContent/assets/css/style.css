@@ -121,7 +121,7 @@ body {
     background: linear-gradient(90deg, #4CAF50, rgb(78, 194, 56));
 }
 
-.invalidField {
+.errorMessage {
 	color: red
 }
 

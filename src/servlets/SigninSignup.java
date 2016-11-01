@@ -83,8 +83,8 @@ public class SigninSignup extends HttpServlet {
     // Password criteria
     private static final int MIN_CHAR_PASSWORD = 6;
     
-    private String errorMessageSignup = null;
-
+    private String errorMessageSignup;
+    private String errorMessageSignin;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -98,6 +98,7 @@ public class SigninSignup extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         playerDao = new PlayerDaoImpl();
+        resetMessagesError();
     }
     
 	/**
@@ -111,6 +112,7 @@ public class SigninSignup extends HttpServlet {
             response.sendRedirect("MainPage");
         }
 	    
+        resetMessagesError();
         processRequest(request, response);
 	}
 
@@ -118,6 +120,8 @@ public class SigninSignup extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    request.setCharacterEncoding("UTF-8");
+	    
 	    // If session exists redirect to main page
         HttpSession session = request.getSession();
         String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
@@ -125,64 +129,16 @@ public class SigninSignup extends HttpServlet {
             response.sendRedirect("MainPage");
         }
 	    
-	    // Reset error message
-	    errorMessageSignup = null;
-	    request.setCharacterEncoding("UTF-8");
+        resetMessagesError();
 	    
 	    // Login button pressed
 	    if (request.getParameter(BTN_NAME_SIGNIN) != null) {
+	        performSignin(request, response);
 	    }
 	    
 	    // Signup button pressed
 	    else if (request.getParameter(BTN_NAME_SIGNUP) != null) {
-	        String login = request.getParameter(INPUT_NAME_SIGNUP_LOGIN).trim();
-	        String firstname = request.getParameter(INPUT_NAME_SIGNUP_FIRSTNAME).trim();
-	        String lastname = request.getParameter(INPUT_NAME_SIGNUP_LASTNAME).trim();
-	        
-	        String sex = request.getParameter(INPUT_NAME_SIGNUP_SEX).trim();
-	        String age = request.getParameter(INPUT_NAME_SIGNUP_AGE).trim();
-	        
-	        String address = request.getParameter(INPUT_NAME_SIGNUP_ADDRESS).trim();
-	        String postcode = request.getParameter(INPUT_NAME_SIGNUP_POSTCODE).trim();
-	        
-	        String phonenumber = request.getParameter(INPUT_NAME_SIGNUP_PHONENUMBER).trim();
-	        String email = request.getParameter(INPUT_NAME_SIGNUP_EMAIL).trim();
-	        String password = request.getParameter(INPUT_NAME_SIGNUP_PASSWORD).trim();
-	        String confirmPassword = request.getParameter(INPUT_NAME_SIGNUP_CONFRIM_PASSWORD).trim();
-
-	        // Check if sent values are OK
-	        if (isLoginValid(login) && isFirstnameValid(firstname) && isLastnameValid(lastname) &&
-	            isSexValid(sex) && isAgeValid(age) && 
-	            isAddressValid(address) && isPostCodeValid(postcode) &&
-	            isPhonenumberValid(phonenumber) && isEmailValid(email) && isPasswordValid(password, confirmPassword)) {
-	            
-	            // Create new Player
-	            Player player = new Player();
-	            player.setUsername(login);
-	            player.setFirstname(firstname);
-	            player.setLastname(lastname);
-	            
-	            player.setSex(Player.Sex.valueOf(sex));
-	            player.setAge(Integer.parseInt(age));
-	            
-	            player.setAddress(address);
-	            player.setPostCode(null);
-	            player.setPhoneNumber(null);
-	            
-	            player.setEmail(email);
-	            player.setPassword(DigestUtils.sha1Hex(password));
-
-	            player.setGames(new ArrayList<String>());
-	            player.setGamesType(new ArrayList<String>());
-	            player.setPlatforms(new ArrayList<String>());
-	            
-	            // Insert in database
-	            playerDao.insertPlayer(player);
-	            
-	            // Create session and redirect to MainPage
-	            session.setAttribute(SessionData.PLAYER_USERNAME.toString(), player.getUsername());
-	            response.sendRedirect("MainPage");
-	        }
+	        performSignup(request, response);
 	    }
 	    
 	    processRequest(request, response);
@@ -201,7 +157,7 @@ public class SigninSignup extends HttpServlet {
         // Body
         out.println("<body>");
             // Menu connection
-            out.println(HTMLBuilder.createTopMenuConnection(INPUT_NAME_SIGNIN_LOGIN, INPUT_NAME_SIGNIN_PASSWORD, BTN_NAME_SIGNIN));
+            out.println(createTopMenuConnection());
 
             /**
              * BEGIN OF MAIN CONTENT
@@ -227,7 +183,7 @@ public class SigninSignup extends HttpServlet {
                     out.println("<div id=\"container-subscription-form\">");
                         // Display error message
                         if (errorMessageSignup != null) {
-                            out.print("<p class=\"invalidField\">" + errorMessageSignup + "</p>");
+                            out.print("<p class=\"errorMessage\">" + errorMessageSignup + "</p>");
                         }              
                         out.println("<form method=\"post\">");
                             // Nickname
@@ -244,11 +200,24 @@ public class SigninSignup extends HttpServlet {
                             out.println("<input type=\"text\" name=\"" + INPUT_NAME_SIGNUP_LASTNAME + "\"" +
                                                             " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_LASTNAME)) + "\"" +
                                                             " placeholder=\"Nom\">");
-                            // Sex
-                            out.println("<label class=\"radio-inline white\"><input class=\"inputGender\" type=\"radio\" name=\"" + INPUT_NAME_SIGNUP_SEX + "\"" + 
-                                                                                                                       " value=\""+ Player.Sex.H + "\" checked>H</label>");
-                            out.println("<label class=\"radio-inline white\"><input class=\"inputGender\" type=\"radio\" name=\"" + INPUT_NAME_SIGNUP_SEX + "\"" + 
-                                                                                                                       " value=\""+ Player.Sex.F + "\">F</label>");
+                            
+                            String sex = request.getParameter(INPUT_NAME_SIGNUP_SEX);
+                            // In case if sex is different from Sex.H or Sex.F
+                            sex = Player.Sex.H.toString().equals(sex) || Player.Sex.F.toString().equals(sex) ? sex : null;
+                            
+                            // Man
+                            out.println("<label class=\"radio-inline white\"><input class=\"inputGender\" type=\"radio\"" +
+                                                                                                        " name=\"" + INPUT_NAME_SIGNUP_SEX + "\"" + 
+                                                                                                        " value=\""+ Player.Sex.H + "\"" +
+                                                                                                        (sex == null || Player.Sex.H.toString().equals(sex) ? " checked" : "") +
+                                                                                                        ">H</label>");
+                            
+                            // Woman
+                            out.println("<label class=\"radio-inline white\"><input class=\"inputGender\" type=\"radio\"" +
+                                                                                                        " name=\"" + INPUT_NAME_SIGNUP_SEX + "\"" + 
+                                                                                                        " value=\""+ Player.Sex.F + "\"" +
+                                                                                                         (Player.Sex.F.toString().equals(sex) ? " checked" : "") +
+                                                                                                        ">F</label>");
                             
                             // Age
                             out.println("<input type=\"number\" min=\"12\" name=\"" + INPUT_NAME_SIGNUP_AGE + "\"" +
@@ -295,6 +264,31 @@ public class SigninSignup extends HttpServlet {
         out.println("</body>");
         out.print("</html>");
 	}
+	
+    private String createTopMenuConnection() {
+        String
+        formConnection = "<form class=\"navbar-form navbar-right\" method=\"post\">\n";
+            // Login error
+            if (errorMessageSignin != null) {
+                formConnection += "<div class=\"form-group errorMessage\">" + errorMessageSignin + "</div>";
+            }
+        
+            // Login
+            formConnection += "<div class=\"form-group\">\n";
+                formConnection += "<input type=\"text\" name=\"" + INPUT_NAME_SIGNIN_LOGIN + "\" placeholder=\"Pseudo\" class=\"form-control\">\n";
+            formConnection += "</div>\n";
+            
+            // Password
+            formConnection += "<div class=\"form-group\">\n";
+                formConnection += "<input type=\"password\" name=\"" + INPUT_NAME_SIGNIN_PASSWORD + "\" placeholder=\"Mot de passe\" class=\"form-control\">\n";
+            formConnection += "</div>\n";
+            
+            // Connection
+            formConnection += "<button type=\"submit\" name=\"" + BTN_NAME_SIGNIN + "\" class=\"btn btn-success\">Connexion</button>\n";
+        formConnection += "</form>\n";
+        
+        return HTMLBuilder.createTopMenu(formConnection);
+    }
 	
 	private boolean isLoginValid(String login) {
         // Check length
@@ -433,5 +427,82 @@ public class SigninSignup extends HttpServlet {
        }
        
        return true;
+   }
+   
+   private void performSignup(HttpServletRequest request, HttpServletResponse response) throws IOException {
+       String login = request.getParameter(INPUT_NAME_SIGNUP_LOGIN).trim();
+       String firstname = request.getParameter(INPUT_NAME_SIGNUP_FIRSTNAME).trim();
+       String lastname = request.getParameter(INPUT_NAME_SIGNUP_LASTNAME).trim();
+       
+       String sex = request.getParameter(INPUT_NAME_SIGNUP_SEX).trim();
+       String age = request.getParameter(INPUT_NAME_SIGNUP_AGE).trim();
+       
+       String address = request.getParameter(INPUT_NAME_SIGNUP_ADDRESS).trim();
+       String postcode = request.getParameter(INPUT_NAME_SIGNUP_POSTCODE).trim();
+       
+       String phonenumber = request.getParameter(INPUT_NAME_SIGNUP_PHONENUMBER).trim();
+       String email = request.getParameter(INPUT_NAME_SIGNUP_EMAIL).trim();
+       String password = request.getParameter(INPUT_NAME_SIGNUP_PASSWORD).trim();
+       String confirmPassword = request.getParameter(INPUT_NAME_SIGNUP_CONFRIM_PASSWORD).trim();
+
+       // Check if sent values are OK
+       if (isLoginValid(login) && isFirstnameValid(firstname) && isLastnameValid(lastname) &&
+           isSexValid(sex) && isAgeValid(age) && 
+           isAddressValid(address) && isPostCodeValid(postcode) &&
+           isPhonenumberValid(phonenumber) && isEmailValid(email) && isPasswordValid(password, confirmPassword)) {
+           
+           // Create new Player
+           Player player = new Player();
+           player.setUsername(login);
+           player.setFirstname(firstname);
+           player.setLastname(lastname);
+           
+           player.setSex(Player.Sex.valueOf(sex));
+           player.setAge(Integer.parseInt(age));
+           
+           player.setAddress(address);
+           player.setPostCode(null);
+           player.setPhoneNumber(null);
+           
+           player.setEmail(email);
+           player.setPassword(DigestUtils.sha1Hex(password));
+
+           player.setGames(new ArrayList<String>());
+           player.setGamesType(new ArrayList<String>());
+           player.setPlatforms(new ArrayList<String>());
+           
+           // Insert in database
+           playerDao.insertPlayer(player);
+           
+           // Create session and redirect to MainPage
+           HttpSession session = request.getSession();
+           session.setAttribute(SessionData.PLAYER_USERNAME.toString(), player.getUsername());
+           response.sendRedirect("MainPage");
+       }
+   }
+   
+   private void performSignin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+       Player player = playerDao.getPlayer(
+               request.getParameter(INPUT_NAME_SIGNIN_LOGIN).trim(),
+               // Don't forget to encrypt password
+               DigestUtils.sha1Hex(request.getParameter(INPUT_NAME_SIGNIN_PASSWORD.trim()))
+       );
+       
+       // Login or password invalid
+       if (player == null) {
+           errorMessageSignin = "Le pseudo ou le mot de passe est invalide.";
+       }
+       // Success
+       else {
+           // Create session and redirect to MainPage
+           HttpSession session = request.getSession();
+           session.setAttribute(SessionData.PLAYER_USERNAME.toString(), player.getUsername());
+           response.sendRedirect("MainPage");
+       }
+   }
+   
+   private void resetMessagesError() {
+       errorMessageSignup = null;
+       errorMessageSignin = null;
    }
 }
