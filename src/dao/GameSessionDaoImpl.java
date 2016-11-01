@@ -15,7 +15,8 @@ public class GameSessionDaoImpl implements GameSessionDao {
 	
 	public GameSessionDaoImpl() {
 	}
-
+	
+    @Override
 	public void insertGameSession(GameSession session) {
 		Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
@@ -25,6 +26,7 @@ public class GameSessionDaoImpl implements GameSessionDao {
         s.close();
 	}
 	
+    @Override
 	public void deleteGameSession(GameSession session) {
 		Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
@@ -34,6 +36,7 @@ public class GameSessionDaoImpl implements GameSessionDao {
         s.close();
 	}
 	
+    @Override
 	public void updateGameSession(GameSession session) {
 		Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
@@ -43,6 +46,7 @@ public class GameSessionDaoImpl implements GameSessionDao {
         s.close();
 	}
 	
+    @Override
 	public List<GameSession> getGameSessionByRoot(Player p) {
 		Session s = HibernateUtils.getSession();
 		List<GameSession> sessions = s.createQuery("select s from GameSession s where s.root like :root", GameSession.class)
