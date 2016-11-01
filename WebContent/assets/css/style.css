@@ -125,5 +125,10 @@ body {
 	color: red
 }
 
+.white {
+	color: white
+}
 
-
+.inputGender {
+    margin-left: -25px !important;
+}
