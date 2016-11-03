@@ -1,5 +1,6 @@
 package enums;
 
 public enum SessionData {
-    PLAYER_USERNAME
+    PLAYER_USERNAME,
+    DECO
 }

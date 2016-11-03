@@ -1,6 +1,7 @@
 package utils;
 
 import enums.PageTitle;
+import enums.SessionData;
 
 public class HTMLBuilder {
 
@@ -57,7 +58,7 @@ public class HTMLBuilder {
                         menu += "<span class=\"icon-bar\"></span>\n";
                         menu += "<span class=\"icon-bar\"></span>\n";
                     menu += "</button>\n";
-                    menu += "<a class=\"navbar-brand\" href=\"MainPage/\">PlayersToPlayers</a>\n";
+                    menu += "<a class=\"navbar-brand\" href=\"MainPage\">PlayersToPlayers</a>\n";
                 menu += "</div>\n\n";
                 
                 menu += "<div id=\"navbar\" class=\"collapse navbar-collapse\">\n";
@@ -93,8 +94,8 @@ public class HTMLBuilder {
         String
         menu = "<ul class=\"nav navbar-nav navbar-right\">\n";
             menu += "<li>\n";
-                menu += "<a href=\"#\">\n";
-                    menu += "Deconnexion";
+                menu += "<a href=\"Disconnection\">\n";
+                    menu += "Déconnexion";
                 menu += "</a>\n";
             menu += "</li>\n";
         menu += "</ul>\n";

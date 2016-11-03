@@ -7,11 +7,17 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 
 
 @Entity
@@ -48,14 +54,24 @@ public class Player {
 	private String address;
 	private Integer postCode;
 	
+	@Column(unique = true)
 	@ElementCollection
-	private List<String> platforms;
-	@ElementCollection
-	private List<String> gamesType;
-	@ElementCollection
-	private List<String> games;
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<String> platforms = new ArrayList<String>();
 	
+	@Column(unique = true)
+	@ElementCollection
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<String> gamesType = new ArrayList<String>();
+	
+	@Column(unique = true)
+	@ElementCollection
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<String> games = new ArrayList<String>();
+	
+	@Column(unique = true)
 	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
     private List<Player> friends = new ArrayList<Player>();
 	 
 	 

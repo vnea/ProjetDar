@@ -111,7 +111,7 @@ public class SigninSignup extends HttpServlet {
         if (playerUsername != null) {
             response.sendRedirect("MainPage");
         }
-	    
+        
         resetMessagesError();
         processRequest(request, response);
 	}

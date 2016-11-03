@@ -90,4 +90,14 @@
     <servlet-name>MyGameSessions</servlet-name>
     <url-pattern>/MyGameSessions</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Disconnection</display-name>
+    <servlet-name>Disconnection</servlet-name>
+    <servlet-class>servlets.Disconnection</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Disconnection</servlet-name>
+    <url-pattern>/Disconnection</url-pattern>
+  </servlet-mapping>
 </web-app>
