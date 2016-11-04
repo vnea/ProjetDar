@@ -50,20 +50,20 @@ public class HTMLBuilder {
     public static String createTopMenu(String content) {
         String
         menu = "<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n";
-            menu += "<div class=\"container\">\n";
-                menu += "<div class=\"navbar-header\">\n";
-                    menu += "<button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n";
-                        menu += "<span class=\"sr-only\">Toggle navigation</span>\n";
-                        menu += "<span class=\"icon-bar\"></span>\n";
-                        menu += "<span class=\"icon-bar\"></span>\n";
-                        menu += "<span class=\"icon-bar\"></span>\n";
-                    menu += "</button>\n";
-                    menu += "<a class=\"navbar-brand\" href=\"MainPage\">PlayersToPlayers</a>\n";
-                menu += "</div>\n\n";
-                
-                menu += "<div id=\"navbar\" class=\"collapse navbar-collapse\">\n";
-                    menu += content;
-                menu += "</div>\n";
+        	menu += "<div class=\"container-fluid\">\n";
+	            menu += "<div class=\"navbar-header\">\n";
+	                menu += "<button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n";
+	                    menu += "<span class=\"sr-only\">Toggle navigation</span>\n";
+	                    menu += "<span class=\"icon-bar\"></span>\n";
+	                    menu += "<span class=\"icon-bar\"></span>\n";
+	                    menu += "<span class=\"icon-bar\"></span>\n";
+	                menu += "</button>\n";
+	                menu += "<a class=\"navbar-brand\" href=\"MainPage\">PlayersToPlayers</a>\n";
+	            menu += "</div>\n\n";
+	            
+	            menu += "<div id=\"navbar-collapse-target\" class=\"collapse navbar-collapse\">\n";
+	                menu += content;
+	            menu += "</div>\n";
             menu += "</div>\n";
         menu += "</nav>";
         
@@ -94,9 +94,11 @@ public class HTMLBuilder {
         String
         menu = "<ul class=\"nav navbar-nav navbar-right\">\n";
             menu += "<li>\n";
-                menu += "<a href=\"Disconnection\">\n";
-                    menu += "Déconnexion";
-                menu += "</a>\n";
+            	menu += "<div class=\"navbar-btn\">\n";
+	                menu += "<a href=\"Disconnection\" class=\"btn btn-success\">\n";
+	                    	menu += "Déconnexion";
+	                menu += "</a>\n";
+                menu += "</div>\n";
             menu += "</li>\n";
         menu += "</ul>\n";
         
