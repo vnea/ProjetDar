@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import enums.PageTitle;
 import enums.SessionData;
 import model.Player;
 import model.PlayerDao;
+import utils.GiantBombUtils;
 import utils.HTMLBuilder;
 
 /**
@@ -74,70 +76,35 @@ public class MyGameTypes extends HttpServlet {
             
             out.println("<div class=\"container-fluid\">");
     			out.println("<form class=\"form\" method=\"post\">");
-	        			out.println("<div class=\"row\">");
-	        				out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
-	            				out.println(checkbox("Action"));
-	            				out.println(checkbox("Stratégie"));
-	            				out.println(checkbox("Sport"));
-	            				out.println(checkbox("Aventure"));
-	            				out.println(checkbox("Jeu de rôle"));
-	            				out.println(checkbox("Course"));
-	            				out.println(checkbox("Simulation"));
-	            				out.println(checkbox("Education"));
-	            				out.println(checkbox("Combat"));
-	            				out.println(checkbox("Lutte"));
-	            				out.println(checkbox("Shoot"));
-	            				out.println(checkbox("Stratégie temps-réel"));
-	        				out.println("</div>");	
-	            			out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
-	            				out.println(checkbox("Jeu de cartes"));
-	            				out.println(checkbox("Jeu de plateau"));
-	            				out.println(checkbox("Compilation"));
-	            				out.println(checkbox("MMORPG"));
-	            				out.println(checkbox("Collection de mini-jeux"));		
-	            				out.println(checkbox("Puzzle"));
-	            				out.println(checkbox("Musique"));
-	            				out.println(checkbox("Boxe"));
-	            				out.println(checkbox("Football"));
-	            				out.println(checkbox("Skateboard"));
-	            				out.println(checkbox("Simulation de vol"));
-	            				out.println(checkbox("Tennis"));
-	        				out.println("</div>");
-	        				out.println("<div class=\"col-xs-2 col-xs-offset-1\">");	
-	            				out.println(checkbox("Billard"));
-	            				out.println(checkbox("Pêche"));
-	            				out.println(checkbox("Golf"));
-	            				out.println(checkbox("Bowling"));
-	            				out.println(checkbox("Pinball"));
-	            				out.println(checkbox("Jeux de shoot Dual-Joystick"));
-	            				out.println(checkbox("FPS"));
-	            				out.println(checkbox("Snowbord / Ski"));
-	            				out.println(checkbox("Baseball"));
-	            				out.println(checkbox("Tir au pistolet optique"));
-	            				out.println(checkbox("Aventure textuelle"));
-	            				out.println(checkbox("Beat'em'up"));
-	        				out.println("</div>");
-	        				out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
-	            				out.println(checkbox("Combat de véhicules"));
-	            				out.println(checkbox("Hockey"));
-	            				out.println(checkbox("Soccer"));
-	            				out.println(checkbox("Plateforme"));
-	            				out.println(checkbox("Athlétisme"));
-	            				out.println(checkbox("Action Aventure"));
-	            				out.println(checkbox("Fitness"));
-	            				out.println(checkbox("Pari"));
-	            				out.println(checkbox("Cricket"));
-	            				out.println(checkbox("Surf"));
-	            				out.println(checkbox("Shoot'em'up"));
-	            				out.println(checkbox("Cass-briques"));
-	            				out.println(checkbox("MOBA"));
-	        				out.println("</div>");
-	    				out.println("</div>");
-	    				out.println("<div class=\"row\">");
-	    					out.println("<div class=\"col-xs-1 col-xs-offset-6\">");
-	        					out.println("<input type=\"submit\" name=\"submit\" value=\"Valider\">");
-	    					out.println("</div>");	
-	        			out.println("</div>");
+	    			out.println("<div class=\"row\">");
+	    			
+		    			// get List of types of games from GiantBomb
+		                List<String> gamesTypes = GiantBombUtils.getGamesTypeList();
+	                
+		                int j = gamesTypes.size() % 4;
+		                int k = 0;
+		                out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
+		                for(int i=0; i<gamesTypes.size(); i++){
+		                	if( (i % (gamesTypes.size()/4) == k) && (i!= 0) ){
+		                		if(j > 0){
+		                			j--;
+		                			k++;
+			                		i++;
+			                		out.println(checkbox(gamesTypes.get(i)));
+		                		}
+								out.println("</div>");
+								out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
+		                	}
+		                	out.println(checkbox(gamesTypes.get(i)));
+		                }
+		                out.println("</div>");	
+					
+					out.println("</div>");
+					out.println("<div class=\"row\">");
+    					out.println("<div class=\"col-xs-1 col-xs-offset-6\">");
+        					out.println("<input type=\"submit\" name=\"submit\" value=\"Valider\">");
+    					out.println("</div>");	
+        			out.println("</div>");
                 out.println("</form>");
             out.println("</div>");
         

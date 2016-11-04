@@ -75,35 +75,39 @@ public class MyPlatforms extends HttpServlet {
             out.println(HTMLBuilder.createTopMenu());
             out.println(HTMLBuilder.createTabsMenu());
             
-            // get List of platforms from GiantBomb
-            List<String> platforms = GiantBombUtils.getPlatformsList();
-            for(int i=0; i<platforms.size(); i++){
-            	System.out.println(platforms.get(i));
-            }
-            
-           /* out.println("<div class=\"container-fluid\">");
+            out.println("<div class=\"container-fluid\">");
     			out.println("<form class=\"form\" method=\"post\">");
-	        			out.println("<div class=\"row\">");
-	        				out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
-	            				
-	        				out.println("</div>");	
-	            			out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
-	            				
-	        				out.println("</div>");
-	        				out.println("<div class=\"col-xs-2 col-xs-offset-1\">");	
-	            				
-	        				out.println("</div>");
-	        				out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
-	            				
-	        				out.println("</div>");
-	    				out.println("</div>");
-	    				out.println("<div class=\"row\">");
-	    					out.println("<div class=\"col-xs-1 col-xs-offset-6\">");
-	        					out.println("<input type=\"submit\" name=\"submit\" value=\"Valider\">");
-	    					out.println("</div>");	
-	        			out.println("</div>");
+    				out.println("<div class=\"row\">");
+    			
+		    			// get List of platforms from GiantBomb
+		                List<String> platforms = GiantBombUtils.getPlatformsList();
+		            
+		                int j = platforms.size() % 4;
+		                int k = 0;
+		                out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
+		                for(int i=0; i<platforms.size(); i++){
+		                	if( (i % (platforms.size()/4) == k) && (i!= 0) ){
+		                		if(j > 0){
+		                			j--;
+		                			k++;
+			                		i++;
+			                		out.println(checkbox(platforms.get(i)));
+		                		}
+								out.println("</div>");
+								out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
+		                	}
+		                	out.println(checkbox(platforms.get(i)));
+		                }
+		                out.println("</div>");	
+					
+					out.println("</div>");
+    				out.println("<div class=\"row\">");
+    					out.println("<div class=\"col-xs-1 col-xs-offset-6\">");
+        					out.println("<input type=\"submit\" name=\"submit\" value=\"Valider\">");
+    					out.println("</div>");	
+        			out.println("</div>");
                 out.println("</form>");
-            out.println("</div>");*/
+            out.println("</div>");
         
             // Scripts
             out.println(HTMLBuilder.createScriptsTags());
@@ -142,13 +146,13 @@ public class MyPlatforms extends HttpServlet {
 	private String checkbox (String buttonName) {
 		String res;
 		
-		if(player.getGamesType().contains(buttonName)){
+		if(player.getPlatforms().contains(buttonName)){
 			res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
-					"name=\"type\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
+					"name=\"platform\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
 		}
 		else{
 			res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\"" +
-					"name=\"type\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
+					"name=\"platform\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
 		}
 			     
         return res;

@@ -36,6 +36,20 @@ public class GiantBombUtils {
 	    return platforms;
 	}
 	
+	public static List<String> getGamesTypeList() {
+		String response = null;
+		List<String> gamesTypes = new ArrayList<String>();
+		
+	    response = resultRequest("http://www.giantbomb.com/api/genres/?format=json&api_key=784568466662eacd7cf5ba81d73976e4aa9291e3&field_list=name");  
+	    
+	    JsonObject JOGamesTypes = JsonUtils.JsonObjectFromString(response);
+	    JsonArray JAGamesTypes = JOGamesTypes.getJsonArray("results");
+	    for(int i = 0; i < JAGamesTypes.size(); i++){
+	    	gamesTypes.add(JAGamesTypes.getJsonObject(i).getString("name"));
+	    }
+	    
+	    return gamesTypes;
+	}
 	
 	private static String resultRequest(String requestURL) {	
 		String responseBody = null; 
