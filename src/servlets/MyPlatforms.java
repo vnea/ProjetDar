@@ -78,7 +78,7 @@ public class MyPlatforms extends HttpServlet {
             // get List of platforms from GiantBomb
             List<String> platforms = GiantBombUtils.getPlatformsList();
             for(int i=0; i<platforms.size(); i++){
-            //	System.out.println(platforms.get(i));
+            	System.out.println(platforms.get(i));
             }
             
            /* out.println("<div class=\"container-fluid\">");
