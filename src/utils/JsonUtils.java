@@ -1,7 +1,8 @@
-package test;
+package utils;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 
 import javax.json.Json;
@@ -14,5 +15,13 @@ public class JsonUtils {
         JsonReader jsonReader = Json.createReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
 
         return jsonReader.readObject();
+    }
+    
+    public static JsonObject JsonObjectFromString(String str){
+		JsonReader jsonReader = Json.createReader(new StringReader(str));
+		JsonObject object = jsonReader.readObject();
+		jsonReader.close();
+		
+		return object;
     }
 }

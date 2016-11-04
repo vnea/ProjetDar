@@ -52,7 +52,7 @@ public class Player {
 	
 	private String phoneNumber;
 	private String address;
-	private Integer postCode;
+	private String postCode;
 	
 	@Column(unique = true)
 	@ElementCollection
@@ -146,10 +146,10 @@ public class Player {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	public Integer getPostCode() {
+	public String getPostCode() {
 		return postCode;
 	}
-	public void setPostCode(Integer postCode) {
+	public void setPostCode(String postCode) {
 		this.postCode = postCode;
 	}
 	

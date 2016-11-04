@@ -50,7 +50,7 @@ public class MyGameTypes extends HttpServlet {
         String playerUsername;
         
         if (session == null) {
-            response.sendRedirect("SigninSignup");
+            response.sendRedirect(".");
         }
         else {
         	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
@@ -135,7 +135,7 @@ public class MyGameTypes extends HttpServlet {
 	    				out.println("</div>");
 	    				out.println("<div class=\"row\">");
 	    					out.println("<div class=\"col-xs-1 col-xs-offset-6\">");
-	        					out.println("<input type=\"submit\" name=\"submit\" value=\"Envoyer\">");
+	        					out.println("<input type=\"submit\" name=\"submit\" value=\"Valider\">");
 	    					out.println("</div>");	
 	        			out.println("</div>");
                 out.println("</form>");

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
+import utils.JsonUtils;
+
 public class TestJDBC {
     /* La liste qui contiendra tous les résultats de nos essais */
     private List<String> messages = new ArrayList<String>();
