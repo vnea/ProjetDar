@@ -72,6 +72,7 @@ public class GiantBombUtils {
 		String response = null;
 		Map<String, String> gameInfos = new HashMap<String, String>();
 		
+		game = game.replace(" ", "%20");
 	    response = resultRequest("http://www.giantbomb.com/api/search/?api_key=784568466662eacd7cf5ba81d73976e4aa9291e3&format=json&query="+game+"&resources=game");  
 	    
 	    // Get all informations
