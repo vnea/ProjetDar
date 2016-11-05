@@ -79,7 +79,7 @@ public class MyGameTypes extends HttpServlet {
 	    			out.println("<div class=\"row\">");
 	    			
 		    			// get List of types of games from GiantBomb
-		                List<String> gamesTypes = GiantBombUtils.getGamesTypeList();
+		                List<String> gamesTypes = GiantBombUtils.getGamesTypes();
 	                
 		                int j = gamesTypes.size() % 4;
 		                int k = 0;

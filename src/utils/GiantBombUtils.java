@@ -2,7 +2,9 @@ package utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -36,7 +38,7 @@ public class GiantBombUtils {
 	    return platforms;
 	}
 	
-	public static List<String> getGamesTypeList() {
+	public static List<String> getGamesTypes() {
 		String response = null;
 		List<String> gamesTypes = new ArrayList<String>();
 		
@@ -50,6 +52,52 @@ public class GiantBombUtils {
 	    
 	    return gamesTypes;
 	}
+	
+	public static List<String> getMostRecentGames() {
+		String response = null;
+		List<String> games = new ArrayList<String>();
+		
+	    response = resultRequest("http://www.giantbomb.com/api/games/?format=json&sort=original_release_date:desc&api_key=784568466662eacd7cf5ba81d73976e4aa9291e3&field_list=name");  
+	    
+	    JsonObject JOGames = JsonUtils.JsonObjectFromString(response);
+	    JsonArray JAGames= JOGames.getJsonArray("results");
+	    for(int i = 0; i < JAGames.size(); i++){
+	    	games.add(JAGames.getJsonObject(i).getString("name"));
+	    }
+	    
+	    return games;
+	}
+	
+	public static Map<String,String> getGameInfos(String game) {
+		String response = null;
+		Map<String, String> gameInfos = new HashMap<String, String>();
+		
+	    response = resultRequest("http://www.giantbomb.com/api/search/?api_key=784568466662eacd7cf5ba81d73976e4aa9291e3&format=json&query="+game+"&resources=game");  
+	    
+	    // Get all informations
+	    JsonObject JOReponse = JsonUtils.JsonObjectFromString(response);
+	    JsonArray JAGameInfos = JOReponse.getJsonArray("results");
+	    JsonObject JOGameInfos = JAGameInfos.getJsonObject(0);
+	    for(String key : JOGameInfos.keySet()){
+    		gameInfos.put(key,JOGameInfos.get(key).toString());
+	    }
+	    
+	    // Get only one main image
+	    JsonObject JOImages = JsonUtils.JsonObjectFromString(gameInfos.get("image"));
+	    gameInfos.put("image", JOImages.get("small_url").toString());
+	    
+	    // Get list of platforms
+	    JsonArray JAPlatforms = JsonUtils.JsonArrayFromString(gameInfos.get("platforms"));
+	    String platforms = "";
+	    for(int i = 0; i < JAPlatforms.size(); i++){
+	    	platforms += JAPlatforms.getJsonObject(i).getString("name")+", ";
+	    	
+	    }
+	    gameInfos.put("platforms", platforms.substring(0, platforms.length() - 2));
+	    
+	    return gameInfos;
+	}
+	
 	
 	private static String resultRequest(String requestURL) {	
 		String responseBody = null; 

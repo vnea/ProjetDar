@@ -1,7 +1,6 @@
 package utils;
 
 import enums.PageTitle;
-import enums.SessionData;
 
 public class HTMLBuilder {
 
@@ -52,7 +51,7 @@ public class HTMLBuilder {
         menu = "<nav class=\"navbar navbar-inverse navbar-fixed-top\">\n";
         	menu += "<div class=\"container-fluid\">\n";
 	            menu += "<div class=\"navbar-header\">\n";
-	                menu += "<button type=\"button\" class=\"navbar-toggle collapsed\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n";
+	                menu += "<button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#navbar\" aria-expanded=\"false\" aria-controls=\"navbar\">\n";
 	                    menu += "<span class=\"sr-only\">Toggle navigation</span>\n";
 	                    menu += "<span class=\"icon-bar\"></span>\n";
 	                    menu += "<span class=\"icon-bar\"></span>\n";
@@ -66,7 +65,6 @@ public class HTMLBuilder {
 	            menu += "</div>\n";
             menu += "</div>\n";
         menu += "</nav>";
-        
         return menu;
     }
     
@@ -92,7 +90,7 @@ public class HTMLBuilder {
     
     public static String createTopMenu() {
         String
-        menu = "<ul class=\"nav navbar-nav navbar-right\">\n";
+        menu = "<div class=\"nav navbar-nav navbar-right\">\n";
             menu += "<li>\n";
             	menu += "<div class=\"navbar-btn\">\n";
 	                menu += "<a href=\"Disconnection\" class=\"btn btn-success\">\n";
@@ -100,30 +98,31 @@ public class HTMLBuilder {
 	                menu += "</a>\n";
                 menu += "</div>\n";
             menu += "</li>\n";
-        menu += "</ul>\n";
+        menu += "</div>\n";
         
         return HTMLBuilder.createTopMenu(menu);
     }
     
     public static String createTabsMenu() {
         String
-        menu = "<ul class=\"nav nav-pills\">\n";
-            menu += "<li><a href=\"MyGameSessions\">Mes parties</a></li>\n";
-            menu += "<li><a href=\"MyGames\">Mes jeux</a></li>\n";
-            menu += "<li><a href=\"MyPlatforms\">Mes platformes</a></li>\n";
-            menu += "<li><a href=\"MyGameTypes\">Mes genres</a></li>\n";
-            menu += "<li><a href=\"MyFriends\">Mes amis</a></li>\n";
-            menu += "<form class=\"navbar-form navbar-right inline-form\">\n";
-                menu += "<div class=\"form-group\">\n";
-                    menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"jeux\">\n";
-                    menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
-                        menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
-                        menu += "Rechercher";
-                    menu += "</button>\n";
-                menu += "</div>\n";
-            menu += "</form>\n";
-        menu += "</ul>\n";
-        
+        menu = "<div class=\"row\">\n";
+	        menu += "<ul class=\"nav nav-pills\">\n";
+	            menu += "<li><a href=\"MyGameSessions\">Mes parties</a></li>\n";
+	            menu += "<li><a href=\"MyGames\">Mes jeux</a></li>\n";
+	            menu += "<li><a href=\"MyPlatforms\">Mes platformes</a></li>\n";
+	            menu += "<li><a href=\"MyGameTypes\">Mes genres</a></li>\n";
+	            menu += "<li><a href=\"MyFriends\">Mes amis</a></li>\n";
+	            menu += "<form class=\"navbar-form navbar-right inline-form\">\n";
+	                menu += "<div class=\"form-group\">\n";
+	                    menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"jeux\">\n";
+	                    menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
+	                        menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
+	                        menu += "Rechercher";
+	                    menu += "</button>\n";
+	                menu += "</div>\n";
+	            menu += "</form>\n";
+	        menu += "</ul>\n";
+        menu += "</div>\n";
         return menu;
     }
 }

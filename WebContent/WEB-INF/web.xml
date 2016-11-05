@@ -100,4 +100,24 @@
     <servlet-name>Disconnection</servlet-name>
     <url-pattern>/Disconnection</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Platform</display-name>
+    <servlet-name>Platform</servlet-name>
+    <servlet-class>servlets.Platform</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Platform</servlet-name>
+    <url-pattern>/Platform</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>Game</display-name>
+    <servlet-name>Game</servlet-name>
+    <servlet-class>servlets.Game</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Game</servlet-name>
+    <url-pattern>/Game</url-pattern>
+  </servlet-mapping>
 </web-app>

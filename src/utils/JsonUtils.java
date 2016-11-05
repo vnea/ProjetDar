@@ -6,6 +6,7 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -23,5 +24,13 @@ public class JsonUtils {
 		jsonReader.close();
 		
 		return object;
+    }
+    
+    public static JsonArray JsonArrayFromString(String str){
+		JsonReader jsonReader = Json.createReader(new StringReader(str));
+		JsonArray array = jsonReader.readArray();
+		jsonReader.close();
+		
+		return array;
     }
 }

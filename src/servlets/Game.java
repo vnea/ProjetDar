@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,10 +19,11 @@ import model.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
 
+
 /**
- * Servlet implementation class MainPage
+ * Servlet implementation class Game
  */
-public class MainPage extends HttpServlet {
+public class Game extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private PlayerDao playerDao;
@@ -30,7 +32,7 @@ public class MainPage extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MainPage() {
+    public Game() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -48,6 +50,7 @@ public class MainPage extends HttpServlet {
 		// If session doesn't exists redirect to SigninSignup page
         HttpSession session = request.getSession(false);
         String playerUsername;
+        String gameName = null;
         
         if (session == null) {
             response.sendRedirect(".");
@@ -57,20 +60,27 @@ public class MainPage extends HttpServlet {
         	player = this.playerDao.getPlayer(playerUsername);
         }
         
-		response.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
-        // DOCTYPE + html + head
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
         out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
-
-        // Body
+        
+	        
+	     // Body
         out.println("<body>");
             // Menu connection
             out.println(HTMLBuilder.createTopMenu());
             out.println(HTMLBuilder.createTabsMenu());
+            
+            request.setCharacterEncoding("UTF-8");
+	        if (request.getParameter("game") == null) {
+		        out.println("error");
+		    } else {
+		        gameName = request.getParameter("game");
+		    }
             
             out.println("<div class=\"row\">");
 	            out.println("<section class=\"col-xs-2 well\">");
@@ -94,6 +104,58 @@ public class MainPage extends HttpServlet {
 				out.println("</section>");
 				
 				out.println("<section class=\"col-xs-8\">");
+					Map<String, String> gameInfos = GiantBombUtils.getGameInfos(gameName);
+					
+					out.println("<div class=\"row\">");
+			            out.println("<div class=\"col-xs-5 well\">");
+			            	out.println("<img src="+gameInfos.get("image")+" alt=\"?\"/>");
+			            out.println("</div>");
+			            out.println("<div class=\"col-xs-7 well\">");
+				            out.println("<div class=\"row\">");
+				            	out.println("<B>Note : </B>");
+			            		out.println(gameInfos.get("original_game_rating"));
+		            		out.println("</div>");
+			            	out.println("<div class=\"row\">");
+			            		out.println("<B>Description : </B>");
+			            		out.println(gameInfos.get("deck"));
+		            		out.println("</div>");
+		            		out.println("<div class=\"row\">");
+			            		out.println("<B>Date de sortie : </B>");
+			            		out.println(gameInfos.get("original_release_date"));
+			            	out.println("</div>");
+			            	out.println("<div class=\"row\">");
+			            		out.println("<B>Genres : </B>");
+			            		out.println(gameInfos.get("genres"));
+			            	out.println("</div>");
+			            	out.println("<div class=\"row\">");
+			            		out.println("<B>Platform : </B>");
+			            		out.println(gameInfos.get("platforms"));
+			            	out.println("</div>");
+				            	out.println("<div class=\"row\">");
+			            		out.println("<B>Développeurs : </B>");
+		            		out.println(gameInfos.get("developers"));
+			            	out.println("</div>");
+			            	out.println("<div class=\"row\">");
+			            		out.println("<B>Editeurs : </B>");
+			            		out.println(gameInfos.get("publishers"));
+			            	out.println("</div>");
+			            	out.println("<div class=\"row\">");
+			            		out.println("<B>Jeux similaires : </B>");
+			            		out.println(gameInfos.get("similar_games"));
+			            	out.println("</div>");
+			            	out.println("<div class=\"row\">");
+			            		out.println("<B>Images : </B>");
+			            		out.println(gameInfos.get("similar_games"));
+			            	out.println("</div>");
+			            out.println("</div>");  
+					out.println("</div>");
+	            	out.println("<div class=\"row\">");
+		            	out.println("<div class=\"col-xs-12 well\">");
+		            		out.println("<B>Description : </B>");
+		            		out.println(gameInfos.get("description"));
+		            	out.println("</div>");
+	            	out.println("</div>");
+	            	
 				out.println("</section>");
 				
 				out.println("<section class=\"col-xs-2 well\">");
