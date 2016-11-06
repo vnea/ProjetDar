@@ -147,7 +147,11 @@ public class MyFriends extends HttpServlet {
 		String res;
 		
 		res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
-				"name=\"friend\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
+				"name=\"friend\"" + " value=\""+buttonName+"\">\n";
+			res += "<a href=\"OtherUser?user="+buttonName+"\">\n";
+				res += buttonName;
+			res += "</a>\n";
+		res += "</label>";
 			     
         return res;
 	}

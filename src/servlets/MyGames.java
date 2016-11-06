@@ -144,7 +144,11 @@ public class MyGames extends HttpServlet {
 		String res;
 		
 		res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
-				"name=\"game\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
+				"name=\"game\"" + " value=\""+buttonName+"\">\n";
+			res += "<a href=\"Game?game="+buttonName+"\">\n";
+				res += buttonName;
+			res += "</a>\n";
+		res += "</label>";
 			     
         return res;
 	}

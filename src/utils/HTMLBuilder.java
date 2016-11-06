@@ -114,7 +114,7 @@ public class HTMLBuilder {
 	                menu += "</div>\n";
 	                menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
 	                    menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
-	                    menu += "Rechercher";
+	                    menu += "Voir profil";
 	                menu += "</button>\n";
 		        menu += "</form>\n";
 		        

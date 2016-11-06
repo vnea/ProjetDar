@@ -106,7 +106,7 @@ public class GiantBombUtils {
 		Map<String, String> platformInfos = new HashMap<String, String>();
 		
 		platform = platform.replace(" ", "%20");
-	    response = resultRequest("http://www.giantbomb.com/api/search/?api_key=784568466662eacd7cf5ba81d73976e4aa9291e3&format=json&query="+platform+"&resources=platform");  
+	    response = resultRequest("http://www.giantbomb.com/api/platforms/?api_key=784568466662eacd7cf5ba81d73976e4aa9291e3&format=json&filter=name:"+platform);  
 	    
 	    // Get all informations
 	    JsonObject JOReponse = JsonUtils.JsonObjectFromString(response);
@@ -120,6 +120,12 @@ public class GiantBombUtils {
 	    if(platformInfos.get("image") != "null"){
 		    JsonObject JOImages = JsonUtils.JsonObjectFromString(platformInfos.get("image"));
 		    platformInfos.put("image", JOImages.get("small_url").toString());
+	    }
+	    
+	    // Get Compagnie
+	    if(platformInfos.get("company") != "null"){
+		    JsonObject JOImages = JsonUtils.JsonObjectFromString(platformInfos.get("company"));
+		    platformInfos.put("company", JOImages.get("name").toString());
 	    }
 	    
 	    return platformInfos;

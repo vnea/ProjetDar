@@ -152,12 +152,12 @@
   </servlet-mapping>
   <servlet>
     <description></description>
-    <display-name>User</display-name>
-    <servlet-name>User</servlet-name>
+    <display-name>OtherUser</display-name>
+    <servlet-name>OtherUser</servlet-name>
     <servlet-class>servlets.OtherUser</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>User</servlet-name>
-    <url-pattern>/User</url-pattern>
+    <servlet-name>OtherUser</servlet-name>
+    <url-pattern>/OtherUser</url-pattern>
   </servlet-mapping>
 </web-app>
