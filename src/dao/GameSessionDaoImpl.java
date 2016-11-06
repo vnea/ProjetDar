@@ -62,5 +62,11 @@ public class GameSessionDaoImpl implements GameSessionDao {
 		// A completer
 		return null;
 	}
+	
+	@Override
+	public List<GameSession> getGameSessionByPlatform(String platformName) {
+		// A completer
+		return null;
+	}
 
 }

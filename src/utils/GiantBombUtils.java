@@ -84,8 +84,10 @@ public class GiantBombUtils {
 	    }
 	    
 	    // Get only one main image
-	    JsonObject JOImages = JsonUtils.JsonObjectFromString(gameInfos.get("image"));
-	    gameInfos.put("image", JOImages.get("small_url").toString());
+	    if(gameInfos.get("image") != "null"){
+		    JsonObject JOImages = JsonUtils.JsonObjectFromString(gameInfos.get("image"));
+		    gameInfos.put("image", JOImages.get("small_url").toString());
+	    }
 	    
 	    // Get list of platforms
 	    JsonArray JAPlatforms = JsonUtils.JsonArrayFromString(gameInfos.get("platforms"));
@@ -115,10 +117,31 @@ public class GiantBombUtils {
 	    }
 	    
 	    // Get only one main image
-	    JsonObject JOImages = JsonUtils.JsonObjectFromString(platformInfos.get("image"));
-	    platformInfos.put("image", JOImages.get("small_url").toString());
+	    if(platformInfos.get("image") != "null"){
+		    JsonObject JOImages = JsonUtils.JsonObjectFromString(platformInfos.get("image"));
+		    platformInfos.put("image", JOImages.get("small_url").toString());
+	    }
 	    
 	    return platformInfos;
+	}
+	
+	public static List<Map<String, String>> getGames(String gameName) {
+		String response = null;
+		List<Map<String, String>> games = new ArrayList<Map<String, String>>();
+		
+	    response = resultRequest("http://www.giantbomb.com/api/games/?format=json&api_key=784568466662eacd7cf5ba81d73976e4aa9291e3&filter=name:"+gameName+"&sort=date_added:desc&field_list=name,original_release_date,image");  
+	    
+	    JsonObject JOGames = JsonUtils.JsonObjectFromString(response);
+	    JsonArray JAGames= JOGames.getJsonArray("results");
+	    for(int i = 0; i < JAGames.size(); i++){
+	    	games.add(new HashMap<String,String>());
+	    	games.get(i).put("name",JAGames.getJsonObject(i).getString("name"));
+    		games.get(i).put("original_release_date",JAGames.getJsonObject(i).get("original_release_date").toString());
+	    	if(JAGames.getJsonObject(i).get("image").toString() != "null")
+	    		games.get(i).put("image",JAGames.getJsonObject(i).getJsonObject("image").get("small_url").toString());
+	    }
+	    
+	    return games;
 	}
 	
 	

@@ -130,4 +130,34 @@
     <servlet-name>CreateGameSession</servlet-name>
     <url-pattern>/CreateGameSession</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SearchGameResult</display-name>
+    <servlet-name>SearchGameResult</servlet-name>
+    <servlet-class>servlets.SearchGameResult</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchGameResult</servlet-name>
+    <url-pattern>/SearchGameResult</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SearchUserResult</display-name>
+    <servlet-name>SearchUserResult</servlet-name>
+    <servlet-class>servlets.SearchUserResult</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchUserResult</servlet-name>
+    <url-pattern>/SearchUserResult</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>User</display-name>
+    <servlet-name>User</servlet-name>
+    <servlet-class>servlets.OtherUser</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>User</servlet-name>
+    <url-pattern>/User</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -14,4 +14,5 @@ public interface GameSessionDao {
 		
 		public List<GameSession> getGameSessionByGame(String gameName);
 	
+		public List<GameSession> getGameSessionByPlatform(String platformName);
 }

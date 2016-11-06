@@ -26,7 +26,6 @@ import utils.GiantBombUtils;
 public class MyPlatforms extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	
 	private PlayerDao playerDao;
 	private Player player;
        

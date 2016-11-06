@@ -62,6 +62,7 @@ public class Platform extends HttpServlet {
         	player = this.playerDao.getPlayer(playerUsername);
         }
         
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -76,7 +77,6 @@ public class Platform extends HttpServlet {
             out.println(HTMLBuilder.createTopMenu());
             out.println(HTMLBuilder.createTabsMenu());
             
-            request.setCharacterEncoding("UTF-8");
 	        if (request.getParameter("platform") == null) {
 		        out.println("error");
 		    } else {
@@ -84,6 +84,7 @@ public class Platform extends HttpServlet {
 		    }
             
             out.println("<div class=\"row\">");
+            
 	            out.println("<section class=\"col-xs-2 well\">");
 		            out.println("<div id=\"wrapper\">");
 						out.println("<div id=\"sidebar-wrapper\">");
@@ -97,47 +98,46 @@ public class Platform extends HttpServlet {
 	    			out.println("</div>");
 				out.println("</section>");
 				
-				out.println("<section class=\"col-xs-8\">");
+				out.println("<section class=\"col-xs-8 well\">");
 					Map<String, String> platformInfos = GiantBombUtils.getPlatformInfos(platformName);
-					
 					out.println("<div class=\"row\">");
-			            out.println("<div class=\"col-xs-5 well text-center\">");
+			            out.println("<div class=\"col-xs-5 text-center\">");
 			            	out.println("<img src="+platformInfos.get("image")+" width=\"250px\" height=\"200px\" alt=\"?\"/>");
 			            out.println("</div>");
-			            out.println("<div class=\"col-xs-7 well\">");
+			            out.println("<div class=\"col-xs-7\">");
 			            out.println("<div class=\"row\">");
 			            	out.println("<B>Nom : </B>");
-				            	if(platformInfos.get("name") != null)
+				            	if(platformInfos.get("name") != null  &&  platformInfos.get("name") != "null")
 				            		out.println(platformInfos.get("name"));
 		            		out.println("</div>");
 				            out.println("<div class=\"row\">");
 				            	out.println("<B>Compagnie : </B>");
-				            	if(platformInfos.get("company") != null)
+				            	if(platformInfos.get("company") != null  &&  platformInfos.get("company") != "null")
 				            		out.println(platformInfos.get("company"));
 		            		out.println("</div>");
 			            	out.println("<div class=\"row\">");
 			            		out.println("<B>Description : </B>");
-			            		if(platformInfos.get("deck") != null)
+			            		if(platformInfos.get("deck") != null  &&  platformInfos.get("deck") != "null")
 			            			out.println(platformInfos.get("deck"));
 		            		out.println("</div>");
 		            		out.println("<div class=\"row\">");
 			            		out.println("<B>Original release date : </B>");
-			            		if(platformInfos.get("release_date") != null)
+			            		if(platformInfos.get("release_date") != null  &&  platformInfos.get("release_date") != "null")
 			            			out.println(platformInfos.get("release_date"));
 			            	out.println("</div>");
 			            out.println("</div>");  
 					out.println("</div>");
 					
-					out.println("<div class=\"row\">");
+					out.println("</br><div class=\"row\">");
 		            	out.println("<div class=\"col-xs-12 text-center\">");
 	            			out.println("<button type=\"button\" class=\"btn btn-primary\">Ajouter à mes consoles</button>");
 		            	out.println("</div>");
 	            	out.println("</div></br>");
             	
 	            	out.println("<div class=\"row\">");
-		            	out.println("<div class=\"col-xs-12 well\">");
+		            	out.println("<div class=\"col-xs-12\">");
 		            		out.println("<B>Description : </B>");
-		            		if(platformInfos.get("description") != null)
+		            		if(platformInfos.get("description") != null  &&  platformInfos.get("description") != "null")
 		            			out.println(platformInfos.get("description"));
 		            	out.println("</div>");
 	            	out.println("</div>");
