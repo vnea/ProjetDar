@@ -69,6 +69,13 @@ public class Player {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> games = new ArrayList<String>();
 	
+	public List<Player> getFriends() {
+		return friends;
+	}
+	public void setFriends(List<Player> friends) {
+		this.friends = friends;
+	}
+
 	@Column(unique = true)
 	@ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,6 +45,16 @@ public class GameSession {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Basic(optional=false)
 	private Date date; 
+	
+	@Column(unique = true)
+	@ElementCollection
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<String> games = new ArrayList<String>();
+	
+	@Column(unique = true)
+	@ElementCollection
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<String> platforms = new ArrayList<String>();
 		
 	
 	// Getters/Setters 
@@ -70,6 +81,24 @@ public class GameSession {
 	}
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	public List<Player> getPlayers() {
+		return players;
+	}
+	public void setPlayers(List<Player> players) {
+		this.players = players;
+	}
+	public List<String> getGames() {
+		return games;
+	}
+	public void setGames(List<String> games) {
+		this.games = games;
+	}
+	public List<String> getPlatforms() {
+		return platforms;
+	}
+	public void setPlatforms(List<String> platforms) {
+		this.platforms = platforms;
 	}
 	
 }

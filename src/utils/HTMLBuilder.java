@@ -107,12 +107,18 @@ public class HTMLBuilder {
         String
         menu = "<div class=\"row\">\n";
 	        menu += "<ul class=\"nav nav-pills\">\n";
-	            menu += "<li><a href=\"MyGameSessions\">Mes parties</a></li>\n";
-	            menu += "<li><a href=\"MyGames\">Mes jeux</a></li>\n";
-	            menu += "<li><a href=\"MyPlatforms\">Mes platformes</a></li>\n";
-	            menu += "<li><a href=\"MyGameTypes\">Mes genres</a></li>\n";
-	            menu += "<li><a href=\"MyFriends\">Mes amis</a></li>\n";
-	            menu += "<form class=\"navbar-form navbar-right inline-form\">\n";
+	        
+		        menu += "<form class=\"navbar-form navbar-left inline-form\">\n";
+		            menu += "<div class=\"form-group\">\n";
+		                menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"utilisateur\">\n";
+	                menu += "</div>\n";
+	                menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
+	                    menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
+	                    menu += "Rechercher";
+	                menu += "</button>\n";
+		        menu += "</form>\n";
+		        
+		        menu += "<form class=\"navbar-form navbar-right inline-form\">\n";
 	                menu += "<div class=\"form-group\">\n";
 	                    menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"jeux\">\n";
 	                    menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
@@ -121,6 +127,21 @@ public class HTMLBuilder {
 	                    menu += "</button>\n";
 	                menu += "</div>\n";
 	            menu += "</form>\n";
+	            
+	            menu += "<li><a href=\"CreateGameSession\">Créer une partie</a></li>\n";
+	            
+        
+		        menu += "<li class=\"dropdown navbar-right\">\n";
+	        		menu += "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Mes Infos <span class=\"caret\"></span></a>\n";
+    				menu += "<ul class=\"dropdown-menu\">\n";
+			          	menu += "<li><a href=\"MyGameSessions\">Mes parties</a></li>\n";
+			            menu += "<li><a href=\"MyGames\">Mes jeux</a></li>\n";
+			            menu += "<li><a href=\"MyPlatforms\">Mes platformes</a></li>\n";
+			            menu += "<li><a href=\"MyGameTypes\">Mes genres</a></li>\n";
+			            menu += "<li><a href=\"MyFriends\">Mes amis</a></li>\n";
+		            menu += " </ul>\n";
+	    		menu += "</li>\n";
+	            
 	        menu += "</ul>\n";
         menu += "</div>\n";
         return menu;

@@ -99,6 +99,28 @@ public class GiantBombUtils {
 	    return gameInfos;
 	}
 	
+	public static Map<String,String> getPlatformInfos(String platform) {
+		String response = null;
+		Map<String, String> platformInfos = new HashMap<String, String>();
+		
+		platform = platform.replace(" ", "%20");
+	    response = resultRequest("http://www.giantbomb.com/api/search/?api_key=784568466662eacd7cf5ba81d73976e4aa9291e3&format=json&query="+platform+"&resources=platform");  
+	    
+	    // Get all informations
+	    JsonObject JOReponse = JsonUtils.JsonObjectFromString(response);
+	    JsonArray JAPlatformInfos = JOReponse.getJsonArray("results");
+	    JsonObject JOPlatformInfos = JAPlatformInfos.getJsonObject(0);
+	    for(String key : JOPlatformInfos.keySet()){
+	    	platformInfos.put(key,JOPlatformInfos.get(key).toString());
+	    }
+	    
+	    // Get only one main image
+	    JsonObject JOImages = JsonUtils.JsonObjectFromString(platformInfos.get("image"));
+	    platformInfos.put("image", JOImages.get("small_url").toString());
+	    
+	    return platformInfos;
+	}
+	
 	
 	private static String resultRequest(String requestURL) {	
 		String responseBody = null; 

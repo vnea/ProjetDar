@@ -120,4 +120,14 @@
     <servlet-name>Game</servlet-name>
     <url-pattern>/Game</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>CreateGameSession</display-name>
+    <servlet-name>CreateGameSession</servlet-name>
+    <servlet-class>servlets.CreateGameSession</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateGameSession</servlet-name>
+    <url-pattern>/CreateGameSession</url-pattern>
+  </servlet-mapping>
 </web-app>

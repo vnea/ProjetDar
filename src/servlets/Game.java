@@ -69,7 +69,7 @@ public class Game extends HttpServlet {
         out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
         
 	        
-	     // Body
+	    // Body
         out.println("<body>");
             // Menu connection
             out.println(HTMLBuilder.createTopMenu());
@@ -88,16 +88,9 @@ public class Game extends HttpServlet {
 						out.println("<div id=\"sidebar-wrapper\">");
 							out.println("<ul class=\"sidebar-nav\">");
 								out.println("<h4 class=\"sidebar-brand\">");
-									out.println("Plateformes");
+									out.println("Parties pour ce jeu");
 		                        out.println("</h4>");
-		                        List<String> platforms = GiantBombUtils.getPlatformsList();
-								for(int i=0; i<platforms.size(); i++){
-									out.println("<li>");
-										out.println("<a href=\"Platform?platform="+platforms.get(i)+"\">");
-											out.println(platforms.get(i));
-										out.println("</a>");
-									out.println("</li>");
-								}
+		                        // A completer
 							out.println("</ul>");
 						out.println("</div>");
 	    			out.println("</div>");
@@ -107,12 +100,17 @@ public class Game extends HttpServlet {
 					Map<String, String> gameInfos = GiantBombUtils.getGameInfos(gameName);
 					
 					out.println("<div class=\"row\">");
-			            out.println("<div class=\"col-xs-5 well\">");
-			            	out.println("<img src="+gameInfos.get("image")+" alt=\"?\"/>");
+			            out.println("<div class=\"col-xs-5 well text-center\">");
+			            	out.println("<img src="+gameInfos.get("image")+" width=\"250px\" height=\"200px\" alt=\"?\"/>");
 			            out.println("</div>");
 			            out.println("<div class=\"col-xs-7 well\">");
 				            out.println("<div class=\"row\">");
-				            	out.println("<B>Rate : </B>");
+				            	out.println("<B>Nom : </B>");
+				            	if(gameInfos.get("name") != null)
+				            		out.println(gameInfos.get("name"));
+		            		out.println("</div>");
+				            out.println("<div class=\"row\">");
+				            	out.println("<B>Note : </B>");
 				            	if(gameInfos.get("original_game_rating") != null)
 				            		out.println(gameInfos.get("original_game_rating"));
 		            		out.println("</div>");
@@ -122,7 +120,7 @@ public class Game extends HttpServlet {
 			            			out.println(gameInfos.get("deck"));
 		            		out.println("</div>");
 		            		out.println("<div class=\"row\">");
-			            		out.println("<B>Original release date : </B>");
+			            		out.println("<B>Date de sortie : </B>");
 			            		if(gameInfos.get("original_release_date") != null)
 			            			out.println(gameInfos.get("original_release_date"));
 			            	out.println("</div>");
@@ -132,27 +130,34 @@ public class Game extends HttpServlet {
 			            			out.println(gameInfos.get("genres"));
 			            	out.println("</div>");
 			            	out.println("<div class=\"row\">");
-			            		out.println("<B>Platforms : </B>");
+			            		out.println("<B>Platformes : </B>");
 			            		if(gameInfos.get("platforms") != null)
 			            			out.println(gameInfos.get("platforms"));
 			            	out.println("</div>");
 				            	out.println("<div class=\"row\">");
-			            		out.println("<B>Developers : </B>");
+			            		out.println("<B>Développeurs : </B>");
 			            		if(gameInfos.get("developers") != null)
 			            			out.println(gameInfos.get("developers"));
 			            	out.println("</div>");
 			            	out.println("<div class=\"row\">");
-			            		out.println("<B>Publishers : </B>");
+			            		out.println("<B>Editeurs : </B>");
 			            		if(gameInfos.get("publishers") != null)
 			            			out.println(gameInfos.get("publishers"));
 			            	out.println("</div>");
 			            	out.println("<div class=\"row\">");
-			            		out.println("<B>Similar games : </B>");
+			            		out.println("<B>Jeux similaires : </B>");
 			            		if(gameInfos.get("similar_games") != null)
 			            			out.println(gameInfos.get("similar_games"));
 			            	out.println("</div>");
 			            out.println("</div>");  
 					out.println("</div>");
+					
+					out.println("<div class=\"row\">");
+		            	out.println("<div class=\"col-xs-12 text-center\">");
+	            			out.println("<button type=\"button\" class=\"btn btn-primary\">Ajouter à mes jeux</button>");
+		            	out.println("</div>");
+	            	out.println("</div></br>");
+	            	
 	            	out.println("<div class=\"row\">");
 		            	out.println("<div class=\"col-xs-12 well\">");
 		            		out.println("<B>Description : </B>");

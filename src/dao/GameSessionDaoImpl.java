@@ -57,4 +57,10 @@ public class GameSessionDaoImpl implements GameSessionDao {
 		return sessions;
 	}
 
+	@Override
+	public List<GameSession> getGameSessionByGame(String gameName) {
+		// A completer
+		return null;
+	}
+
 }

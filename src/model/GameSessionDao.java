@@ -11,5 +11,7 @@ public interface GameSessionDao {
 		public void updateGameSession(GameSession session);
 		
 		public List<GameSession> getGameSessionByRoot(Player p);
+		
+		public List<GameSession> getGameSessionByGame(String gameName);
 	
 }
