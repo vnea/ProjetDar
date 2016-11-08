@@ -12,8 +12,8 @@ import javax.servlet.http.HttpSession;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
 import enums.SessionData;
-import model.Player;
-import model.PlayerDao;
+import models.Player;
+import models.PlayerDao;
 import utils.HTMLBuilder;
 
 /**
@@ -99,7 +99,6 @@ public class SearchUserResult extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

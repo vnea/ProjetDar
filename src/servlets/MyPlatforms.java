@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
 import enums.SessionData;
-import model.Player;
-import model.PlayerDao;
+import models.Player;
+import models.PlayerDao;
 import utils.HTMLBuilder;
 import utils.GiantBombUtils;
 
@@ -55,6 +55,8 @@ public class MyPlatforms extends HttpServlet {
             response.sendRedirect(".");
         }
         else {
+            request.setCharacterEncoding("UTF-8");
+            
         	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
         	player = this.playerDao.getPlayer(playerUsername);
         }
@@ -66,7 +68,7 @@ public class MyPlatforms extends HttpServlet {
         // DOCTYPE + html + head
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
-        out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
+        out.println(HTMLBuilder.createHeadTag(PageTitle.MY_PLATFORMS));
 
         // Body
         out.println("<body>");
@@ -133,7 +135,7 @@ public class MyPlatforms extends HttpServlet {
     		request.setCharacterEncoding("UTF-8");
     		String platforms[]= request.getParameterValues("platform");
     		player.setPlatforms(new ArrayList<String>(Arrays.asList(platforms)));
-    		this.playerDao.updatePlayer(player);
+    		this.playerDao.update(player);
     		response.sendRedirect("MyPlatforms");
     	}
 	}

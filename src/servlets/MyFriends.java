@@ -14,8 +14,8 @@ import javax.servlet.http.HttpSession;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
 import enums.SessionData;
-import model.Player;
-import model.PlayerDao;
+import models.Player;
+import models.PlayerDao;
 import utils.HTMLBuilder;
 
 /**
@@ -32,7 +32,6 @@ public class MyFriends extends HttpServlet {
      */
     public MyFriends() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     @Override
@@ -64,7 +63,7 @@ public class MyFriends extends HttpServlet {
         // DOCTYPE + html + head
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
-        out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
+        out.println(HTMLBuilder.createHeadTag(PageTitle.MY_FRIENDS));
 
         // Body
         out.println("<body>");
@@ -134,7 +133,7 @@ public class MyFriends extends HttpServlet {
     			friends.add(this.playerDao.getPlayer(friendsName[i]));
     		}
     		player.setFriends(friends);
-    		this.playerDao.updatePlayer(player);
+    		this.playerDao.update(player);
     		response.sendRedirect("MyFriends");
     	}
 	}
@@ -144,7 +143,7 @@ public class MyFriends extends HttpServlet {
 	 * @return
 	 */
 	private String checkbox (String buttonName) {
-		String res;
+		String
 		
 		res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
 				"name=\"friend\"" + " value=\""+buttonName+"\">\n";

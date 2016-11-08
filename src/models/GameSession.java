@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,12 +35,24 @@ public class GameSession {
 	@ManyToOne(optional=false)
 	private Player root;
 	
-	@ManyToMany
+    @Basic(optional=false)
+    private String label;
+    
+    private String desc;
+
+    @ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<Player> players = new ArrayList<Player>();
+	private List<Player> players = new ArrayList<>();
 	
 	@Basic(optional=false)
 	private String address;
+	
+	@Basic(optional=false)
+	private String postCode;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Basic(optional=false)
+    private Date timestamp;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Basic(optional=false)
@@ -49,19 +61,37 @@ public class GameSession {
 	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<String> games = new ArrayList<String>();
+	private List<String> games = new ArrayList<>();
 	
 	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<String> platforms = new ArrayList<String>();
+	private List<String> platforms = new ArrayList<>();
 		
 	
 	// Getters/Setters 
 	public Integer getIdSession() {
 		return idSession;
 	}
-	public void setIdSession(Integer idSession) {
+	public String getDesc() {
+        return desc;
+    }
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+    public String getPostCode() {
+        return postCode;
+    }
+    public void setPostCode(String postCode) {
+        this.postCode = postCode;
+    }
+    public Date getTimestamp() {
+        return timestamp;
+    }
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+    public void setIdSession(Integer idSession) {
 		this.idSession = idSession;
 	}
 	public Player getRoot() {
@@ -92,13 +122,19 @@ public class GameSession {
 		return games;
 	}
 	public void setGames(List<String> games) {
-		this.games = games;
-	}
-	public List<String> getPlatforms() {
+        this.games = games;
+    }
+    public void setPlatforms(List<String> platforms) {
+        this.platforms = platforms;
+    }
+    public List<String> getPlatforms() {
 		return platforms;
 	}
-	public void setPlatforms(List<String> platforms) {
-		this.platforms = platforms;
-	}
+    public String getLabel() {
+        return label;
+    }
+    public void setLabel(String label) {
+        this.label = label;
+    }
 	
 }

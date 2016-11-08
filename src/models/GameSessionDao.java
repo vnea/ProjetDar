@@ -1,14 +1,14 @@
-package model;
+package models;
 
 import java.util.List;
 
 public interface GameSessionDao {
 
-		public void insertGameSession(GameSession session);
+		public void insert(GameSession gameSession);
 		
-		public void deleteGameSession(GameSession session);
+		public void delete(GameSession gameSession);
 		
-		public void updateGameSession(GameSession session);
+		public void update(GameSession gameSession);
 		
 		public List<GameSession> getGameSessionByRoot(Player p);
 		

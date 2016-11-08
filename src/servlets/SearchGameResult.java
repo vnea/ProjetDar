@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import models.Player;
+import models.PlayerDao;
+import utils.GiantBombUtils;
+import utils.HTMLBuilder;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
 import enums.SessionData;
-import model.Player;
-import model.PlayerDao;
-import utils.GiantBombUtils;
-import utils.HTMLBuilder;
 
 /**
  * Servlet implementation class SearchGameResults
@@ -159,7 +159,6 @@ public class SearchGameResult extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

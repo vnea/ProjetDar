@@ -3,17 +3,12 @@ package test;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.amazonaws.services.databasemigrationservice.model.Connection;
-import com.mysql.jdbc.Statement;
 
 /**
  * Servlet implementation class Test

@@ -2,8 +2,8 @@ package dao;
 
 import java.util.List;
 
-import model.Player;
-import model.PlayerDao;
+import models.Player;
+import models.PlayerDao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -17,7 +17,7 @@ public class PlayerDaoImpl implements PlayerDao {
 	}
 	
 	@Override
-	public void insertPlayer(Player p) {
+	public void insert(Player p) {
         Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
        
@@ -27,7 +27,7 @@ public class PlayerDaoImpl implements PlayerDao {
 	}
 	
 	@Override
-	public void deletePlayer(Player p) {
+	public void delete(Player p) {
 		Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
        
@@ -37,7 +37,7 @@ public class PlayerDaoImpl implements PlayerDao {
 	}
 	
 	@Override
-	public void updatePlayer(Player p) {
+	public void update(Player p) {
 		Session s = HibernateUtils.getSession();
         Transaction t = s.beginTransaction();
        

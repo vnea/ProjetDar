@@ -16,7 +16,8 @@ public class HTMLBuilder {
             head += "<title>" + pageTitle +"</title>\n\n";
             
             // CSS
-            head += "<link href=\"assets/css/bootstrap.css\" rel=\"stylesheet\">\n";
+            head += "<link href=\"assets/css/bootstrap.min.css\" rel=\"stylesheet\">\n";
+            head += "<link href=\"assets/css/bootstrap-datetimepicker.min.css\" rel=\"stylesheet\">\n";
             head += "<link href=\"assets/css/ie10-viewport-bug-workaround.css\" rel=\"stylesheet\">\n";
             head += "<link href=\"assets/css/style.css\" rel=\"stylesheet\">\n\n";
             
@@ -37,7 +38,9 @@ public class HTMLBuilder {
         
         // Bootstrap core JavaScript
         scripts = "<script src=\"assets/js/jquery-3.1.1.min.js\"></script>\n";
-        scripts += "<script src=\"assets/js/bootstrap.min.js\"></script>\n\n";
+        scripts += "<script src=\"assets/js/moment-with-locales.min.js\"></script>\n";
+        scripts += "<script src=\"assets/js/bootstrap.min.js\"></script>\n";
+        scripts += "<script src=\"assets/js/bootstrap-datetimepicker.min.js\"></script>\n\n";
         
         // IE10 viewport hack for Surface/desktop Windows 8 bug
         scripts += "<script src=\"assets/js/ie10-viewport-bug-workaround.js\"></script>\n";
@@ -68,9 +71,14 @@ public class HTMLBuilder {
         return menu;
     }
     
-    public static String createTopMenuConnection(String inputNameLogin, String inputNamePassword, String btnName) {
+    public static String createTopMenuConnection(String inputNameLogin, String inputNamePassword, String btnName, String errorMessageSignin) {
         String
         formConnection = "<form class=\"navbar-form navbar-right\" method=\"post\">\n";
+            // Login error
+            if (errorMessageSignin != null) {
+                formConnection += "<div class=\"form-group errorMessage\">" + errorMessageSignin + "</div>";
+            }
+        
             // Login
             formConnection += "<div class=\"form-group\">\n";
                 formConnection += "<input type=\"text\" name=\"" + inputNameLogin + "\" placeholder=\"Pseudo\" class=\"form-control\">\n";
@@ -91,13 +99,13 @@ public class HTMLBuilder {
     public static String createTopMenu() {
         String
         menu = "<div class=\"nav navbar-nav navbar-right\">\n";
-            menu += "<li>\n";
+            //menu += "<li>\n";
             	menu += "<div class=\"navbar-btn\">\n";
 	                menu += "<a href=\"Disconnection\" class=\"btn btn-success\">\n";
 	                    	menu += "Déconnexion";
 	                menu += "</a>\n";
                 menu += "</div>\n";
-            menu += "</li>\n";
+            //menu += "</li>\n";
         menu += "</div>\n";
         
         return HTMLBuilder.createTopMenu(menu);
@@ -107,26 +115,31 @@ public class HTMLBuilder {
         String
         menu = "<div class=\"row\">\n";
 	        menu += "<ul class=\"nav nav-pills\">\n";
-	        
-		        menu += "<form class=\"navbar-form navbar-left inline-form\" action=\"SearchUserResult\" method=\"get\">\n";
-		            menu += "<div class=\"form-group\">\n";
-		                menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"utilisateur\" name=\"user\">\n";
-	                menu += "</div>\n";
-	                menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
-	                    menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
-	                    menu += "Voir profil";
-	                menu += "</button>\n";
-		        menu += "</form>\n";
+	            
+	            menu += "<li>";
+    		        menu += "<form class=\"navbar-form navbar-left inline-form\" action=\"SearchUserResult\" method=\"get\">\n";
+    		            menu += "<div class=\"form-group\">\n";
+    		                menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"utilisateur\" name=\"user\">\n";
+    	                menu += "</div>\n";
+    	                menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
+    	                    menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
+    	                    menu += "Voir profil";
+    	                menu += "</button>\n";
+    		        menu += "</form>\n";
+		        menu += "</li>\n";
 		        
-		        menu += "<form class=\"navbar-form navbar-right inline-form\" action=\"SearchGameResult\" method=\"get\">\n";
-	                menu += "<div class=\"form-group\">\n";
-	                    menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"jeux\" name=\"game\">\n";
-	                    menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
-	                        menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
-	                        menu += "Rechercher";
-	                    menu += "</button>\n";
-	                menu += "</div>\n";
-	            menu += "</form>\n";
+	            menu += "<li>";
+    		        menu += "<form class=\"navbar-form navbar-right inline-form\" action=\"SearchGameResult\" method=\"get\">\n";
+    	                menu += "<div class=\"form-group\">\n";
+    	                    menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"jeux\" name=\"game\">\n";
+    	                    menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
+    	                        menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
+    	                        menu += "Rechercher";
+    	                    menu += "</button>\n";
+    	                menu += "</div>\n";
+    	            menu += "</form>\n";
+	            menu += "</li>\n";
+
 	            
 	            menu += "<li><a href=\"CreateGameSession\">Créer une partie</a></li>\n";
 	            
@@ -145,4 +158,25 @@ public class HTMLBuilder {
         menu += "</div>\n";
         return menu;
     }
+    
+    public static String createLabelInput(String id, String name, String label, String value) {
+        return createLabel(id, label) + createInput(id, name, value);
+    }
+    
+    public static String createLabelInput(String id, String name, String label, String value, String placeholder) {
+        return createLabel(id, label) + createInput(id, name, value, placeholder);
+    }
+    
+    public static String createLabel(String id, String label) {
+        return "<label for=\"" + id + "\">" + label + "</label>\n";
+    }
+    
+    public static String createInput(String id, String name, String value) {
+        return "<input class=\"form-control\" type=\"text\" name=\"" + name + "\" id=\"" + id + "\" value=\"" + value + "\">\n";
+    }
+    
+    public static String createInput(String id, String name, String value, String placeholder) {
+        return "<input class=\"form-control\" type=\"text\" name=\"" + name + "\" id=\"" + id + "\" value=\"" + value + "\" placeholder=\"" + placeholder + "\">\n";        
+    }
+
 }

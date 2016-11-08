@@ -10,13 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.PlayerDaoImpl;
-import enums.PageTitle;
-import enums.SessionData;
-import model.Player;
-import model.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
+
+import comparators.ComparatorIgnoreCase;
+
+import enums.PageTitle;
 
 /**
  * Servlet implementation class MainPage
@@ -24,8 +23,8 @@ import utils.HTMLBuilder;
 public class MainPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private PlayerDao playerDao;
-	private Player player;
+	//private PlayerDao playerDao;
+	//private Player player;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,7 +37,7 @@ public class MainPage extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        playerDao = new PlayerDaoImpl();
+        //playerDao = new PlayerDaoImpl();
     }
 
 	/**
@@ -47,14 +46,16 @@ public class MainPage extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// If session doesn't exists redirect to SigninSignup page
         HttpSession session = request.getSession(false);
-        String playerUsername;
+        //String playerUsername;
         
         if (session == null) {
             response.sendRedirect(".");
         }
         else {
-        	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
-        	player = this.playerDao.getPlayer(playerUsername);
+            request.setCharacterEncoding("UTF-8");
+
+        	//playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
+        	//player = this.playerDao.getPlayer(playerUsername);
         }
         
 		response.setCharacterEncoding("UTF-8");
@@ -68,12 +69,13 @@ public class MainPage extends HttpServlet {
 
         // Body
         out.println("<body>");
-            // Menu connection
+            // Top menus
             out.println(HTMLBuilder.createTopMenu());
             out.println(HTMLBuilder.createTabsMenu());
             
             out.println("<div class=\"row\">");
             
+                // Show platforms
 	            out.println("<section class=\"col-xs-2 well\">");
 		            out.println("<div id=\"wrapper\">");
 						out.println("<div id=\"sidebar-wrapper\">");
@@ -82,10 +84,11 @@ public class MainPage extends HttpServlet {
 									out.println("Plateformes");
 		                        out.println("</h4>");
 		                        List<String> platforms = GiantBombUtils.getPlatformsList();
-								for(int i=0; i<platforms.size(); i++){
+		                        platforms.sort(new ComparatorIgnoreCase());
+								for(String platform : platforms) {
 									out.println("<li>");
-										out.println("<a href=\"Platform?platform="+platforms.get(i)+"\">");
-											out.println(platforms.get(i));
+										out.println("<a href=\"Platform?platform=" + platform + "\">");
+											out.println(platform);
 										out.println("</a>");
 									out.println("</li>");
 								}
@@ -97,6 +100,7 @@ public class MainPage extends HttpServlet {
 				out.println("<section class=\"col-xs-8\">");
 				out.println("</section>");
 				
+				// Show recent games
 				out.println("<section class=\"col-xs-2 well\">");
 		            out.println("<div id=\"wrapper\">");
 						out.println("<div id=\"sidebar-wrapper pull-right\">");
@@ -105,10 +109,10 @@ public class MainPage extends HttpServlet {
 									out.println("Latest games added");
 		                        out.println("</h4>");
 		                        List<String> recentGames = GiantBombUtils.getMostRecentGames();
-		                        for(int i=0; i<recentGames.size(); i++){
+		                        for(String recentGame : recentGames) {
 									out.println("<li>");
-										out.println("<a href=\"Game?game="+recentGames.get(i)+"\">");
-											out.println(recentGames.get(i));
+										out.println("<a href=\"Game?game=" + recentGame + "\">");
+											out.println(recentGame);
 										out.println("</a>");
 									out.println("</li>");
 								}
@@ -128,8 +132,6 @@ public class MainPage extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +7,11 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -57,29 +55,22 @@ public class Player {
 	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<String> platforms = new ArrayList<String>();
+	private List<String> platforms = new ArrayList<>();
 	
 	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<String> gamesType = new ArrayList<String>();
+	private List<String> gamesType = new ArrayList<>();
 	
 	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<String> games = new ArrayList<String>();
-	
-	public List<Player> getFriends() {
-		return friends;
-	}
-	public void setFriends(List<Player> friends) {
-		this.friends = friends;
-	}
+	private List<String> games = new ArrayList<>();
 
 	@Column(unique = true)
 	@ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
-    private List<Player> friends = new ArrayList<Player>();
+    private List<Player> friends = new ArrayList<>();
 	 
 	 
 	// Getters/Setters
@@ -90,6 +81,13 @@ public class Player {
 		this.idPlayer = idPlayer;
 	}
 	
+	public List<Player> getFriends() {
+        return friends;
+    }
+    public void setFriends(List<Player> friends) {
+        this.friends = friends;
+    }
+    
 	public String getEmail() {
 		return email;
 	}

@@ -122,14 +122,29 @@ body {
 }
 
 .errorMessage {
-	color: red
+	color: red;
+}
+
+.successMessage {
+    color: green;
 }
 
 .white {
-	color: white
+	color: white;
 }
 
 .inputGender {
     margin-left: -25px !important;
 }
 
+.center {
+	text-align: center;
+}
+
+.max-width {
+	width: 100%;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

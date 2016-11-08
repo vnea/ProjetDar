@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.Player;
-import model.PlayerDao;
+import models.Player;
+import models.PlayerDao;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -68,7 +68,7 @@ public class SigninSignup extends HttpServlet {
     private static final int MIN_AGE = 12;
     
     // Name criteria
-    private static final String NAME_REGEX = "^[\\p{L} .'-]+$";
+    private static final String NAME_REGEX = "^[a-zA-Z][\\p{L} .'-]*$";
     
     // Phone number criteria
     private static final String PHONENUMBER_REGEX = "^0[1-9]([-. ]?[0-9]{2}){4}$";
@@ -98,7 +98,7 @@ public class SigninSignup extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         playerDao = new PlayerDaoImpl();
-        resetMessagesError();
+        resetErrorMessages();
     }
     
 	/**
@@ -106,13 +106,11 @@ public class SigninSignup extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    // If session exists redirect to main page
-        HttpSession session = request.getSession();
-        String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
-        if (playerUsername != null) {
+        if (request.getSession(false) != null) {
             response.sendRedirect("MainPage");
         }
         
-        resetMessagesError();
+        resetErrorMessages();
         processRequest(request, response);
 	}
 
@@ -123,13 +121,11 @@ public class SigninSignup extends HttpServlet {
 	    request.setCharacterEncoding("UTF-8");
 	    
 	    // If session exists redirect to main page
-        HttpSession session = request.getSession();
-        String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
-        if (playerUsername != null) {
+        if (request.getSession(false) != null) {
             response.sendRedirect("MainPage");
         }
 	    
-        resetMessagesError();
+        resetErrorMessages();
 	    
 	    // Login button pressed
 	    if (request.getParameter(BTN_NAME_SIGNIN) != null) {
@@ -157,7 +153,7 @@ public class SigninSignup extends HttpServlet {
         // Body
         out.println("<body>");
             // Menu connection
-            out.println(createTopMenuConnection());
+            out.println(HTMLBuilder.createTopMenuConnection(INPUT_NAME_SIGNIN_LOGIN, INPUT_NAME_SIGNIN_PASSWORD, BTN_NAME_SIGNIN, errorMessageSignin));
 
             /**
              * BEGIN OF MAIN CONTENT
@@ -264,31 +260,6 @@ public class SigninSignup extends HttpServlet {
         out.println("</body>");
         out.print("</html>");
 	}
-	
-    private String createTopMenuConnection() {
-        String
-        formConnection = "<form class=\"navbar-form navbar-right\" method=\"post\">\n";
-            // Login error
-            if (errorMessageSignin != null) {
-                formConnection += "<div class=\"form-group errorMessage\">" + errorMessageSignin + "</div>";
-            }
-        
-            // Login
-            formConnection += "<div class=\"form-group\">\n";
-                formConnection += "<input type=\"text\" name=\"" + INPUT_NAME_SIGNIN_LOGIN + "\" placeholder=\"Pseudo\" class=\"form-control\">\n";
-            formConnection += "</div>\n";
-            
-            // Password
-            formConnection += "<div class=\"form-group\">\n";
-                formConnection += "<input type=\"password\" name=\"" + INPUT_NAME_SIGNIN_PASSWORD + "\" placeholder=\"Mot de passe\" class=\"form-control\">\n";
-            formConnection += "</div>\n";
-            
-            // Connection
-            formConnection += "<button type=\"submit\" name=\"" + BTN_NAME_SIGNIN + "\" class=\"btn btn-success\">Connexion</button>\n";
-        formConnection += "</form>\n";
-        
-        return HTMLBuilder.createTopMenu(formConnection);
-    }
 	
 	private boolean isLoginValid(String login) {
         // Check length
@@ -472,7 +443,7 @@ public class SigninSignup extends HttpServlet {
            player.setPlatforms(new ArrayList<String>());
            
            // Insert in database
-           playerDao.insertPlayer(player);
+           playerDao.insert(player);
            
            // Create session and redirect to MainPage
            HttpSession session = request.getSession();
@@ -501,7 +472,7 @@ public class SigninSignup extends HttpServlet {
        }
    }
    
-   private void resetMessagesError() {
+   private void resetErrorMessages() {
        errorMessageSignup = null;
        errorMessageSignin = null;
    }

@@ -1,12 +1,12 @@
-package model;
+package models;
 
 public interface PlayerDao {
 	
-	public void insertPlayer(Player p);
+	public void insert(Player p);
 	
-	public void deletePlayer(Player p);
+	public void delete(Player p);
 	
-	public void updatePlayer(Player p);
+	public void update(Player p);
 	
 	public Player getPlayer(String username, String password);
 	

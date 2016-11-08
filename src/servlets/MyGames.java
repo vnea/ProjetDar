@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
 import enums.SessionData;
-import model.Player;
-import model.PlayerDao;
+import models.Player;
+import models.PlayerDao;
 import utils.HTMLBuilder;
 
 /**
@@ -33,7 +33,6 @@ public class MyGames extends HttpServlet {
      */
     public MyGames() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -65,7 +64,7 @@ public class MyGames extends HttpServlet {
         // DOCTYPE + html + head
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
-        out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
+        out.println(HTMLBuilder.createHeadTag(PageTitle.MY_GAMES));
 
         // Body
         out.println("<body>");
@@ -131,7 +130,7 @@ public class MyGames extends HttpServlet {
     		request.setCharacterEncoding("UTF-8");
     		String games[]= request.getParameterValues("game");
     		player.setGames(new ArrayList<String>(Arrays.asList(games)));
-    		this.playerDao.updatePlayer(player);
+    		this.playerDao.update(player);
     		response.sendRedirect("MyGames");
     	}
 	}
@@ -140,8 +139,8 @@ public class MyGames extends HttpServlet {
 	 * @param buttonName
 	 * @return
 	 */
-	private String checkbox (String buttonName) {
-		String res;
+	private String checkbox(String buttonName) {
+		String
 		
 		res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
 				"name=\"game\"" + " value=\""+buttonName+"\">\n";

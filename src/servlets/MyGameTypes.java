@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
 import enums.SessionData;
-import model.Player;
-import model.PlayerDao;
+import models.Player;
+import models.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
 
@@ -66,7 +66,7 @@ public class MyGameTypes extends HttpServlet {
         // DOCTYPE + html + head
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
-        out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
+        out.println(HTMLBuilder.createHeadTag(PageTitle.MY_GAME_TYPES));
 
         // Body
         out.println("<body>");
@@ -133,7 +133,7 @@ public class MyGameTypes extends HttpServlet {
     		request.setCharacterEncoding("UTF-8");
     		String types[]= request.getParameterValues("type");
     		player.setGamesType(new ArrayList<String>(Arrays.asList(types)));
-    		this.playerDao.updatePlayer(player);
+    		this.playerDao.update(player);
     		response.sendRedirect("MyGameTypes");
     	}
 	}

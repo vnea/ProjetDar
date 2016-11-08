@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.GameSessionDao;
-import model.PlayerDao;
+import models.GameSessionDao;
+import models.PlayerDao;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
