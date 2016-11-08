@@ -66,7 +66,7 @@ public class MyGameTypes extends HttpServlet {
         // DOCTYPE + html + head
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
-        out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
+        out.println(HTMLBuilder.createHeadTag(PageTitle.MY_GAME_TYPES));
 
         // Body
         out.println("<body>");

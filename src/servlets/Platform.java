@@ -11,16 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.PlayerDaoImpl;
-import enums.PageTitle;
-import enums.SessionData;
 import model.Player;
 import model.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
+import dao.PlayerDaoImpl;
+import enums.PageTitle;
+import enums.SessionData;
 
 
-//////////////////////////// Page pour afficher les genres, jeux, caractéristique d'une console //////////////////
+//////////////////////////// Page pour afficher les genres, jeux, caractéristiques d'une console //////////////////
 
 /**
  * Servlet implementation class Platform
@@ -69,7 +69,7 @@ public class Platform extends HttpServlet {
         
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
-        out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
+        out.println(HTMLBuilder.createHeadTag(PageTitle.PLATFORM));
         
         // Body
         out.println("<body>");
@@ -176,7 +176,6 @@ public class Platform extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

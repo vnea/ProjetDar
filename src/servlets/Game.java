@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.PlayerDaoImpl;
-import enums.PageTitle;
-import enums.SessionData;
 import model.Player;
 import model.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
+import dao.PlayerDaoImpl;
+import enums.PageTitle;
+import enums.SessionData;
 
 
 /**

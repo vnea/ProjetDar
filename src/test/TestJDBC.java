@@ -8,10 +8,10 @@ import java.util.List;
 import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 
+import utils.JsonUtils;
+
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
-
-import utils.JsonUtils;
 
 public class TestJDBC {
     /* La liste qui contiendra tous les résultats de nos essais */

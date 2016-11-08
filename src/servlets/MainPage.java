@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.PlayerDaoImpl;
-import enums.PageTitle;
-import enums.SessionData;
 import model.Player;
 import model.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
+import dao.PlayerDaoImpl;
+import enums.PageTitle;
+import enums.SessionData;
 
 /**
  * Servlet implementation class MainPage
@@ -53,6 +53,8 @@ public class MainPage extends HttpServlet {
             response.sendRedirect(".");
         }
         else {
+            request.setCharacterEncoding("UTF-8");
+
         	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
         	player = this.playerDao.getPlayer(playerUsername);
         }
@@ -128,7 +130,6 @@ public class MainPage extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

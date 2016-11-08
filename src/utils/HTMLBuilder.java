@@ -68,9 +68,14 @@ public class HTMLBuilder {
         return menu;
     }
     
-    public static String createTopMenuConnection(String inputNameLogin, String inputNamePassword, String btnName) {
+    public static String createTopMenuConnection(String inputNameLogin, String inputNamePassword, String btnName, String errorMessageSignin) {
         String
         formConnection = "<form class=\"navbar-form navbar-right\" method=\"post\">\n";
+            // Login error
+            if (errorMessageSignin != null) {
+                formConnection += "<div class=\"form-group errorMessage\">" + errorMessageSignin + "</div>";
+            }
+        
             // Login
             formConnection += "<div class=\"form-group\">\n";
                 formConnection += "<input type=\"text\" name=\"" + inputNameLogin + "\" placeholder=\"Pseudo\" class=\"form-control\">\n";

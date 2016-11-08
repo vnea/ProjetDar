@@ -33,7 +33,6 @@ public class MyGames extends HttpServlet {
      */
     public MyGames() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     @Override
@@ -65,7 +64,7 @@ public class MyGames extends HttpServlet {
         // DOCTYPE + html + head
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
-        out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
+        out.println(HTMLBuilder.createHeadTag(PageTitle.MY_GAMES));
 
         // Body
         out.println("<body>");
@@ -140,8 +139,8 @@ public class MyGames extends HttpServlet {
 	 * @param buttonName
 	 * @return
 	 */
-	private String checkbox (String buttonName) {
-		String res;
+	private String checkbox(String buttonName) {
+		String
 		
 		res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
 				"name=\"game\"" + " value=\""+buttonName+"\">\n";

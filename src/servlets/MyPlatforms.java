@@ -55,6 +55,8 @@ public class MyPlatforms extends HttpServlet {
             response.sendRedirect(".");
         }
         else {
+            request.setCharacterEncoding("UTF-8");
+            
         	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
         	player = this.playerDao.getPlayer(playerUsername);
         }
@@ -66,7 +68,7 @@ public class MyPlatforms extends HttpServlet {
         // DOCTYPE + html + head
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
-        out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
+        out.println(HTMLBuilder.createHeadTag(PageTitle.MY_PLATFORMS));
 
         // Body
         out.println("<body>");

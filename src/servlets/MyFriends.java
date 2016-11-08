@@ -32,7 +32,6 @@ public class MyFriends extends HttpServlet {
      */
     public MyFriends() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     @Override
@@ -64,7 +63,7 @@ public class MyFriends extends HttpServlet {
         // DOCTYPE + html + head
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"fr\">");
-        out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
+        out.println(HTMLBuilder.createHeadTag(PageTitle.MY_FRIENDS));
 
         // Body
         out.println("<body>");
@@ -144,7 +143,7 @@ public class MyFriends extends HttpServlet {
 	 * @return
 	 */
 	private String checkbox (String buttonName) {
-		String res;
+		String
 		
 		res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
 				"name=\"friend\"" + " value=\""+buttonName+"\">\n";

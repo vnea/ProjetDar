@@ -106,9 +106,7 @@ public class SigninSignup extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    // If session exists redirect to main page
-        HttpSession session = request.getSession();
-        String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
-        if (playerUsername != null) {
+        if (request.getSession(false) != null) {
             response.sendRedirect("MainPage");
         }
         
@@ -123,9 +121,7 @@ public class SigninSignup extends HttpServlet {
 	    request.setCharacterEncoding("UTF-8");
 	    
 	    // If session exists redirect to main page
-        HttpSession session = request.getSession();
-        String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
-        if (playerUsername != null) {
+        if (request.getSession(false) != null) {
             response.sendRedirect("MainPage");
         }
 	    
@@ -157,7 +153,7 @@ public class SigninSignup extends HttpServlet {
         // Body
         out.println("<body>");
             // Menu connection
-            out.println(createTopMenuConnection());
+            out.println(HTMLBuilder.createTopMenuConnection(INPUT_NAME_SIGNIN_LOGIN, INPUT_NAME_SIGNIN_PASSWORD, BTN_NAME_SIGNIN, errorMessageSignin));
 
             /**
              * BEGIN OF MAIN CONTENT
@@ -264,31 +260,6 @@ public class SigninSignup extends HttpServlet {
         out.println("</body>");
         out.print("</html>");
 	}
-	
-    private String createTopMenuConnection() {
-        String
-        formConnection = "<form class=\"navbar-form navbar-right\" method=\"post\">\n";
-            // Login error
-            if (errorMessageSignin != null) {
-                formConnection += "<div class=\"form-group errorMessage\">" + errorMessageSignin + "</div>";
-            }
-        
-            // Login
-            formConnection += "<div class=\"form-group\">\n";
-                formConnection += "<input type=\"text\" name=\"" + INPUT_NAME_SIGNIN_LOGIN + "\" placeholder=\"Pseudo\" class=\"form-control\">\n";
-            formConnection += "</div>\n";
-            
-            // Password
-            formConnection += "<div class=\"form-group\">\n";
-                formConnection += "<input type=\"password\" name=\"" + INPUT_NAME_SIGNIN_PASSWORD + "\" placeholder=\"Mot de passe\" class=\"form-control\">\n";
-            formConnection += "</div>\n";
-            
-            // Connection
-            formConnection += "<button type=\"submit\" name=\"" + BTN_NAME_SIGNIN + "\" class=\"btn btn-success\">Connexion</button>\n";
-        formConnection += "</form>\n";
-        
-        return HTMLBuilder.createTopMenu(formConnection);
-    }
 	
 	private boolean isLoginValid(String login) {
         // Check length
