@@ -52,22 +52,18 @@ public class Player {
 	private String address;
 	private String postCode;
 	
-	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> platforms = new ArrayList<>();
 	
-	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> gamesType = new ArrayList<>();
 	
-	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> games = new ArrayList<>();
 
-	@Column(unique = true)
 	@ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
     private List<Player> friends = new ArrayList<>();

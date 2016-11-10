@@ -116,6 +116,7 @@ public class CreateGameSession extends HttpServlet {
 	    }
 	    
 	    processRequest(request, response);
+		doGet(request, response);
 	}
 	
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -58,12 +57,10 @@ public class GameSession {
 	@Basic(optional=false)
 	private Date date; 
 	
-	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> games = new ArrayList<>();
 	
-	@Column(unique = true)
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> platforms = new ArrayList<>();
