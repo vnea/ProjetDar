@@ -11,10 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import utils.GiantBombUtils;
+import utils.GoogleMapsUtils;
 import utils.HTMLBuilder;
-
 import comparators.ComparatorIgnoreCase;
-
 import enums.PageTitle;
 
 /**
@@ -63,12 +62,12 @@ public class MainPage extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         // DOCTYPE + html + head
-        out.println("<!DOCTYPE html>");
+        out.println("<!DOCTYPE html class=\"max-height\">");
         out.println("<html lang=\"fr\">");
         out.println(HTMLBuilder.createHeadTag(PageTitle.HOME));
 
         // Body
-        out.println("<body>");
+        out.println("<body class=\"max-height\">");
             // Top menus
             out.println(HTMLBuilder.createTopMenu());
             out.println(HTMLBuilder.createTabsMenu());
@@ -97,9 +96,13 @@ public class MainPage extends HttpServlet {
 	    			out.println("</div>");
 				out.println("</section>");
 				
-				out.println("<section class=\"col-xs-8\">");
-				out.println("</section>");
-				
+				out.println("<div class=\"col-xs-8 well\">");
+                    out.print("<div id=\"gmaps\" style=\"height:100%; width: 100%; position: relative;\">");
+                    out.println("</div>");
+				out.println("</div>");
+
+				GoogleMapsUtils.geocode("21 rue de draveil juvisy 91260");
+
 				// Show recent games
 				out.println("<section class=\"col-xs-2 well\">");
 		            out.println("<div id=\"wrapper\">");
@@ -124,6 +127,10 @@ public class MainPage extends HttpServlet {
 			out.println("</div>");
 			// Scripts
             out.println(HTMLBuilder.createScriptsTags());
+            
+            // Google maps
+            out.println("<script src=\"https://maps.googleapis.com/maps/api/js?key=AIzaSyC5U4UKF009_yNlDjGO9X3JEoE9QsADw9g\"></script>\n");
+            out.println("<script src=\"assets/js/main-page.js\"></script>\n");
         out.println("</body>");
         out.print("</html>");
 	}

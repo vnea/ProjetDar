@@ -18,9 +18,16 @@ public class HTMLBuilder {
             // CSS
             head += "<link href=\"assets/css/bootstrap.min.css\" rel=\"stylesheet\">\n";
             head += "<link href=\"assets/css/bootstrap-datetimepicker.min.css\" rel=\"stylesheet\">\n";
+            head += "<link href=\"assets/css/animate.css\" rel=\"stylesheet\">\n";
+            head += "<link href=\"assets/css/icomoon.css\" rel=\"stylesheet\">\n";
+            head += "<link href=\"assets/css/magnific-popup.css\" rel=\"stylesheet\">\n";
+            head += "<link href=\"assets/css/salvattore.css\" rel=\"stylesheet\">\n";
+            head += "<link href=\"assets/css/font-awesome.min.css\" rel=\"stylesheet\">\n";
             head += "<link href=\"assets/css/ie10-viewport-bug-workaround.css\" rel=\"stylesheet\">\n";
             head += "<link href=\"assets/css/style.css\" rel=\"stylesheet\">\n\n";
             
+            head += " <script src=\"assets/js/modernizr-2.6.2.min.js\"></script>\n\n";
+
             head += "<!--[if lt IE 9]><script src=\"assets/js/ie8-responsive-file-warning.js\"></script><![endif]-->\n";
         
             // HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries

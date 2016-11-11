@@ -267,13 +267,15 @@ public class CreateGameSession extends HttpServlet {
                         
                         // Date
                         out.println("<br>");
+                        out.println(HTMLBuilder.createLabel(INPUT_NAME_DATE, "Date"));
+
                         out.println("<div class=\"input-group date \" id=\"datetimepicker1\">");
-                            out.println(HTMLBuilder.createLabelInput(
-                                    INPUT_NAME_DATE, INPUT_NAME_DATE,
-                                    "Date",
-                                    StringUtils.getStr(request.getParameter(INPUT_NAME_DATE)),
-                                    "Entrez une date au format " + DATE_REGEX)
-                            );
+                        out.println(HTMLBuilder.createInput(
+                                INPUT_NAME_DATE,
+                                INPUT_NAME_DATE,
+                                StringUtils.getStr(request.getParameter(INPUT_NAME_DATE)),
+                                "Entrez une date au format " + DATE_REGEX
+                        ));
                             out.println("<span class=\"input-group-addon\">");
                                 out.println("<i class=\"glyphicon glyphicon-calendar\"></i>");
                             out.println("</span>");
@@ -301,25 +303,25 @@ public class CreateGameSession extends HttpServlet {
         String[] platforms = request.getParameterValues(INPUT_NAME_PLATFORMS);
         String address = StringUtils.getStr(request.getParameter(INPUT_NAME_ADDRESS)).trim();
         String postcode = StringUtils.getStr(request.getParameter(INPUT_NAME_POSTCODE).trim());
-        String date = StringUtils.getStr(request.getParameter(INPUT_NAME_DATE).trim());
+        String meetingDate = StringUtils.getStr(request.getParameter(INPUT_NAME_DATE).trim());
         
-        Date timestamp = new Date();
+        Date timestampDate = new Date();
         
         // No need to check description field as it can contains any values
         // No need to check games as we can only specify platforms if we want
         if (success =
                 isLabelValid(label) && arePlatformsValid(platforms) &&
-                isAddressValid(address, postcode) && isDateValid(date, timestamp)) {
+                isAddressValid(address, postcode) && isDateValid(meetingDate, timestampDate)) {
             GameSession gameSession = new GameSession();
             gameSession.setLabel(label);
-            gameSession.setDesc(StringUtils.getStr(request.getParameter(INPUT_NAME_DESC)).trim());
+            gameSession.setDescription(StringUtils.getStr(request.getParameter(INPUT_NAME_DESC)).trim());
             gameSession.setAddress(address);
             gameSession.setPostCode(postcode);
-            gameSession.setTimestamp(timestamp);
+            gameSession.setTimestampDate(timestampDate);
             
             // Should not throw an exception as date has alreayd been checked
             try {
-                gameSession.setDate(SDF.parse(date));
+                gameSession.setMeetingDate(SDF.parse(meetingDate));
             }
             catch (ParseException e) {
             }

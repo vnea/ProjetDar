@@ -37,7 +37,7 @@ public class GameSession {
     @Basic(optional=false)
     private String label;
     
-    private String desc;
+    private String description;
 
     @ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -51,11 +51,11 @@ public class GameSession {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Basic(optional=false)
-    private Date timestamp;
+    private Date timestampDate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Basic(optional=false)
-	private Date date; 
+	private Date meetingDate;
 	
 	@ElementCollection
 	@LazyCollection(LazyCollectionOption.FALSE)
@@ -70,11 +70,11 @@ public class GameSession {
 	public Integer getIdSession() {
 		return idSession;
 	}
-	public String getDesc() {
-        return desc;
+	public String getDescription() {
+        return description;
     }
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
     public String getPostCode() {
         return postCode;
@@ -82,11 +82,11 @@ public class GameSession {
     public void setPostCode(String postCode) {
         this.postCode = postCode;
     }
-    public Date getTimestamp() {
-        return timestamp;
+    public Date getTimestampDate() {
+        return timestampDate;
     }
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
+    public void setTimestampDate(Date timestampDate) {
+        this.timestampDate = timestampDate;
     }
     public void setIdSession(Integer idSession) {
 		this.idSession = idSession;
@@ -103,11 +103,11 @@ public class GameSession {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Date getDate() {
-		return date;
+	public Date getMeetingDate() {
+		return meetingDate;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setMeetingDate(Date meetingDate) {
+		this.meetingDate = meetingDate;
 	}
 	public List<Player> getPlayers() {
 		return players;

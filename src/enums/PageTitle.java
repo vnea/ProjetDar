@@ -10,7 +10,8 @@ public enum PageTitle {
     MY_GAMES("Mes jeux"),
     PLATFORM("Console"),
     MY_FRIENDS("Mes amis"),
-    CREATE_SESSION("Créer une partie");
+    CREATE_SESSION("Créer une partie"),
+    MY_GAME_SESSIONS("Mes parties");
 
     private final String title;
 

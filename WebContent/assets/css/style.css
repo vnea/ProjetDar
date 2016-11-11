@@ -145,6 +145,16 @@ body {
 	width: 100%;
 }
 
+.max-height {
+    height: 100%;
+}
+
 .cursor-pointer {
     cursor: pointer;
+}
+
+#gmaps {
+	height:100%;
+	width: 100%;
+	position: relative;
 }

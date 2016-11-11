@@ -10,7 +10,9 @@ public interface GameSessionDao {
 		
 		public void update(GameSession gameSession);
 		
-		public List<GameSession> getGameSessionByRoot(Player p);
+	    public List<GameSession> getGameSessionByRoot(Player p);
+		
+		public List<GameSession> getGameSessionCreatedByRoot(Player p);
 		
 		public List<GameSession> getGameSessionByGame(String gameName);
 	
