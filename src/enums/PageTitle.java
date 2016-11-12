@@ -8,7 +8,8 @@ public enum PageTitle {
     MY_PLATFORMS("Mes plateformes"),
     MY_GAME_TYPES("Mes type de jeux"),
     MY_GAMES("Mes jeux"),
-    PLATFORM("Console"),
+    PLATFORM("Platforme"),
+    GAME("Jeu"),
     MY_FRIENDS("Mes amis"),
     CREATE_SESSION("Créer une partie"),
     MY_GAME_SESSIONS("Mes parties");

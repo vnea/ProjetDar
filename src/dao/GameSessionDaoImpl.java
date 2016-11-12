@@ -72,12 +72,9 @@ public class GameSessionDaoImpl implements GameSessionDao {
     
     @Override
     public List<GameSession> getGameSessionsByRoot(Player p) {
-        Session s = HibernateUtils.getSession();
-        // Take all GameSession
-        List<GameSession> gameSessions = s.createQuery("select gs from GameSession gs", GameSession.class)
-                                                   .getResultList();
-        
-        List<GameSession> resultGameSessions = new ArrayList<>();
+        List<GameSession> gameSessions = getGameSessions();
+     
+        List<GameSession> resultGameSessions = new ArrayList<>(gameSessions.size());
         for (GameSession gameSession : gameSessions) {
             List<Player> players = gameSession.getPlayers();
             for (Player player : players) {
@@ -88,7 +85,6 @@ public class GameSessionDaoImpl implements GameSessionDao {
             }
         }
         
-        s.close();
         return resultGameSessions;
     }
 	
@@ -105,14 +101,36 @@ public class GameSessionDaoImpl implements GameSessionDao {
     
 	@Override
 	public List<GameSession> getGameSessionsByGame(String gameName) {
-		// A completer
-		return null;
+        List<GameSession> gameSessions = getGameSessions();
+        
+        List<GameSession> resultGameSessions = new ArrayList<>(gameSessions.size());
+        for (GameSession gameSession : gameSessions) {
+            List<String> games = gameSession.getGames();
+            for (String game : games) {
+                if (game.equalsIgnoreCase(gameName)) {
+                    resultGameSessions.add(gameSession);
+                }
+            }
+        }
+        
+        return resultGameSessions;
 	}
 	
 	@Override
 	public List<GameSession> getGameSessionsByPlatform(String platformName) {
-		// A completer
-		return null;
+        List<GameSession> gameSessions = getGameSessions();
+        
+        List<GameSession> resultGameSessions = new ArrayList<>(gameSessions.size());
+        for (GameSession gameSession : gameSessions) {
+            List<String> platforms = gameSession.getPlatforms();
+            for (String platform : platforms) {
+                if (platform.equalsIgnoreCase(platformName)) {
+                    resultGameSessions.add(gameSession);
+                }
+            }
+        }
+        
+		return resultGameSessions;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.json.JsonArray;
+import javax.json.JsonException;
 import javax.json.JsonObject;
 
 import enums.GiantBombResource;
@@ -67,6 +68,10 @@ public class GiantBombUtils {
         // Get all informations
         JsonObject JOReponse = JsonUtils.JsonObjectFromString(response);
         JsonArray JAPlatformInfos = JOReponse.getJsonArray("results");
+        if (JAPlatformInfos.isEmpty()) {
+            return null;
+        }
+        
         JsonObject JOPlatformInfos = JAPlatformInfos.getJsonObject(0);
         
         Map<String, String> platformInfos = new HashMap<>();
@@ -195,6 +200,10 @@ public class GiantBombUtils {
 	    // Get all information
 	    JsonObject JOReponse = JsonUtils.JsonObjectFromString(response);
 	    JsonArray JAGameInfos = JOReponse.getJsonArray("results");
+        if (JAGameInfos.isEmpty()) {
+            return null;
+        }
+	    
 	    JsonObject JOGameInfos = JAGameInfos.getJsonObject(0);
 	    
 	    Map<String, String> gameInfos = new HashMap<>();
@@ -209,14 +218,18 @@ public class GiantBombUtils {
 	    }
 	    
 	    // Get list of platforms
-	    JsonArray JAPlatforms = JsonUtils.JsonArrayFromString(gameInfos.get("platforms"));
-	    
-	    StringBuilder platforms = new StringBuilder();
-	    for (int i = 0; i < JAPlatforms.size(); i++) {
-	    	platforms.append(JAPlatforms.getJsonObject(i).getString("name"));
-	    	platforms.append(", ");
+	    try {
+	        JsonArray JAPlatforms = JsonUtils.JsonArrayFromString(gameInfos.get("platforms"));
+    	    
+    	    StringBuilder platforms = new StringBuilder();
+    	    for (int i = 0; i < JAPlatforms.size(); i++) {
+    	    	platforms.append(JAPlatforms.getJsonObject(i).getString("name"));
+    	    	platforms.append(", ");
+    	    }
+    	    gameInfos.put("platforms", platforms.substring(0, platforms.length() - 2));
 	    }
-	    gameInfos.put("platforms", platforms.substring(0, platforms.length() - 2));
+	    catch (JsonException e) {
+	    }
 	    
 	    return gameInfos;
 	}

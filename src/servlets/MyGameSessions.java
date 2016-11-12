@@ -123,7 +123,7 @@ public class MyGameSessions extends HttpServlet {
                     out.println("<p class=\"" + msgClass + "\">" + message + "</p>");
                 out.println("</div>");
 
-                success = null;
+                resetStatus();
             }
             else {
                 // Created game sessions

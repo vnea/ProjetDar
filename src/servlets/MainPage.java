@@ -79,6 +79,8 @@ public class MainPage extends HttpServlet {
         BUTTONS.put(BTN_LEAVE, "Quitter");
         BUTTONS.put(BTN_DELETE, "Supprimer");
         
+        resetStatus();
+        
         super.init();
     }
 
@@ -168,7 +170,7 @@ public class MainPage extends HttpServlet {
                         out.println("<p class=\"" + msgClass + "\">" + message + "</p>");
                     out.println("</div>");
     
-                    success = null;
+                    resetStatus();
                 }
                 else {
                     // Google maps
@@ -282,7 +284,7 @@ public class MainPage extends HttpServlet {
                                 // Marker
                                 String makerVar = "marker" + gameSession.getIdSession();
                                 scriptMarkers += "var " + makerVar + " = new google.maps.Marker({\n";
-                                    scriptMarkers += "position: " + location.toJson() + ",\n";
+                                    scriptMarkers += "position: " + location.toJsonApprox() + ",\n";
                                     scriptMarkers += "map: " + GMAPS + ",\n";
                                     
                                     // Normal case
@@ -400,46 +402,38 @@ public class MainPage extends HttpServlet {
             GameSession gs = gameSessionDao.getGameSession(gameSessionId);
             
             if (gs != null) {
-                // The game session is held after today
-                if (new Date().before(gs.getMeetingDate())) {
-                    final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
-                   
-                    boolean playerJoinedGs = false;
-                    List<Player> players = gs.getPlayers();
-                    for (Player player : players) {
-                        if (player.getUsername().equals(username)) {
-                            playerJoinedGs = true;
-                            
-                            // Need to change this ugly code...
-                            Predicate<Player> pred = new Predicate<Player>() {
-                                @Override
-                                public boolean test(Player arg0) {
-                                    return username.equals(arg0.getUsername());
-                                }
-                            };
-                            players.removeIf(pred);
-                            // End of ugly code
-                            
-                            // This line is maybe useless, need to check more info about Hibernate
-                            gs.setPlayers(players);
-    
-                            gameSessionDao.update(gs);
-                            
-                            success = true;
-                            message = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
-                            break;
-                        }
-                    }
-                    
-                    if (!playerJoinedGs) {
-                        success = false;
-                        message = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
+                final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+               
+                boolean playerJoinedGs = false;
+                List<Player> players = gs.getPlayers();
+                for (Player player : players) {
+                    if (player.getUsername().equals(username)) {
+                        playerJoinedGs = true;
+                        
+                        // Need to change this ugly code...
+                        Predicate<Player> pred = new Predicate<Player>() {
+                            @Override
+                            public boolean test(Player arg0) {
+                                return username.equals(arg0.getUsername());
+                            }
+                        };
+                        players.removeIf(pred);
+                        // End of ugly code
+                        
+                        // This line is maybe useless, need to check more info about Hibernate
+                        gs.setPlayers(players);
+
+                        gameSessionDao.update(gs);
+                        
+                        success = true;
+                        message = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
+                        break;
                     }
                 }
-                // Can't join cause of invalid date
-                else {
+                
+                if (!playerJoinedGs) {
                     success = false;
-                    message = "Vous ne particpez à la partie " + gs.getLabel() + " car la date est déjà passée.";
+                    message = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
                 }
             }
             else {
@@ -460,28 +454,36 @@ public class MainPage extends HttpServlet {
             GameSession gs = gameSessionDao.getGameSession(gameSessionId);
             
             if (gs != null) {
-                String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
-                boolean playerAlreadyJoinedGs = false;
-                List<Player> players = gs.getPlayers();
-                for (Player player : players) {
-                    if (player.getUsername().equals(username)) {
-                        playerAlreadyJoinedGs = true;
+                // The game session is held after today
+                if (new Date().before(gs.getMeetingDate())) {
+                    String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+                    boolean playerAlreadyJoinedGs = false;
+                    List<Player> players = gs.getPlayers();
+                    for (Player player : players) {
+                        if (player.getUsername().equals(username)) {
+                            playerAlreadyJoinedGs = true;
+                            
+                            success = false;
+                            message = "Vous participez déjà à la partie " + gs.getLabel() + ".";
+                            break;
+                        }
+                    }
+                    
+                    if (!playerAlreadyJoinedGs) {
+                        players.add(playerDao.getPlayer(username));
+                        // This line is maybe useless, need to check more info about Hibernate
+                        gs.setPlayers(players);
+    
+                        gameSessionDao.update(gs);
                         
-                        success = false;
-                        message = "Vous participez déjà à la partie " + gs.getLabel() + ".";
-                        break;
+                        success = true;
+                        message = "Vous participation à la partie " + gs.getLabel() + " a bien été confirmée.";
                     }
                 }
-                
-                if (!playerAlreadyJoinedGs) {
-                    players.add(playerDao.getPlayer(username));
-                    // This line is maybe useless, need to check more info about Hibernate
-                    gs.setPlayers(players);
-
-                    gameSessionDao.update(gs);
-                    
-                    success = true;
-                    message = "Vous participation à la partie " + gs.getLabel() + " a bien été confirmée.";
+                // Can't join cause of invalid date
+                else {
+                    success = false;
+                    message = "Vous ne pouvez pas participer à la partie " + gs.getLabel() + " car la date est déjà passée.";
                 }
             }
             else {
@@ -493,6 +495,11 @@ public class MainPage extends HttpServlet {
             success = false;
             message = "L'identifiant de la partie est invalide.";
         }
+    }
+    
+    private void resetStatus() {
+        message = null;
+        success = null;
     }
 
 }

@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 import javax.json.Json;
 import javax.json.JsonArray;
+import javax.json.JsonException;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
@@ -18,7 +19,7 @@ public class JsonUtils {
         return jsonReader.readObject();
     }
     
-    public static JsonObject JsonObjectFromString(String str){
+    public static JsonObject JsonObjectFromString(String str) throws JsonException {
 		JsonReader jsonReader = Json.createReader(new StringReader(str));
 		JsonObject object = jsonReader.readObject();
 		jsonReader.close();
@@ -26,7 +27,7 @@ public class JsonUtils {
 		return object;
     }
     
-    public static JsonArray JsonArrayFromString(String str){
+    public static JsonArray JsonArrayFromString(String str) throws JsonException {
 		JsonReader jsonReader = Json.createReader(new StringReader(str));
 		JsonArray array = jsonReader.readArray();
 		jsonReader.close();

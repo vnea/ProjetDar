@@ -434,8 +434,8 @@ public class SigninSignup extends HttpServlet {
            player.setAge(Integer.parseInt(age));
            
            player.setAddress(address);
-           player.setPostCode(null);
-           player.setPhoneNumber(null);
+           player.setPostCode(postcode);
+           player.setPhoneNumber(phonenumber);
            
            player.setEmail(email);
            player.setPassword(DigestUtils.sha1Hex(password));
