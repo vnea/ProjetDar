@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,9 @@ import models.PlayerDao;
 import utils.GiantBombUtils;
 import utils.GoogleMapsUtils;
 import utils.HTMLBuilder;
+
 import comparators.ComparatorIgnoreCase;
+
 import dao.GameSessionDaoImpl;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
@@ -37,12 +40,12 @@ public class MainPage extends HttpServlet {
 	private static final Location DEFAULT_LOCATION = new Location(48.866667, 2.333333);
     private static final int DEFAULT_ZOOM = 8;
 	private static final String GMAPS = "map";
+	private static final String LEGEND_ID = "legend";
 	
 	private static final String BASE_IMG_MARKERS = "assets/images/markers/";
 	private static final String IMG_MARKER_CREATED_GS = BASE_IMG_MARKERS + "created-gs.png";
     private static final String IMG_MARKER_JOINED_GS = BASE_IMG_MARKERS + "joined-gs.png";
     private static final String IMG_MARKER_OTHERS_GS = BASE_IMG_MARKERS + "others-gs.png";
-
 
     private static final String INPUT_NAME_VALUE = "input-gs-id";
     private static final String BTN_JOIN = "btn-join";
@@ -170,9 +173,13 @@ public class MainPage extends HttpServlet {
                 else {
                     // Google maps
                     out.println("<div class=\"col-xs-8 well\">");
-                        out.println("<div id=\"gmaps\" style=\"height:100%; width: 100%; position: relative;\">");
-                            out.println("Chargement de la carte.");
+                        out.println("<div id=\"gmaps\">");
+                            out.println("Chargement de la carte...");
                         out.println("</div>");
+                        
+                        // Legend
+                        out.println("<div id=\"" + LEGEND_ID + "\"><h3>Légende</h3></div>");
+
                     out.println("</div>");
 
                     username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
@@ -268,6 +275,7 @@ public class MainPage extends HttpServlet {
                 String
                 scriptMarkers = "<script>\n";
                     scriptMarkers += "$(document).ready(function() {\n";
+                        // Create markers for each game session
                         for (GameSession gameSession : gameSessions) {
                             Location location = GoogleMapsUtils.geocode(gameSession.getAddress() + " " + gameSession.getPostCode());
                             if (location != null) {
@@ -315,6 +323,40 @@ public class MainPage extends HttpServlet {
                                 scriptMarkers += "});\n";
                             }
                         }
+                        
+                        // Create legend
+                        scriptMarkers += "var icons = {\n";
+                            // Created GS
+                            scriptMarkers += "created: {\n";
+                                scriptMarkers += "name: 'Parties créées',\n";
+                                scriptMarkers += "icon: '" + IMG_MARKER_CREATED_GS + "'\n";
+                            scriptMarkers +="},\n";
+                            
+                            // Joined GS
+                            scriptMarkers +="joined: {\n";
+                                    scriptMarkers += "name: 'Parties rejointes',\n";
+                                    scriptMarkers += "icon: '" + IMG_MARKER_JOINED_GS + "'\n";
+                            scriptMarkers += "},\n";
+                            
+                            // Others GS
+                            scriptMarkers += "others: {\n";
+                                scriptMarkers += "name: 'Autres parties',\n";
+                                scriptMarkers += "icon: '" + IMG_MARKER_OTHERS_GS + "'\n";
+                            scriptMarkers +="}\n";
+                        scriptMarkers += "}\n";
+                        
+                        scriptMarkers += "var legend = $('#legend')[0];\n";
+                        scriptMarkers += "for (var key in icons) {\n";
+                            scriptMarkers += "var type = icons[key];\n";
+                            scriptMarkers += "var name = type.name;\n";
+                            scriptMarkers += "var icon = type.icon;\n";
+                            scriptMarkers += "var div = document.createElement('div');\n";
+                            scriptMarkers += "div.innerHTML = '<img src=\"' + icon + '\"> ' + name;\n";
+                            scriptMarkers += "legend.appendChild(div);\n";
+                        scriptMarkers += "}\n";
+                        
+                        // Add legend to map
+                        scriptMarkers += GMAPS + ".controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);\n";
                     scriptMarkers += "});\n";
                 scriptMarkers += "</script>";
                 out.println(scriptMarkers);
@@ -358,39 +400,46 @@ public class MainPage extends HttpServlet {
             GameSession gs = gameSessionDao.getGameSession(gameSessionId);
             
             if (gs != null) {
-                final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
-                // Only allow delete the current user is the root
-               
-                boolean playerJoinedGs = false;
-                List<Player> players = gs.getPlayers();
-                for (Player player : players) {
-                    if (player.getUsername().equals(username)) {
-                        playerJoinedGs = true;
-                        
-                        // Need to change this ugly code...
-                        Predicate<Player> pred = new Predicate<Player>() {
-                            @Override
-                            public boolean test(Player arg0) {
-                                return username.equals(arg0.getUsername());
-                            }
-                        };
-                        players.removeIf(pred);
-                        // End of ugly code
-                        
-                        // This line is maybe useless, need to check more info about Hibernate
-                        gs.setPlayers(players);
-
-                        gameSessionDao.update(gs);
-                        
-                        success = true;
-                        message = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
-                        break;
+                // The game session is held after today
+                if (new Date().before(gs.getMeetingDate())) {
+                    final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+                   
+                    boolean playerJoinedGs = false;
+                    List<Player> players = gs.getPlayers();
+                    for (Player player : players) {
+                        if (player.getUsername().equals(username)) {
+                            playerJoinedGs = true;
+                            
+                            // Need to change this ugly code...
+                            Predicate<Player> pred = new Predicate<Player>() {
+                                @Override
+                                public boolean test(Player arg0) {
+                                    return username.equals(arg0.getUsername());
+                                }
+                            };
+                            players.removeIf(pred);
+                            // End of ugly code
+                            
+                            // This line is maybe useless, need to check more info about Hibernate
+                            gs.setPlayers(players);
+    
+                            gameSessionDao.update(gs);
+                            
+                            success = true;
+                            message = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
+                            break;
+                        }
+                    }
+                    
+                    if (!playerJoinedGs) {
+                        success = false;
+                        message = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
                     }
                 }
-                
-                if (!playerJoinedGs) {
+                // Can't join cause of invalid date
+                else {
                     success = false;
-                    message = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
+                    message = "Vous ne particpez à la partie " + gs.getLabel() + " car la date est déjà passée.";
                 }
             }
             else {
@@ -412,8 +461,6 @@ public class MainPage extends HttpServlet {
             
             if (gs != null) {
                 String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
-                // Only allow delete the current user is the root
-               
                 boolean playerAlreadyJoinedGs = false;
                 List<Player> players = gs.getPlayers();
                 for (Player player : players) {

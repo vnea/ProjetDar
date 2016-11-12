@@ -190,6 +190,10 @@ public class HTMLBuilder {
     public static String createInput(String id, String name, String value, String placeholder) {
         return "<input class=\"form-control\" type=\"text\" name=\"" + name + "\" id=\"" + id + "\" value=\"" + value + "\" placeholder=\"" + placeholder + "\">\n";        
     }
+    
+    public static String createInputList(String id, String name, String list, String value, String placeholder) {
+        return "<input class=\"form-control\" type=\"text\" name=\"" + name + "\" id=\"" + id + "\" list=\"" + list + "\" value=\"" + value + "\" placeholder=\"" + placeholder + "\">\n";        
+    }
 
     public static String createPanelGameSession(GameSession gameSession) {
         String

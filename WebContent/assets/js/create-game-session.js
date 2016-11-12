@@ -21,7 +21,10 @@ $(document).ready(function() {
         },
 
         // Timer for searching text
-        timer: 400,
+        timerSearch: 400,
+        
+        // Timer for on keyup
+        timerKeyUp: 250,
         
         // CSS class message
         classMessage: {
@@ -29,9 +32,10 @@ $(document).ready(function() {
         	error: "errorMessage"
         },
         
-        clearIntervalUpdateText: function(interval, elem, text) {
-            clearInterval(interval);
-            $(elem).text(text);
+        resetText: function(resultElem) {
+        	$(resultElem).text("");
+            $(resultElem).removeClass(CGS.classMessage.success);
+            $(resultElem).removeClass(CGS.classMessage.error);
         },
         
         createInput: function(list, inputName, inputValue) {
@@ -76,30 +80,34 @@ $(document).ready(function() {
          ********************/
         games: {
             init: function() {
-            	// Action when clicking on search btn
-            	$(CGS.games.elements.btnSearch).click(function() {
-            		// Remove all games found
-            		$(CGS.games.elements.select).empty();
-					
-            		// Show that we are searching for games
-            		CGS.games.showSearchingText();
-					
-            		// Call server API to get games
-					GiantBomb.getGames(
-							$(CGS.games.elements.inputSearch).val(),
-							CGS.games.handlers.success,
-							CGS.games.handlers.error
-					);
-            	});
-            	 
-            	// Add input game when selecting a game in select
-            	$(CGS.games.elements.select).change(function() {
-            		CGS.createInput(
-            				CGS.games.elements.list,
-            				CGS.games.elements.inputList,
-            				$(this).val()
-            		);
-            	});
+            	// Search games on keyup
+        		var timerGames;
+        		$(CGS.games.elements.inputSearch).keyup(function() {
+        			clearTimeout(timerGames);
+        			var value = $(this).val().trim();
+        			
+        			// Input has a value, we do search
+        			if (value.length) {
+        				timerGames = setTimeout(function() {
+	                		// Remove all games found
+	                		$(CGS.games.elements.datalist).empty();
+	    	
+	                		// Show that we are searching for games
+	                		CGS.games.showSearchingText();
+	    	
+	                		// Call server API to get games
+	                		GiantBomb.getGames(
+	                			value,
+                				CGS.games.handlers.success,
+                				CGS.games.handlers.error
+	                		);
+	        			}, CGS.timerKeyUp);
+        			}
+        			else {
+                		$(CGS.games.elements.datalist).empty();
+                    	CGS.resetText(CGS.games.elements.result);
+        			}
+        		});
             	
             	// Add input game when clicking on + btn
             	$(CGS.games.elements.btnAdd).click(function() {
@@ -115,7 +123,7 @@ $(document).ready(function() {
             elements: {
             	btnSearch: $("#btn-search-games"),
             	btnAdd: $("#btn-add-games"),
-                select: $("#select-search-games"),
+                datalist: $("#datalist-games"),
                 inputSearch: $("#input-search-games"),
                 inputList: "input-list-games",
                 result: $("#result-search-games"),
@@ -131,8 +139,7 @@ $(document).ready(function() {
                     if (jqXHR.status == 200) {
                     	// Create one option tag for each game found
                         for (var i = 0; i < data.results.length; ++i) {
-                        	$(CGS.games.elements.select).append($("<option>", {
-                                text: data.results[i].name,
+                        	$(CGS.games.elements.datalist).append($("<option>", {
                                 value: data.results[i].name
                             }));
                         }
@@ -155,11 +162,7 @@ $(document).ready(function() {
                     }
 
                     // Update searching text
-                    CGS.clearIntervalUpdateText(
-                    		sgtInterval,
-                    		CGS.games.elements.result,
-                    		resultMsg
-                    );
+                    $(CGS.games.elements.result).text(resultMsg);
                 },
 
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -167,27 +170,14 @@ $(document).ready(function() {
                     $(CGS.games.elements.result).removeClass(CGS.classMessage.success);
                 	
                     // Update searching text
-                    CGS.clearIntervalUpdateText(
-                    		sgtInterval,
-                    		CGS.games.elements.result,
-                    		"Erreur de la requête."
-                    );
+                    $(CGS.games.elements.result).text("Erreur de la requête.");
                 }
             },
             
             // Show message : msg. -> msg.. -> msg... -> etc.
             showSearchingText: function() {
-            	$(CGS.games.elements.result).text("");
-                $(CGS.games.elements.result).removeClass(CGS.classMessage.success);
-                $(CGS.games.elements.result).removeClass(CGS.classMessage.error);
-                j = 0;
-                sgtInterval = setInterval(
-                    function() {
-                        j = ++j % 4;
-                        $(CGS.games.elements.result).text("Recherche de jeux en cours" + Array(j + 1).join("."));
-                    },
-                    CGS.timer
-                );
+            	CGS.resetText(CGS.games.elements.result);
+                $(CGS.games.elements.result).text("Recherche de jeux en cours...");
             }
         },
         
@@ -196,30 +186,34 @@ $(document).ready(function() {
          ********************/
         platforms: {
             init: function() {
-            	// Action when clicking on search btn
-            	$(CGS.platforms.elements.btnSearch).click(function() {
-            		// Remove all platforms found
-            		$(CGS.platforms.elements.select).empty();
-	
-            		// Show that we are searching for platforms
-            		CGS.platforms.showSearchingText();
-	
-            		// Call server API to get platforms
-            		GiantBomb.getPlatforms(
-            				$(CGS.platforms.elements.inputSearch).val(),
-            				CGS.platforms.handlers.success,
-            				CGS.platforms.handlers.error
-            		);
-            	});
-            	
-            	// Add input platform when selecting a platform in select
-            	$(CGS.platforms.elements.select).change(function() {
-            		CGS.createInput(
-            				CGS.platforms.elements.list,
-            				CGS.platforms.elements.inputList,
-            				$(this).val()
-            		);
-            	});
+            	// Search platforms on keyup
+            	var timerPlatforms;
+        		$(CGS.platforms.elements.inputSearch).keyup(function() {
+        			clearTimeout(timerPlatforms);
+        			var value = $(this).val().trim();
+        			
+        			// Input has a value, we do search
+        			if (value.length) {
+        				timerPlatforms = setTimeout(function() {
+	                		// Remove all platforms found
+	                		$(CGS.platforms.elements.datalist).empty();
+	    	
+	                		// Show that we are searching for platforms
+	                		CGS.platforms.showSearchingText();
+	    	
+	                		// Call server API to get platforms
+	                		GiantBomb.getPlatforms(
+	                			value,
+                				CGS.platforms.handlers.success,
+                				CGS.platforms.handlers.error
+	                		);
+	        			}, CGS.timerKeyUp);
+        			}
+        			else {
+                		$(CGS.platforms.elements.datalist).empty();
+                    	CGS.resetText(CGS.platforms.elements.result);
+        			}
+        		});
             	
             	// Add input platform when clicking on + btn
             	$(CGS.platforms.elements.btnAdd).click(function() {
@@ -229,12 +223,12 @@ $(document).ready(function() {
             				$(CGS.platforms.elements.inputSearch).val()
             		);
             	});
-            },
-
+            },    
+            
             elements: {
             	btnSearch: $("#btn-search-platforms"),
             	btnAdd: $("#btn-add-platforms"),
-                select: $("#select-search-platforms"),
+            	datalist: $("#datalist-platforms"),
                 inputSearch: $("#input-search-platforms"),
                 inputList: "input-list-platforms",
                 result: $("#result-search-platforms"),
@@ -249,8 +243,7 @@ $(document).ready(function() {
                     if (jqXHR.status == 200) {
                     	// Create one option tag for each platform found
                         for (var i = 0; i < data.results.length; ++i) {
-                        	$(CGS.platforms.elements.select).append($("<option>", {
-                                text: data.results[i].name,
+                        	$(CGS.platforms.elements.datalist).append($("<option>", {
                                 value: data.results[i].name
                             }));
                         }
@@ -273,11 +266,7 @@ $(document).ready(function() {
                     }
 
                     // Update searching text
-                    CGS.clearIntervalUpdateText(
-                    		sptInterval,
-                    		CGS.platforms.elements.result,
-                    		resultMsg
-                    );
+        			$(CGS.platforms.elements.result).text(resultMsg);
                 },
 
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -285,27 +274,14 @@ $(document).ready(function() {
                     $(CGS.platforms.elements.result).removeClass(CGS.classMessage.success);
                 	
                     // Update searching text
-                    CGS.clearIntervalUpdateText(
-                    		sptInterval,
-                    		CGS.platforms.elements.result,
-                    		"Erreur de la requête."
-                    );
+        			$(CGS.platforms.elements.result).text("Erreur de la requête.");
                 }
             },
             
             // Show message : msg. -> msg.. -> msg... -> etc.
             showSearchingText: function() {
-            	$(CGS.platforms.elements.result).text("");
-                $(CGS.platforms.elements.result).removeClass(CGS.classMessage.success);
-                $(CGS.platforms.elements.result).removeClass(CGS.classMessage.error);
-                h = 0;
-                sptInterval = setInterval(
-                    function() {
-                        h = ++h % 4;
-                        $(CGS.platforms.elements.result).text("Recherche de plateformes en cours" + Array(h + 1).join("."));
-                    },
-                    CGS.timer
-                );
+            	CGS.resetText(CGS.platforms.elements.result);
+            	$(CGS.platforms.elements.result).text("Recherche de plateformes en cours...");
             }
         }
     }

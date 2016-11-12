@@ -68,7 +68,7 @@ public class SigninSignup extends HttpServlet {
     private static final int MIN_AGE = 12;
     
     // Name criteria
-    private static final String NAME_REGEX = "^[a-zA-Z][\\p{L} .'-]*$";
+    private static final String NAME_REGEX = "^[\\p{L}][\\p{L} .'-]*[\\p{L}]$";
     
     // Phone number criteria
     private static final String PHONENUMBER_REGEX = "^0[1-9]([-. ]?[0-9]{2}){4}$";

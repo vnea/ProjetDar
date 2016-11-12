@@ -227,7 +227,6 @@ public class MyGameSessions extends HttpServlet {
             
             if (gs != null) {
                 final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
-                // Only allow delete the current user is the root
                
                 boolean playerJoinedGs = false;
                 List<Player> players = gs.getPlayers();

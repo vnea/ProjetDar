@@ -37,11 +37,14 @@ public class CreateGameSession extends HttpServlet {
     private static final String INPUT_NAME_SEARCH_PLATFORMS = "input-search-platforms";
     private static final String INPUT_NAME_PLATFORMS = "input-list-platforms";
     private static final String LIST_ID_PLATFORMS = "list-platforms";
+    private static final String DATALIST_PLATFORMS = "datalist-platforms";
+
     
     private static final String INPUT_NAME_SEARCH_GAMES = "input-search-games";
     private static final String INPUT_NAME_GAMES = "input-list-games";
     private static final String LIST_ID_GAMES = "list-games";
-    
+    private static final String DATALIST_GAMES = "datalist-games";
+
     private static final String INPUT_NAME_ADDRESS = "input-address";
     private static final String INPUT_NAME_POSTCODE = "input-postcode";
     private static final String INPUT_NAME_DATE = "input-date";
@@ -49,7 +52,7 @@ public class CreateGameSession extends HttpServlet {
     private static final String BTN_NAME_CREATE_SESSION = "btn-create-session";
 
     // Label criteria
-    private static final int MIN_CHAR_LABEL = 3;
+    private static final int MIN_CHAR_LABEL = 2;
     private static final String LABEl_REGEX = "^[\\p{Alnum}][\\p{Alnum}\\s]+$";
     
     // Post code criteria
@@ -176,11 +179,7 @@ public class CreateGameSession extends HttpServlet {
                         out.println(HTMLBuilder.createLabel(INPUT_NAME_SEARCH_PLATFORMS, "Plateformes"));
                         out.println("<div class=\"input-group\">");
                             // Input search
-                            out.println(HTMLBuilder.createInput(INPUT_NAME_SEARCH_PLATFORMS, INPUT_NAME_SEARCH_PLATFORMS, "", "Cherchez une plateforme"));
-                            // Search button
-                            out.println("<span id=\"btn-search-platforms\" class=\"input-group-addon cursor-pointer\">");
-                                out.println("<i class=\"glyphicon glyphicon-search\"></i>");
-                            out.println("</span>");
+                            out.println(HTMLBuilder.createInputList(INPUT_NAME_SEARCH_PLATFORMS, INPUT_NAME_SEARCH_PLATFORMS, DATALIST_PLATFORMS, "", "Cherchez une plateforme"));
                             // Add game
                             out.println("<span id=\"btn-add-platforms\" class=\"input-group-addon cursor-pointer\">");
                                 out.println("<i class=\"glyphicon glyphicon-plus\"></i>");
@@ -188,7 +187,7 @@ public class CreateGameSession extends HttpServlet {
                         out.println("</div>");
                         out.println("<div>");
                             // Result in select
-                            out.println("<select class=\"max-width\" id=\"select-search-platforms\"></select>");
+                            out.println("<datalist class=\"max-width\" id=\"" + DATALIST_PLATFORMS + "\"></datalist>");
                             // Status
                             out.println("<span id=\"result-search-platforms\"></span>");
                             // Platforms added
@@ -214,11 +213,7 @@ public class CreateGameSession extends HttpServlet {
                         out.println(HTMLBuilder.createLabel(INPUT_NAME_SEARCH_GAMES, "Jeux"));
                         out.println("<div class=\"input-group\">");
                             // Input search
-                            out.println(HTMLBuilder.createInput(INPUT_NAME_SEARCH_GAMES, INPUT_NAME_SEARCH_GAMES, "", "Cherchez un jeu"));
-                            // Search button
-                            out.println("<span id=\"btn-search-games\" class=\"input-group-addon cursor-pointer\">");
-                                out.println("<i class=\"glyphicon glyphicon-search\"></i>");
-                            out.println("</span>");
+                            out.println(HTMLBuilder.createInputList(INPUT_NAME_SEARCH_GAMES, INPUT_NAME_SEARCH_GAMES, DATALIST_GAMES, "", "Cherchez un jeu"));
                             // Add game
                             out.println("<span id=\"btn-add-games\" class=\"input-group-addon cursor-pointer\">");
                                 out.println("<i class=\"glyphicon glyphicon-plus\"></i>");
@@ -226,7 +221,7 @@ public class CreateGameSession extends HttpServlet {
                         out.println("</div>");
                         out.println("<div>");
                             // Result in select
-                            out.println("<select class=\"max-width\" id=\"select-search-games\"></select>");
+                            out.println("<datalist class=\"max-width\" id=\"" + DATALIST_GAMES + "\"></datalist>");
                             // Status
                             out.println("<span id=\"result-search-games\"></span>");
                             // Games added
@@ -253,7 +248,7 @@ public class CreateGameSession extends HttpServlet {
                                 INPUT_NAME_ADDRESS,
                                 "Adresse",
                                 StringUtils.getStr(request.getParameter(INPUT_NAME_ADDRESS)),
-                                "Entrez une adresse")
+                                "Entrez une adresse avec la ville (ex: 4 Place Jussieu Paris)")
                         );
                         
                         // Post code
