@@ -49,7 +49,29 @@ public class GameSessionDaoImpl implements GameSessionDao {
 	}
     
     @Override
-    public List<GameSession> getGameSessionByRoot(Player p) {
+    public GameSession getGameSession(Integer id) {
+        Session s = HibernateUtils.getSession();
+        List<GameSession> gameSessions = s.createQuery("select gs from GameSession gs where gs.idSession like :id", GameSession.class)
+                                .setParameter("id", id)
+                                .getResultList();
+        
+        s.close();
+        return gameSessions.isEmpty() ? null : gameSessions.get(0);
+    }
+    
+    @Override
+    public List<GameSession> getGameSessions() {
+        Session s = HibernateUtils.getSession();
+        // Take all GameSession
+        List<GameSession> gameSessions = s.createQuery("select gs from GameSession gs", GameSession.class)
+                                          .getResultList();
+        
+        s.close();
+        return gameSessions;
+    }
+    
+    @Override
+    public List<GameSession> getGameSessionsByRoot(Player p) {
         Session s = HibernateUtils.getSession();
         // Take all GameSession
         List<GameSession> gameSessions = s.createQuery("select gs from GameSession gs", GameSession.class)
@@ -71,7 +93,7 @@ public class GameSessionDaoImpl implements GameSessionDao {
     }
 	
     @Override
-	public List<GameSession> getGameSessionCreatedByRoot(Player p) {
+	public List<GameSession> getGameSessionsCreatedByRoot(Player p) {
 		Session s = HibernateUtils.getSession();
 		List<GameSession> gameSessions = s.createQuery("select gs from GameSession gs where gs.root like :root", GameSession.class)
 							              .setParameter("root", p)
@@ -82,13 +104,13 @@ public class GameSessionDaoImpl implements GameSessionDao {
 	}
     
 	@Override
-	public List<GameSession> getGameSessionByGame(String gameName) {
+	public List<GameSession> getGameSessionsByGame(String gameName) {
 		// A completer
 		return null;
 	}
 	
 	@Override
-	public List<GameSession> getGameSessionByPlatform(String platformName) {
+	public List<GameSession> getGameSessionsByPlatform(String platformName) {
 		// A completer
 		return null;
 	}

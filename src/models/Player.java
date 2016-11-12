@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Entity
 @Table(name="Players")
 public class Player {
-	
+
 	public Player(){}
 	
 	// Properties 
@@ -174,6 +174,5 @@ public class Player {
 	public void setGames(List<String> games) {
 		this.games = games;
 	}
-	
-	
+
 }

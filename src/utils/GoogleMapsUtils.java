@@ -1,6 +1,6 @@
 package utils;
 
-import javax.json.JsonArray;
+import javax.json.JsonException;
 import javax.json.JsonObject;
 
 import models.Location;
@@ -18,12 +18,25 @@ public class GoogleMapsUtils {
     public static Location geocode(String address) {
         String response = ResultRequester.resultRequest(createRequestAdressUrl(address), null, ACCEPT);
         
-        JsonObject joReponse = JsonUtils.JsonObjectFromString(response);
-        JsonArray jaPlatformInfos = joReponse.getJsonArray("status");
-
-
-        
-        return null;
+        try {
+            JsonObject joResponse = JsonUtils.JsonObjectFromString(response);
+            String status = joResponse.getString("status");
+            
+            // Error (this case might never happen as we check address in create game session form)
+            if (status == null || !"OK".equals(status)) {
+                return null;
+            }
+            
+            // Get location
+            JsonObject joLocation = joResponse.getJsonArray("results").getJsonObject(0).getJsonObject("geometry").getJsonObject("location");
+            return new Location(
+                    joLocation.getJsonNumber("lat").doubleValue(),
+                    joLocation.getJsonNumber("lng").doubleValue());
+        }
+        // Parsing error (this case might never happen as we check address in create game session form)
+        catch (JsonException e) {
+            return null;
+        }
     }
     
     

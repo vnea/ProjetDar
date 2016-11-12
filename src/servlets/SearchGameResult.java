@@ -53,6 +53,7 @@ public class SearchGameResult extends HttpServlet {
         
         if (session == null) {
             response.sendRedirect(".");
+            return;
         }
         else {
         	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());

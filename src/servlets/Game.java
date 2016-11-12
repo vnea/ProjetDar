@@ -54,6 +54,7 @@ public class Game extends HttpServlet {
         
         if (session == null) {
             response.sendRedirect(".");
+            return;
         }
         else {
         	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());

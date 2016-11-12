@@ -4,17 +4,22 @@ import java.util.List;
 
 public interface GameSessionDao {
 
-		public void insert(GameSession gameSession);
-		
-		public void delete(GameSession gameSession);
-		
-		public void update(GameSession gameSession);
-		
-	    public List<GameSession> getGameSessionByRoot(Player p);
-		
-		public List<GameSession> getGameSessionCreatedByRoot(Player p);
-		
-		public List<GameSession> getGameSessionByGame(String gameName);
+	public void insert(GameSession gameSession);
 	
-		public List<GameSession> getGameSessionByPlatform(String platformName);
+	public void delete(GameSession gameSession);
+	
+	public void update(GameSession gameSession);
+	
+	public GameSession getGameSession(Integer id);
+	
+    public List<GameSession> getGameSessions();
+	
+    public List<GameSession> getGameSessionsByRoot(Player p);
+	
+	public List<GameSession> getGameSessionsCreatedByRoot(Player p);
+	
+	public List<GameSession> getGameSessionsByGame(String gameName);
+
+	public List<GameSession> getGameSessionsByPlatform(String platformName);
+
 }

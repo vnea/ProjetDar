@@ -108,6 +108,7 @@ public class SigninSignup extends HttpServlet {
 	    // If session exists redirect to main page
         if (request.getSession(false) != null) {
             response.sendRedirect("MainPage");
+            return;
         }
         
         resetErrorMessages();
@@ -123,6 +124,7 @@ public class SigninSignup extends HttpServlet {
 	    // If session exists redirect to main page
         if (request.getSession(false) != null) {
             response.sendRedirect("MainPage");
+            return;
         }
 	    
         resetErrorMessages();

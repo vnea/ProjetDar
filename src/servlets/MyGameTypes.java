@@ -53,6 +53,7 @@ public class MyGameTypes extends HttpServlet {
         
         if (session == null) {
             response.sendRedirect(".");
+            return;
         }
         else {
         	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
@@ -124,6 +125,7 @@ public class MyGameTypes extends HttpServlet {
         
         if (session == null) {
             response.sendRedirect(".");
+            return;
         }
 
     	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());

@@ -50,6 +50,7 @@ public class SearchUserResult extends HttpServlet {
         
         if (session == null) {
             response.sendRedirect(".");
+            return;
         }
         else {
         	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
@@ -81,6 +82,7 @@ public class SearchUserResult extends HttpServlet {
             if(this.playerDao.getPlayer(userName) != null){
             	//out.println(this.playerDao.getPlayer(userName));
             	response.sendRedirect("OtherUser?user="+userName);
+                return;
             }
             else{
             	

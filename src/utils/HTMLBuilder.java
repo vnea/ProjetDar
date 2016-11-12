@@ -1,5 +1,10 @@
 package utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import models.GameSession;
+import models.Player;
 import enums.PageTitle;
 
 public class HTMLBuilder {
@@ -184,6 +189,96 @@ public class HTMLBuilder {
     
     public static String createInput(String id, String name, String value, String placeholder) {
         return "<input class=\"form-control\" type=\"text\" name=\"" + name + "\" id=\"" + id + "\" value=\"" + value + "\" placeholder=\"" + placeholder + "\">\n";        
+    }
+
+    public static String createPanelGameSession(GameSession gameSession) {
+        String
+        panel = "<div class=\"panel panel-default\">\n";
+            // Head
+            panel += "<div class=\"panel-heading\">\n";
+                panel += gameSession.getLabel();
+            panel += "</div>\n";
+            
+            // Content
+            panel += "<div class=\"panel-body\">\n";
+                panel += "<span>Hébergé par: " + gameSession.getRoot().getUsername() + "</span><br>\n";
+                panel += "<span>" + gameSession.getMeetingDate() + "</span><br><br>\n";
+                panel += "<button type=\"button\" class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\"#myModal" + gameSession.getIdSession() + "\">Détails</button>\n";
+            panel += "</div>\n";
+        panel += "</div>\n";
+        
+        return panel;
+    }
+    
+    public static String createModalGameSession(GameSession gameSession, String inputNameValue, String btnName, String btnValue) {
+        String
+        modal = "<div class=\"modal fade\" id=\"myModal" + gameSession.getIdSession() + "\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n";
+            modal += "<div class=\"modal-dialog\" role=\"document\">\n";
+                modal += "<div class=\"modal-content\">\n";
+                    // Header
+                    modal += "<div class=\"modal-header\">";
+                        modal += "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n";
+                        modal += "<h4 class=\"modal-title display-4\" id=\"myModalLabel\">" + gameSession.getLabel() + "</h4>\n";
+                    modal += "</div>\n";
+                    
+                    // Body
+                    modal += "<div class=\"modal-body\">\n";
+                        // Author
+                        modal += "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\">&nbsp;Hébergé par : " + gameSession.getRoot().getUsername() + "</span>\n";
+                        modal += "<hr>\n";
+    
+                        // Desc
+                        modal += "<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\">&nbsp;Description : " + gameSession.getDescription() + "</span>\n";
+                        modal += "<hr>\n";
+                        
+                        // Platforms
+                        modal += "<span class=\"fa fa-television\" aria-hidden=\"true\">&nbsp;Plateformes :";
+                            modal += String.join(" - ", gameSession.getPlatforms());
+                        modal += "</span>\n";
+                        modal += "<hr>\n";
+                        
+                        // Games
+                        modal += "<span class=\"fa fa-gamepad\" aria-hidden=\"true\">&nbsp;Jeux :";
+                            modal += String.join(" - ", gameSession.getGames());
+                        modal += "</span>\n";
+                        modal += "<hr>\n";
+                        
+                        // Participants
+                        modal += "<span class=\"fa fa-users\" aria-hidden=\"true\">&nbsp;Participants :";
+                            List<Player> participants = gameSession.getPlayers();
+                            List<String> usernames = new ArrayList<>(participants.size());
+                            for (Player participant : participants) {
+                                usernames.add(participant.getUsername());
+                            }
+                            modal += String.join(" - ", usernames);
+                        modal += "</span>\n";
+                        modal += "<hr>\n";
+                        
+                        // Address
+                        modal += "<span class=\"fa fa-home\" aria-hidden=\"true\">&nbsp;Adresse : " +
+                                    gameSession.getAddress() + " " +
+                                    gameSession.getPostCode() +
+                                    "</span>\n";
+                        modal += "<hr>\n";
+                        
+                        // Date
+                        modal += "<span class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;Date : " + gameSession.getMeetingDate() + "</span>\n";
+                        modal += "<hr>\n";
+                        
+                    modal += "</div>\n";
+                    
+                    // Footer
+                    modal += "<div class=\"modal-footer\">\n";
+                        modal += "<form method=\"post\">";
+                            modal += "<input type=\"hidden\" name=\"" +  inputNameValue + "\" value=\"" + gameSession.getIdSession() + "\">\n";
+                                modal += "<button type=\"submit\" name=\"" + btnName + "\" class=\"btn btn-primary\">" + btnValue + "</button>\n";
+                        modal += "</form>\n";
+                    modal += "</div>\n";
+                modal += "</div>\n";
+           modal += "</div>\n";
+        modal += "</div>\n";
+            
+        return modal;
     }
 
 }

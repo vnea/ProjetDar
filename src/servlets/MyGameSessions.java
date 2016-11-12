@@ -2,7 +2,10 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,8 +29,17 @@ public class MyGameSessions extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
+	private static final String INPUT_NAME_VALUE = "input-gs-id";
+    private static final String BTN_LEAVE= "btn-leave";
+    private static final String BTN_DELETE = "btn-delete";
+
+	private static final Map<String, String> BUTTONS = new HashMap<>(3);
+	
     private GameSessionDao gameSessionDao;
     private PlayerDao playerDao;
+    
+    private String message;
+    private Boolean success;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,8 +50,13 @@ public class MyGameSessions extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        resetStatus();
+        
         gameSessionDao = new GameSessionDaoImpl();
         playerDao = new PlayerDaoImpl();
+        
+        BUTTONS.put(BTN_LEAVE, "Quitter");
+        BUTTONS.put(BTN_DELETE, "Supprimer");
         
         super.init();
     }
@@ -48,16 +65,41 @@ public class MyGameSessions extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    processeRequest(request, response);
+        request.setCharacterEncoding("UTF-8");
+        if (request.getSession(false) == null) {
+            response.sendRedirect(".");
+            return;
+        }
+	    
+	    resetStatus();
+	    processRequest(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        if (request.getSession(false) == null) {
+            response.sendRedirect(".");
+            return;
+        }
+	    
+        resetStatus();
+
+        // Delete button pressed
+	    if (request.getParameter(BTN_DELETE) != null) {
+	       performDeleteGameSession(request, response);
+	    }
+        // Leave button pressed
+        else if (request.getParameter(BTN_LEAVE) != null) {
+            performLeaveGameSession(request, response);
+        }
+    	    
+	    processRequest(request, response);
 	}
 	
-	private void processeRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    response.setCharacterEncoding("UTF-8");
 	    response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
@@ -74,217 +116,68 @@ public class MyGameSessions extends HttpServlet {
             out.println(HTMLBuilder.createTabsMenu());
             
             // MAIN CONTENT
-            // Created game sessions
-            out.println("<div class=\"container well\">");
-                out.println("<div class=\"row\">");
-                    out.println("<h1>Parties hébergées</h1>");
-                    out.println("<hr>");
-
-                    String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
-                    Player player = playerDao.getPlayer(username);
-                    
-                    List<GameSession> gameSessionsCreated = gameSessionDao.getGameSessionCreatedByRoot(player);
-                    // No game sessions found
-                    if (gameSessionsCreated == null || gameSessionsCreated.isEmpty()) {
-                        out.println("<p>Vous n'avez pas créé de partie.</p>");
-                    }
-                    // Game sessions found
-                    else {
-                        for (GameSession gameSession : gameSessionsCreated) {
-                            // Game sessions list
-                            out.println("<div class=\"panel panel-default\">");
-                                // Head
-                                out.println("<div class=\"panel-heading\">");
-                                    out.println(gameSession.getLabel());
-                                out.print("</div>");
-                                
-                                // Content
-                                out.println("<div class=\"panel-body\">");
-                                    out.println("<span>Hébergé par: " + username + "</span><br>");
-                                    out.println("<span>" + gameSession.getMeetingDate() + "</span><br><br>");
-                                    out.println("<button type=\"button\" class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\"#myModal" + gameSession.getIdSession() + "\">Détails</button>");
-                                out.print("</div>");
-                            out.print("</div>");
-                            
-                            // Game sessions modals
-                            out.println("<div class=\"modal fade\" id=\"myModal" + gameSession.getIdSession() + "\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">");
-                                out.println("<div class=\"modal-dialog\" role=\"document\">");
-                                    out.println("<div class=\"modal-content\">");
-                                        // Header
-                                        out.println("<div class=\"modal-header\">");
-                                            out.println("<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
-                                            out.println("<h4 class=\"modal-title display-4\" id=\"myModalLabel\">" + gameSession.getLabel() + "</h4>");
-                                        out.println("</div>");
-                                        
-                                        // Body
-                                        out.println("<div class=\"modal-body\">");
-                                            // Author
-                                            out.println("<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\">&nbsp;Hébergé par : " + username + "</span>");
-                                            out.println("<hr>");
-    
-                                            // Desc
-                                            out.println("<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\">&nbsp;Description : " + gameSession.getDescription() + "</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Platforms
-                                            out.println("<span class=\"fa fa-television\" aria-hidden=\"true\">&nbsp;Plateformes :");
-                                            List<String> platforms = gameSession.getPlatforms();
-                                            for (String platform : platforms) {
-                                                out.print(" " + platform);
-                                            }
-                                            out.println("</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Games
-                                            out.println("<span class=\"fa fa-gamepad\" aria-hidden=\"true\">&nbsp;Jeux :");
-                                            List<String> games = gameSession.getGames();
-                                            for (String game : games) {
-                                                out.print(" " + game);
-                                            }
-                                            out.println("</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Participants
-                                            out.println("<span class=\"fa fa-users\" aria-hidden=\"true\">&nbsp;Participants :");
-                                            List<Player> participants = gameSession.getPlayers();
-                                            for (Player participant : participants) {
-                                                out.print(" " + participant.getUsername());
-                                            }
-                                            out.println("</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Address
-                                            out.println("<span class=\"fa fa-home\" aria-hidden=\"true\">&nbsp;Adresse : " +
-                                                        gameSession.getAddress() + " " +
-                                                        gameSession.getPostCode() +
-                                                        "</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Date
-                                            out.println("<span class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;Date : " + gameSession.getMeetingDate() + "</span>");
-                                            out.println("<hr>");
-                                            
-                                        out.println("</div>");
-                                        
-                                        // Footer
-                                        out.println("<div class=\"modal-footer\">");
-                                            out.println("<form method=\"post\">");
-                                            out.println("<input type=\"hidden\" name=\"input-gs-id\" value=\"" + gameSession.getIdSession() + "\">");
-                                            out.println("<button type=\"submit\" name=\"btn-delete\" class=\"btn btn-primary\">Supprimer</button>");
-                                            out.println("</form>");
-                                        out.print("</div>");
-                                    out.println("</div>");
-                                out.println("</div>");
-                            out.println("</div>");
-                        }
-                    }
+            if (success != null) {
+                out.println("<div class=\"container well\">");
+                    out.println("<a href=\"MyGameSessions\">&#8592; Retour</a>");
+                    String msgClass = success ? "successMessage" : "errorMessage";
+                    out.println("<p class=\"" + msgClass + "\">" + message + "</p>");
                 out.println("</div>");
-            out.println("</div>");
 
-            // Joined game sessions
-            out.println("<div class=\"container well\">");
-                out.println("<div class=\"row\">");
-                    out.println("<h1>Parties auxquelles je participe</h1>");
-                    out.println("<hr>");
-
-                    List<GameSession> gameSessionsJoined = gameSessionDao.getGameSessionByRoot(player);
-                    
-                    // No game sessions found
-                    if (gameSessionsJoined == null || gameSessionsJoined.isEmpty()) {
-                        out.println("<p>Vous ne participez à aucune partie.</p>");
-                    }
-                    // Game sessions found
-                    else {
-                        for (GameSession gameSession : gameSessionsJoined) {
-                            // Game sessions list
-                            out.println("<div class=\"panel panel-default\">");
-                                // Head
-                                out.println("<div class=\"panel-heading\">");
-                                    out.println(gameSession.getLabel());
-                                out.print("</div>");
-                                
-                                // Content
-                                out.println("<div class=\"panel-body\">");
-                                    out.println("<span>Hébergé par: " + gameSession.getRoot().getUsername() + "</span><br>");
-                                    out.println("<span>" + gameSession.getMeetingDate() + "</span><br><br>");
-                                    out.println("<button type=\"button\" class=\"btn btn-primary btn-sm\" data-toggle=\"modal\" data-target=\"#myModal" + gameSession.getIdSession() + "\">Détails</button>");
-                                out.print("</div>");
-                            out.print("</div>");
-                            
-                            // Game sessions modals
-                            out.println("<div class=\"modal fade\" id=\"myModal" + gameSession.getIdSession() + "\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">");
-                                out.println("<div class=\"modal-dialog\" role=\"document\">");
-                                    out.println("<div class=\"modal-content\">");
-                                        // Header
-                                        out.println("<div class=\"modal-header\">");
-                                            out.println("<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>");
-                                            out.println("<h4 class=\"modal-title display-4\" id=\"myModalLabel\">" + gameSession.getLabel() + "</h4>");
-                                        out.println("</div>");
-                                        
-                                        // Body
-                                        out.println("<div class=\"modal-body\">");
-                                            // Author
-                                            out.println("<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\">&nbsp;Hébergé par : " + username + "</span>");
-                                            out.println("<hr>");
-    
-                                            // Desc
-                                            out.println("<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\">&nbsp;Description : " + gameSession.getDescription() + "</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Platforms
-                                            out.println("<span class=\"fa fa-television\" aria-hidden=\"true\">&nbsp;Plateformes :");
-                                            List<String> platforms = gameSession.getPlatforms();
-                                            for (String platform : platforms) {
-                                                out.print(" " + platform);
-                                            }
-                                            out.println("</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Games
-                                            out.println("<span class=\"fa fa-gamepad\" aria-hidden=\"true\">&nbsp;Jeux :");
-                                            List<String> games = gameSession.getGames();
-                                            for (String game : games) {
-                                                out.print(" " + game);
-                                            }
-                                            out.println("</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Participants
-                                            out.println("<span class=\"fa fa-users\" aria-hidden=\"true\">&nbsp;Participants :");
-                                            List<Player> participants = gameSession.getPlayers();
-                                            for (Player participant : participants) {
-                                                out.print(" " + participant.getUsername());
-                                            }
-                                            out.println("</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Address
-                                            out.println("<span class=\"fa fa-home\" aria-hidden=\"true\">&nbsp;Adresse : " +
-                                                        gameSession.getAddress() + " " +
-                                                        gameSession.getPostCode() +
-                                                        "</span>");
-                                            out.println("<hr>");
-                                            
-                                            // Date
-                                            out.println("<span class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;Date : " + gameSession.getMeetingDate() + "</span>");
-                                            out.println("<hr>");
-                                            
-                                        out.println("</div>");
-                                        
-                                        // Footer
-                                        out.println("<div class=\"modal-footer\">");
-                                            out.println("<form method=\"post\">");
-                                                out.println("<input type=\"hidden\" name=\"input-gs-id\" value=\"" +  gameSession.getIdSession() + "\">");
-                                                out.println("<button type=\"submit\" name=\"btn-leave\" class=\"btn btn-primary\">Quitter</button>");
-                                            out.println("</form>");
-                                        out.print("</div>");
-                                    out.println("</div>");
-                                out.println("</div>");
-                            out.println("</div>");
+                success = null;
+            }
+            else {
+                // Created game sessions
+                out.println("<div class=\"container well\">");
+                    out.println("<div class=\"row\">");                
+                        out.println("<h1>Parties hébergées</h1>");
+                        out.println("<hr>");
+                        
+                        String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+                        Player player = playerDao.getPlayer(username);
+                        
+                        List<GameSession> gameSessionsCreated = gameSessionDao.getGameSessionsCreatedByRoot(player);
+                        // No game sessions found
+                        if (gameSessionsCreated == null || gameSessionsCreated.isEmpty()) {
+                            out.println("<p>Vous n'avez pas créé de partie.</p>");
                         }
-                    }
+                        // Game sessions found
+                        else {
+                            for (GameSession gameSession : gameSessionsCreated) {
+                                // Game sessions panels
+                                out.println(HTMLBuilder.createPanelGameSession(gameSession));
+                                
+                                // Game sessions modals
+                                out.println(HTMLBuilder.createModalGameSession(gameSession, INPUT_NAME_VALUE, BTN_DELETE, BUTTONS.get(BTN_DELETE)));
+                            }
+                        }
+                    out.println("</div>");
                 out.println("</div>");
-            out.println("</div>");
+    
+                // Joined game sessions
+                out.println("<div class=\"container well\">");
+                    out.println("<div class=\"row\">");
+                        out.println("<h1>Parties auxquelles je participe</h1>");
+                        out.println("<hr>");
+    
+                        List<GameSession> gameSessionsJoined = gameSessionDao.getGameSessionsByRoot(player);
+                        
+                        // No game sessions found
+                        if (gameSessionsJoined == null || gameSessionsJoined.isEmpty()) {
+                            out.println("<p>Vous ne participez à aucune partie.</p>");
+                        }
+                        // Game sessions found
+                        else {
+                            for (GameSession gameSession : gameSessionsJoined) {
+                                // Game sessions panels
+                                out.println(HTMLBuilder.createPanelGameSession(gameSession));
+                                
+                                // Game sessions modals
+                                out.println(HTMLBuilder.createModalGameSession(gameSession, INPUT_NAME_VALUE, BTN_LEAVE, BUTTONS.get(BTN_LEAVE)));
+                            }
+                        }
+                    out.println("</div>");
+                out.println("</div>");
+            }
             // END OF MAIN CONTENT
             
             // Scripts
@@ -298,4 +191,90 @@ public class MyGameSessions extends HttpServlet {
         out.print("</html>");  
 	}
 
+	private void performDeleteGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    try {
+	        // Get game session that we want to delete
+	        Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
+	        GameSession gs = gameSessionDao.getGameSession(gameSessionId);
+	        
+	        if (gs != null) {
+	            String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+	            // Only allow delete the current user is the root
+	            if (gs.getRoot().getUsername().equals(username)) {
+	                String lastDeletedGameSession = gs.getLabel();
+	                gameSessionDao.delete(gs);
+	                success = true;
+	                message = "La partie " + lastDeletedGameSession + " a bien été supprimée";
+	            }
+	        }
+	        else {
+	            success = false;
+	            message = "La partie n'existe pas.";
+	        }
+
+	    }
+	    catch (NumberFormatException e) {
+            success = false;
+	        message = "L'identifiant de la partie est invalide.";
+	    }
+	}
+	
+    private void performLeaveGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            // Get game session that we want to delete
+            Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
+            GameSession gs = gameSessionDao.getGameSession(gameSessionId);
+            
+            if (gs != null) {
+                final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+                // Only allow delete the current user is the root
+               
+                boolean playerJoinedGs = false;
+                List<Player> players = gs.getPlayers();
+                for (Player player : players) {
+                    if (player.getUsername().equals(username)) {
+                        playerJoinedGs = true;
+                        
+                        // Need to change this ugly code...
+                        Predicate<Player> pred = new Predicate<Player>() {
+                            @Override
+                            public boolean test(Player arg0) {
+                                return username.equals(arg0.getUsername());
+                            }
+                        };
+                        players.removeIf(pred);
+                        // End of ugly code
+                        
+                        // This line is maybe useless, need to check more info about Hibernate
+                        gs.setPlayers(players);
+
+                        gameSessionDao.update(gs);
+                        
+                        success = true;
+                        message = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
+                        break;
+                    }
+                }
+                
+                if (!playerJoinedGs) {
+                    success = false;
+                    message = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
+                }
+            }
+            else {
+                success = false;
+                message = "La partie n'existe pas.";
+            }
+        }
+        catch (NumberFormatException e) {
+            success = false;
+            message = "L'identifiant de la partie est invalide.";
+        }
+    }
+	
+    private void resetStatus() {
+        message = null;
+        success = null;
+    }
+	
 }

@@ -53,6 +53,7 @@ public class MyPlatforms extends HttpServlet {
         
         if (session == null) {
             response.sendRedirect(".");
+            return;
         }
         else {
             request.setCharacterEncoding("UTF-8");
@@ -126,6 +127,7 @@ public class MyPlatforms extends HttpServlet {
         
         if (session == null) {
             response.sendRedirect(".");
+            return;
         }
 
     	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
