@@ -4,26 +4,6 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<servlet>
 		<description></description>
-		<display-name>Test</display-name>
-		<servlet-name>Test</servlet-name>
-		<servlet-class>test.Test</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Test</servlet-name>
-		<url-pattern>/Test</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<description></description>
-		<display-name>SignIn</display-name>
-		<servlet-name>SignIn</servlet-name>
-		<servlet-class>test.SignIn</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>SignIn</servlet-name>
-		<url-pattern>/test/SignIn</url-pattern>
-	</servlet-mapping>
-	<servlet>
-		<description></description>
 		<display-name>SigninSignup</display-name>
 		<servlet-name>SigninSignup</servlet-name>
 		<servlet-class>servlets.SigninSignup</servlet-class>
