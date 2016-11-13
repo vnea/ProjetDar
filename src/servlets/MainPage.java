@@ -109,7 +109,7 @@ public class MainPage extends HttpServlet {
         
         // Delete button pressed
         if (request.getParameter(BTN_DELETE) != null) {
-           performDeleteGameSession(request, response);
+           performDeleteGameSession(request);
         }
         // Leave button pressed
         else if (request.getParameter(BTN_LEAVE) != null) {
@@ -376,7 +376,7 @@ public class MainPage extends HttpServlet {
         out.print("</html>");
 	}
 	
-    private void performDeleteGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performDeleteGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));

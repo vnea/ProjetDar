@@ -2,7 +2,10 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 
 import javax.servlet.ServletException;
@@ -10,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.GameSession;
+import models.GameSessionDao;
 import models.Player;
 import models.PlayerDao;
 
@@ -17,6 +22,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import utils.HTMLBuilder;
 import utils.StringUtils;
+import dao.GameSessionDaoImpl;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
 import enums.SessionData;
@@ -45,6 +51,15 @@ public class Profile extends HttpServlet {
     private static final String BTN_NAME_MODIFY = "btn-modify";
     private static final String BTN_NAME_ADD_FRIEND = "btn-add-friend";
     private static final String BTN_NAME_DELETE_FRIEND = "btn-delete-friend";
+    
+    private static final String BTN_JOIN = "btn-join";
+    private static final String BTN_LEAVE= "btn-leave";
+    private static final String BTN_DELETE = "btn-delete";
+    private static final String INPUT_NAME_VALUE = "input-gs-id";
+
+    
+    private static final Map<String, String> BUTTONS = new HashMap<>(3);
+
 
 
     // Age criteria
@@ -66,6 +81,7 @@ public class Profile extends HttpServlet {
     private static final int MIN_CHAR_PASSWORD = 6;
     
     private PlayerDao playerDao;
+    private GameSessionDao gameSessionDao; 
     
     private String errorMessage;
     private Boolean success;
@@ -82,6 +98,11 @@ public class Profile extends HttpServlet {
     @Override
     public void init() throws ServletException {
         playerDao = new PlayerDaoImpl();
+        gameSessionDao = new GameSessionDaoImpl();
+        
+        BUTTONS.put(BTN_JOIN, "Rejoindre");
+        BUTTONS.put(BTN_LEAVE, "Quitter");
+        BUTTONS.put(BTN_DELETE, "Supprimer");
         username = null;
         resetStatus();
         
@@ -128,6 +149,18 @@ public class Profile extends HttpServlet {
         // Delete friend
         else if (request.getParameter(BTN_NAME_DELETE_FRIEND) != null) {
             performDeleteFriend(request);
+        }
+        // Delete game session
+        else if (request.getParameter(BTN_DELETE) != null) {
+           performDeleteGameSession(request);
+        }
+        // Leave game session
+        else if (request.getParameter(BTN_LEAVE) != null) {
+            performLeaveGameSession(request);
+        }
+        // Join game session
+        else if (request.getParameter(BTN_JOIN) != null) {
+            performJoinGameSession(request);
         }
         
         username = null;
@@ -420,6 +453,47 @@ public class Profile extends HttpServlet {
                                 }
                             }
                             
+                            if (areFriends) {
+                                out.println("<hr>");
+                                out.println("<h3>Liste des parties</h3>");
+                                // Get sessions of his friend
+                                Player friend = playerDao.getPlayer(username);
+                                List<GameSession> gameSessions = gameSessionDao.getAllGameSessionsByRoot(friend);
+                                // No game sessions
+                                if (gameSessions.isEmpty()) {
+                                    out.println("<p>Aucune partie.</p>");
+                                }
+                                else {
+                                    out.println("<form method=\"post\">");
+                                    for (GameSession gameSession : gameSessions) {
+                                        // Default case : show join btn
+                                        String btnName = BTN_JOIN;
+                                        String btnValue = BUTTONS.get(BTN_JOIN);
+                                        
+                                        // Show delete btn
+                                        if (gameSession.getRoot().getUsername().equals(currentUsername)) {
+                                            btnName = BTN_DELETE;
+                                            btnValue = BUTTONS.get(BTN_DELETE);
+                                        }
+                                        else {                        
+                                            List<Player> players = gameSession.getPlayers();
+                                            for (Player p : players) {
+                                                // Show leave btn
+                                                if (p.getUsername().equals(currentUsername)) {
+                                                    btnName = BTN_LEAVE;
+                                                    btnValue = BUTTONS.get(BTN_LEAVE);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        out.println(HTMLBuilder.createPanelGameSession(gameSession));
+                                        out.println(HTMLBuilder.createModalGameSession(gameSession, INPUT_NAME_VALUE, btnName, btnValue));
+                                    }
+                                    
+                                    out.println("</form>");
+                                }
+                            }
+
                             out.println("<form method=\"post\">");
                             if (areFriends) {
                                 // Delete friend
@@ -700,6 +774,136 @@ public class Profile extends HttpServlet {
                success = false;
                errorMessage = "Vous n'êtes pas ami avec" + username + ".";
            }
+       }
+   }
+   
+   private void performDeleteGameSession(HttpServletRequest request) throws ServletException, IOException {
+       try {
+           // Get game session that we want to delete
+           Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
+           GameSession gs = gameSessionDao.getGameSession(gameSessionId);
+           
+           if (gs != null) {
+               String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+               // Only allow delete the current user is the root
+               if (gs.getRoot().getUsername().equals(username)) {
+                   String lastDeletedGameSession = gs.getLabel();
+                   gameSessionDao.delete(gs);
+                   success = true;
+                   errorMessage = "La partie " + lastDeletedGameSession + " a bien été supprimée";
+               }
+           }
+           else {
+               success = false;
+               errorMessage = "La partie n'existe pas.";
+           }
+
+       }
+       catch (NumberFormatException e) {
+           success = false;
+           errorMessage = "L'identifiant de la partie est invalide.";
+       }
+   }
+   
+   private void performLeaveGameSession(HttpServletRequest request) throws ServletException, IOException {
+       try {
+           // Get game session that we want to delete
+           Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
+           GameSession gs = gameSessionDao.getGameSession(gameSessionId);
+           
+           if (gs != null) {
+               final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+              
+               boolean playerJoinedGs = false;
+               List<Player> players = gs.getPlayers();
+               for (Player player : players) {
+                   if (player.getUsername().equals(username)) {
+                       playerJoinedGs = true;
+                       
+                       // Need to change this ugly code...
+                       Predicate<Player> pred = new Predicate<Player>() {
+                           @Override
+                           public boolean test(Player arg0) {
+                               return username.equals(arg0.getUsername());
+                           }
+                       };
+                       players.removeIf(pred);
+                       // End of ugly code
+                       
+                       // This line is maybe useless, need to check more info about Hibernate
+                       gs.setPlayers(players);
+
+                       gameSessionDao.update(gs);
+                       
+                       success = true;
+                       errorMessage = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
+                       break;
+                   }
+               }
+               
+               if (!playerJoinedGs) {
+                   success = false;
+                   errorMessage = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
+               }
+           }
+           else {
+               success = false;
+               errorMessage = "La partie n'existe pas.";
+           }
+       }
+       catch (NumberFormatException e) {
+           success = false;
+           errorMessage = "L'identifiant de la partie est invalide.";
+       }
+   }
+   
+   private void performJoinGameSession(HttpServletRequest request) throws ServletException, IOException {
+       try {
+           // Get game session that we want to delete
+           Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
+           GameSession gs = gameSessionDao.getGameSession(gameSessionId);
+           
+           if (gs != null) {
+               // The game session is held after today
+               if (new Date().before(gs.getMeetingDate())) {
+                   String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+                   boolean playerAlreadyJoinedGs = false;
+                   List<Player> players = gs.getPlayers();
+                   for (Player player : players) {
+                       if (player.getUsername().equals(username)) {
+                           playerAlreadyJoinedGs = true;
+                           
+                           success = false;
+                           errorMessage = "Vous participez déjà à la partie " + gs.getLabel() + ".";
+                           break;
+                       }
+                   }
+                   
+                   if (!playerAlreadyJoinedGs) {
+                       players.add(playerDao.getPlayer(username));
+                       // This line is maybe useless, need to check more info about Hibernate
+                       gs.setPlayers(players);
+   
+                       gameSessionDao.update(gs);
+                       
+                       success = true;
+                       errorMessage = "Vous participation à la partie " + gs.getLabel() + " a bien été confirmée.";
+                   }
+               }
+               // Can't join cause of invalid date
+               else {
+                   success = false;
+                   errorMessage = "Vous ne pouvez pas participer à la partie " + gs.getLabel() + " car la date est déjà passée.";
+               }
+           }
+           else {
+               success = false;
+               errorMessage = "La partie n'existe pas.";
+           }
+       }
+       catch (NumberFormatException e) {
+           success = false;
+           errorMessage = "L'identifiant de la partie est invalide.";
        }
    }
    

@@ -34,6 +34,7 @@ import enums.SessionData;
  * Servlet implementation class Platform
  */
 public class Platform extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
 	
     private static final String INPUT_NAME_VALUE = "input-gs-id";

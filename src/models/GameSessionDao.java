@@ -15,6 +15,8 @@ public interface GameSessionDao {
     public List<GameSession> getGameSessions();
 	
     public List<GameSession> getGameSessionsByRoot(Player p);
+    
+    public List<GameSession> getAllGameSessionsByRoot(Player p);
 	
 	public List<GameSession> getGameSessionsCreatedByRoot(Player p);
 	

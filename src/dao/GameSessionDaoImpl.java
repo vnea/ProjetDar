@@ -133,4 +133,27 @@ public class GameSessionDaoImpl implements GameSessionDao {
 		return resultGameSessions;
 	}
 
+    @Override
+    public List<GameSession> getAllGameSessionsByRoot(Player p) {
+        List<GameSession> gameSessions = getGameSessions();
+        
+        List<GameSession> resultGameSessions = new ArrayList<>(gameSessions.size());
+        for (GameSession gameSession : gameSessions) {
+            if (gameSession.getRoot().getUsername().equals(p.getUsername())) {
+                resultGameSessions.add(gameSession);
+            }
+            else {
+                List<Player> players = gameSession.getPlayers();
+                for (Player player : players) {
+                    // Only keep game sessions which the player participates
+                    if (player.getIdPlayer() == p.getIdPlayer()) {
+                        resultGameSessions.add(gameSession);
+                    }
+                }
+            }
+        }
+        
+        return resultGameSessions;
+    }
+
 }
