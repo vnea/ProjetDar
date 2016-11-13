@@ -114,7 +114,7 @@ public class CreateGameSession extends HttpServlet {
 	    
 	    // Btn create session pressed
 	    if (request.getParameter(BTN_NAME_CREATE_SESSION) != null) {
-	        performCreateSession(request, response);
+	        performCreateSession(request);
 	    }
 	    
 	    processRequest(request, response);
@@ -294,7 +294,7 @@ public class CreateGameSession extends HttpServlet {
         out.print("</html>");   
 	}
 	
-    private void performCreateSession(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void performCreateSession(HttpServletRequest request) throws IOException {
         String label = StringUtils.getStr(request.getParameter(INPUT_NAME_LABEL)).trim();
         String[] platforms = request.getParameterValues(INPUT_NAME_PLATFORMS);
         String address = StringUtils.getStr(request.getParameter(INPUT_NAME_ADDRESS)).trim();

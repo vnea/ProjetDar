@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.PlayerDaoImpl;
-import enums.PageTitle;
-import enums.SessionData;
 import models.Player;
 import models.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
+import dao.PlayerDaoImpl;
+import enums.PageTitle;
+import enums.SessionData;
 
 /**
  * Servlet implementation class MyGameTypes
@@ -80,9 +80,9 @@ public class MyGameTypes extends HttpServlet {
 		                int j = gamesTypes.size() % 4;
 		                int k = 0;
 		                out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
-		                for(int i=0; i<gamesTypes.size(); i++){
-		                	if( (i % (gamesTypes.size()/4) == k) && (i!= 0) ){
-		                		if(j > 0){
+		                for (int i=0; i<gamesTypes.size(); i++) {
+		                	if (i!= 0 && (i % (gamesTypes.size() / 4) == k)) {
+		                		if (j > 0) {
 		                			j--;
 		                			k++;
 			                		i++;
@@ -116,20 +116,18 @@ public class MyGameTypes extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// If session doesn't exists redirect to SigninSignup page
         HttpSession session = request.getSession(false);
-        String playerUsername;
-        
         if (session == null) {
             response.sendRedirect(".");
             return;
         }
 
-    	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
+        request.setCharacterEncoding("UTF-8");
+        String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
     	player = this.playerDao.getPlayer(playerUsername);
     	
-    	if( player != null){
-    		request.setCharacterEncoding("UTF-8");
-    		String types[]= request.getParameterValues("type");
-    		player.setGamesType(new ArrayList<String>(Arrays.asList(types)));
+    	if (player != null) {
+    		String[] types = request.getParameterValues("type");
+    		player.setGamesType(types == null ? new ArrayList<String>() : Arrays.asList(types));
     		this.playerDao.update(player);
     		response.sendRedirect("MyGameTypes");
     	}
@@ -143,13 +141,13 @@ public class MyGameTypes extends HttpServlet {
 	private String checkbox (String buttonName) {
 		String res;
 		
-		if(player.getGamesType().contains(buttonName)){
+		if (player.getGamesType().contains(buttonName)) {
 			res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
-					"name=\"type\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
+					"name=\"type\"" + " value=\"" + buttonName + "\">" + buttonName + "</label>";
 		}
-		else{
+		else {
 			res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\"" +
-					"name=\"type\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
+					"name=\"type\"" + " value=\"" + buttonName + "\">" + buttonName + "</label>";
 		}
 			     
         return res;

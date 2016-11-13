@@ -89,11 +89,11 @@ public class MyGameSessions extends HttpServlet {
 
         // Delete button pressed
 	    if (request.getParameter(BTN_DELETE) != null) {
-	       performDeleteGameSession(request, response);
+	       performDeleteGameSession(request);
 	    }
         // Leave button pressed
         else if (request.getParameter(BTN_LEAVE) != null) {
-            performLeaveGameSession(request, response);
+            performLeaveGameSession(request);
         }
     	    
 	    processRequest(request, response);
@@ -192,7 +192,7 @@ public class MyGameSessions extends HttpServlet {
         out.print("</html>");  
 	}
 
-	private void performDeleteGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void performDeleteGameSession(HttpServletRequest request) throws ServletException, IOException {
 	    try {
 	        // Get game session that we want to delete
 	        Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
@@ -220,7 +220,7 @@ public class MyGameSessions extends HttpServlet {
 	    }
 	}
 	
-    private void performLeaveGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performLeaveGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));

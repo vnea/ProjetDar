@@ -115,7 +115,7 @@ public class Profil extends HttpServlet {
             String currentUsername = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
             // Verify that the user is the owner of the profil
             if (currentUsername.equals(username)) {
-                performModify(request, response);
+                performModify(request);
             }
             else {
                 errorMessage = "Vous ne pouvez pas modifier les données du profil.";
@@ -123,11 +123,11 @@ public class Profil extends HttpServlet {
         }
         // Add friend
         else if (request.getParameter(BTN_NAME_ADD_FRIEND) != null) {
-            performAddFriend(request, response);
+            performAddFriend(request);
         }
         // Delete friend
         else if (request.getParameter(BTN_NAME_DELETE_FRIEND) != null) {
-            performDeleteFriend(request, response);
+            performDeleteFriend(request);
         }
         
         username = null;
@@ -560,7 +560,7 @@ public class Profil extends HttpServlet {
        return true;
    }
    
-   private void performModify(HttpServletRequest request, HttpServletResponse response) throws IOException {
+   private void performModify(HttpServletRequest request) throws IOException {
        String firstname = StringUtils.getStr(request.getParameter(INPUT_NAME_FIRSTNAME));
        String lastname = StringUtils.getStr(request.getParameter(INPUT_NAME_LASTNAME));
        
@@ -613,7 +613,7 @@ public class Profil extends HttpServlet {
        }
    }
 
-   private void performAddFriend(HttpServletRequest request, HttpServletResponse response) throws IOException {
+   private void performAddFriend(HttpServletRequest request) throws IOException {
        String currentUsername = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
        Player currentAuthenticatedPlayer = playerDao.getPlayer(currentUsername);
        
@@ -650,7 +650,7 @@ public class Profil extends HttpServlet {
        }
    }
    
-   private void performDeleteFriend(HttpServletRequest request, HttpServletResponse response) throws IOException {
+   private void performDeleteFriend(HttpServletRequest request) throws IOException {
        final String currentUsername = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
        Player currentAuthenticatedPlayer = playerDao.getPlayer(currentUsername);
        

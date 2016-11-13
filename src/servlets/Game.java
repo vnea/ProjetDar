@@ -36,6 +36,8 @@ public class Game extends HttpServlet {
     private static final String BTN_JOIN = "btn-join";
     private static final String BTN_LEAVE= "btn-leave";
     private static final String BTN_DELETE = "btn-delete";
+    private static final String BTN_ADD_GAME= "btn-add-game";
+    private static final String BTN_DELETE_GAME = "btn-delete-game";
     
     private static final Map<String, String> BUTTONS = new HashMap<>(3);
     
@@ -88,15 +90,23 @@ public class Game extends HttpServlet {
 
         // Delete button pressed
         if (request.getParameter(BTN_DELETE) != null) {
-           performDeleteGameSession(request, response);
+           performDeleteGameSession(request);
         }
         // Leave button pressed
         else if (request.getParameter(BTN_LEAVE) != null) {
-            performLeaveGameSession(request, response);
+            performLeaveGameSession(request);
         }
         // Join button pressed
         else if (request.getParameter(BTN_JOIN) != null) {
-            performJoinGameSession(request, response);
+            performJoinGameSession(request);
+        }
+        // Add game pressed
+        else if (request.getParameter(BTN_ADD_GAME) != null) {
+            performAddGame(request);
+        }
+        // Delete game pressed
+        else if (request.getParameter(BTN_DELETE_GAME) != null) {
+            performDeleteGame(request);
         }
         
         processRequest(request, response);
@@ -212,69 +222,84 @@ public class Game extends HttpServlet {
                             out.println("<section class=\"col-xs-8 well\">");
                                 out.println("<div class=\"row\">");
                                     out.println("<div class=\"col-xs-5 text-center\">");
-                                        out.println("<img src="+gameInfos.get("image")+" width=\"250px\" height=\"200px\" alt=\"?\"/>");
+                                        out.println("<img src=" + gameInfos.get("image") + " width=\"250px\" height=\"200px\" alt=\"?\"/>");
                                     out.println("</div>");
                                     out.println("<div class=\"col-xs-7\">");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Nom : </B>");
-                                            if(gameInfos.get("name") != null  &&  gameInfos.get("name") != "null")
+                                            if (gameInfos.get("name") != null && gameInfos.get("name") != "null") {
                                                 out.println(gameInfos.get("name"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Note : </B>");
-                                            if(gameInfos.get("original_game_rating") != null  &&  gameInfos.get("original_game_rating") != "null")
+                                            if (gameInfos.get("original_game_rating") != null && gameInfos.get("original_game_rating") != "null") {
                                                 out.println(gameInfos.get("original_game_rating"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Description : </B>");
-                                            if(gameInfos.get("deck") != null  &&  gameInfos.get("deck") != "null")
+                                            if (gameInfos.get("deck") != null && gameInfos.get("deck") != "null") {
                                                 out.println(gameInfos.get("deck"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Date de sortie : </B>");
-                                            if(gameInfos.get("original_release_date") != null  &&  gameInfos.get("original_release_date") != "null")
+                                            if (gameInfos.get("original_release_date") != null && gameInfos.get("original_release_date") != "null") {
                                                 out.println(gameInfos.get("original_release_date"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Genres : </B>");
-                                            if(gameInfos.get("genre") != null  &&  gameInfos.get("genres") != "null")
+                                            if (gameInfos.get("genre") != null && gameInfos.get("genres") != "null") {
                                                 out.println(gameInfos.get("genres"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Platformes : </B>");
-                                            if(gameInfos.get("platforms") != null  &&  gameInfos.get("platforms") != "null")
+                                            if (gameInfos.get("platforms") != null && gameInfos.get("platforms") != "null") {
                                                 out.println(gameInfos.get("platforms"));
+                                            }
                                         out.println("</div>");
                                             out.println("<div class=\"row\">");
                                             out.println("<B>Développeurs : </B>");
-                                            if(gameInfos.get("developers") != null  &&  gameInfos.get("developers") != "null")
+                                            if (gameInfos.get("developers") != null && gameInfos.get("developers") != "null") {
                                                 out.println(gameInfos.get("developers"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Editeurs : </B>");
-                                            if(gameInfos.get("publishers") != null  &&  gameInfos.get("publishers") != "null")
+                                            if (gameInfos.get("publishers") != null && gameInfos.get("publishers") != "null") {
                                                 out.println(gameInfos.get("publishers"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Jeux similaires : </B>");
-                                            if(gameInfos.get("similar_games") != null  &&  gameInfos.get("similar_games") != "null")
+                                            if (gameInfos.get("similar_games") != null && gameInfos.get("similar_games") != "null") {
                                                 out.println(gameInfos.get("similar_games"));
+                                            }
                                         out.println("</div>");
                                     out.println("</div>");  
                                 out.println("</div>");
                                 
                                 // Add game
                                 out.println("</br><div class=\"row\">");
-                                    out.println("<div class=\"col-xs-12 text-center\">");
-                                        out.println("<button type=\"button\" class=\"btn btn-primary\">Ajouter à mes jeux</button>");
-                                    out.println("</div>");
+                                    Player player = playerDao.getPlayer(username);
+                                    out.println("<form method=\"post\" class=\"col-xs-12 text-center\">");
+                                        out.println(player.getGames().contains(gameName)
+                                                    // Show delete game
+                                                    ? "<input type=\"submit\" class=\"btn btn-primary\" value=\"Supprimer de mes jeux\" name=\"" + BTN_DELETE_GAME + "\">"
+                                                    // Show add game
+                                                    : "<input type=\"submit\" class=\"btn btn-primary\" value=\"Ajouter à mes jeux\" name=\"" + BTN_ADD_GAME + "\">");
+                                    out.println("</form>");
                                 out.println("</div></br>");
                                 
                                 out.println("<div class=\"row\">");
                                     out.println("<div class=\"col-xs-12\">");
                                         out.println("<B>Description : </B>");
-                                        if(gameInfos.get("description") != null  &&  gameInfos.get("description") != "null")
+                                        if (gameInfos.get("description") != null && gameInfos.get("description") != "null") {
                                             out.println(gameInfos.get("description"));
+                                        }
                                     out.println("</div>");
                                 out.println("</div>");
                                 
@@ -311,7 +336,7 @@ public class Game extends HttpServlet {
         out.print("</html>");   
 	}
 
-    private void performDeleteGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performDeleteGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
@@ -339,7 +364,7 @@ public class Game extends HttpServlet {
         }
     }
     
-    private void performLeaveGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performLeaveGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
@@ -391,7 +416,7 @@ public class Game extends HttpServlet {
         }
     }
     
-    private void performJoinGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performJoinGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
@@ -438,6 +463,42 @@ public class Game extends HttpServlet {
         catch (NumberFormatException e) {
             success = false;
             message = "L'identifiant de la partie est invalide.";
+        }
+    }
+    
+    private void performAddGame(HttpServletRequest request) throws ServletException, IOException {
+        String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+        Player player = playerDao.getPlayer(username);
+        
+        // Can't add platform as it already has this platform
+        if (player.getGames().contains(lastGameName)) {
+            success = false;
+            message = "Vous avez déjà ajouté ce jeu à votre liste de jeux.";
+        }
+        else {
+            player.getGames().add(lastGameName);
+            playerDao.update(player);
+            
+            success = true;
+            message = "Le jeu a bien été ajoutée à votre liste de jeux.";
+        }
+    }
+    
+    private void performDeleteGame(HttpServletRequest request) throws ServletException, IOException {
+        String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+        Player player = playerDao.getPlayer(username);
+        
+        // Can't add game as it already has this game
+        if (player.getGames().contains(lastGameName)) {
+            player.getGames().remove(lastGameName);
+            playerDao.update(player);
+            
+            success = true;
+            message = "Le jeu a bien été supprimé de votre liste de jeux.";
+        }
+        else {
+            success = false;
+            message = "Le jeu ne fait pas partie de votre liste de jeux.";
         }
     }
     

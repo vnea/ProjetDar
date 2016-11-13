@@ -16,6 +16,7 @@ import models.Player;
 import models.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
+import comparators.ComparatorIgnoreCase;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
 import enums.SessionData;
@@ -76,13 +77,13 @@ public class MyPlatforms extends HttpServlet {
     			
 		    			// get List of platforms from GiantBomb
 		                List<String> platforms = GiantBombUtils.getPlatformsList();
-		            
+                        platforms.sort(new ComparatorIgnoreCase());
 		                int j = platforms.size() % 4;
 		                int k = 0;
 		                out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
-		                for(int i=0; i<platforms.size(); i++){
-		                	if( (i % (platforms.size()/4) == k) && (i!= 0) ){
-		                		if(j > 0){
+		                for (int i=0; i<platforms.size(); i++) {
+		                	if (i!= 0 && (i % (platforms.size() / 4 ) == k)) {
+		                		if (j > 0) {
 		                			j--;
 		                			k++;
 			                		i++;
@@ -115,21 +116,19 @@ public class MyPlatforms extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// If session doesn't exists redirect to SigninSignup page
-        HttpSession session = request.getSession(false);
-        String playerUsername;
-        
+        HttpSession session = request.getSession(false);        
         if (session == null) {
             response.sendRedirect(".");
             return;
         }
 
-    	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
+        request.setCharacterEncoding("UTF-8");
+        String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
     	player = this.playerDao.getPlayer(playerUsername);
     	
-    	if( player != null){
-    		request.setCharacterEncoding("UTF-8");
-    		String platforms[]= request.getParameterValues("platform");
-    		player.setPlatforms(new ArrayList<String>(Arrays.asList(platforms)));
+    	if (player != null) {
+    		String[] platforms = request.getParameterValues("platform");
+    		player.setPlatforms(platforms == null ? new ArrayList<String>() : Arrays.asList(platforms));
     		this.playerDao.update(player);
     		response.sendRedirect("MyPlatforms");
     	}
@@ -139,16 +138,16 @@ public class MyPlatforms extends HttpServlet {
 	 * @param buttonName
 	 * @return
 	 */
-	private String checkbox (String buttonName) {
+	private String checkbox(String buttonName) {
 		String res;
 		
-		if(player.getPlatforms().contains(buttonName)){
+		if (player.getPlatforms().contains(buttonName)) {
 			res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
-					"name=\"platform\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
+					"name=\"platform\"" + " value=\"" + buttonName + "\">" + buttonName + "</label>";
 		}
-		else{
+		else {
 			res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\"" +
-					"name=\"platform\"" + " value=\""+buttonName+"\">"+buttonName+"</label>";
+					"name=\"platform\"" + " value=\"" + buttonName+"\">" + buttonName + "</label>";
 		}
 			     
         return res;

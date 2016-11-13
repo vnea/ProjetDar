@@ -113,11 +113,11 @@ public class MainPage extends HttpServlet {
         }
         // Leave button pressed
         else if (request.getParameter(BTN_LEAVE) != null) {
-            performLeaveGameSession(request, response);
+            performLeaveGameSession(request);
         }
         // Join button pressed
         else if (request.getParameter(BTN_JOIN) != null) {
-            performJoinGameSession(request, response);
+            performJoinGameSession(request);
         }
         
         processRequest(request, response);
@@ -397,7 +397,7 @@ public class MainPage extends HttpServlet {
         }
     }
     
-    private void performLeaveGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performLeaveGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
@@ -449,7 +449,7 @@ public class MainPage extends HttpServlet {
         }
     }
     
-    private void performJoinGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performJoinGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));

@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.PlayerDaoImpl;
-import enums.PageTitle;
-import enums.SessionData;
 import models.Player;
 import models.PlayerDao;
 import utils.HTMLBuilder;
+import dao.PlayerDaoImpl;
+import enums.PageTitle;
+import enums.SessionData;
 
 /**
  * Servlet implementation class MyGames
@@ -77,9 +77,9 @@ public class MyGames extends HttpServlet {
 		                int j = games.size() % 4;
 		                int k = 0;
 		                out.println("<div class=\"col-xs-2 col-xs-offset-1\">");
-		                for(int i=0; i<games.size(); i++){
-		                	if( (i % (games.size()/4) == k) && (i!= 0) ){
-		                		if(j > 0){
+		                for (int i = 0; i < games.size(); i++) {
+		                	if (i!= 0 && (i % (games.size() / 4) == k)) {
+		                		if (j > 0) {
 		                			j--;
 		                			k++;
 			                		i++;
@@ -112,21 +112,19 @@ public class MyGames extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// If session doesn't exists redirect to SigninSignup page
-        HttpSession session = request.getSession(false);
-        String playerUsername;
-        
+        HttpSession session = request.getSession(false);        
         if (session == null) {
             response.sendRedirect(".");
             return;
         }
 
-    	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
+        request.setCharacterEncoding("UTF-8");
+        String playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
     	player = this.playerDao.getPlayer(playerUsername);
     	
-    	if( player != null){
-    		request.setCharacterEncoding("UTF-8");
-    		String games[]= request.getParameterValues("game");
-    		player.setGames(new ArrayList<String>(Arrays.asList(games)));
+    	if (player != null) {
+    		String[] games = request.getParameterValues("game");
+    		player.setGames(games == null ? new ArrayList<String>() : Arrays.asList(games));
     		this.playerDao.update(player);
     		response.sendRedirect("MyGames");
     	}
@@ -140,8 +138,8 @@ public class MyGames extends HttpServlet {
 		String
 		
 		res = "<label class=\"checkbox white\"><input class=\"inputGender\" type=\"checkbox\" checked=\"checked\"" +
-				"name=\"game\"" + " value=\""+buttonName+"\">\n";
-			res += "<a href=\"Game?game="+buttonName+"\">\n";
+				"name=\"game\"" + " value=\"" + buttonName + "\">\n";
+			res += "<a href=\"Game?game=" + buttonName + "\">\n";
 				res += buttonName;
 			res += "</a>\n";
 		res += "</label>";

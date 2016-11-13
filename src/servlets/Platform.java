@@ -19,7 +19,9 @@ import models.Player;
 import models.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
+
 import comparators.ComparatorIgnoreCase;
+
 import dao.GameSessionDaoImpl;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
@@ -39,7 +41,9 @@ public class Platform extends HttpServlet {
     private static final String BTN_JOIN = "btn-join";
     private static final String BTN_LEAVE= "btn-leave";
     private static final String BTN_DELETE = "btn-delete";
-    
+    private static final String BTN_ADD_PLATFORM = "btn-add-platform";
+    private static final String BTN_DELETE_PLATFORM = "btn-delete-platform";
+
     private static final Map<String, String> BUTTONS = new HashMap<>(3);
     
     private String message;
@@ -90,15 +94,23 @@ public class Platform extends HttpServlet {
 
         // Delete button pressed
         if (request.getParameter(BTN_DELETE) != null) {
-           performDeleteGameSession(request, response);
+           performDeleteGameSession(request);
         }
         // Leave button pressed
         else if (request.getParameter(BTN_LEAVE) != null) {
-            performLeaveGameSession(request, response);
+            performLeaveGameSession(request);
         }
         // Join button pressed
         else if (request.getParameter(BTN_JOIN) != null) {
-            performJoinGameSession(request, response);
+            performJoinGameSession(request);
+        }
+        // Add platform pressed
+        else if (request.getParameter(BTN_ADD_PLATFORM) != null) {
+            performAddPlatform(request);
+        }
+        // Delete platform pressed
+        else if (request.getParameter(BTN_DELETE_PLATFORM) != null) {
+            performDeletePlatform(request);
         }
         
 	    processRequest(request, response);
@@ -219,39 +231,49 @@ public class Platform extends HttpServlet {
                                     out.println("<div class=\"col-xs-7\">");
                                     out.println("<div class=\"row\">");
                                         out.println("<B>Nom : </B>");
-                                            if(platformInfos.get("name") != null  &&  platformInfos.get("name") != "null")
+                                            if (platformInfos.get("name") != null && platformInfos.get("name") != "null") {
                                                 out.println(platformInfos.get("name"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Compagnie : </B>");
-                                            if(platformInfos.get("company") != null  &&  platformInfos.get("company") != "null")
+                                            if (platformInfos.get("company") != null && platformInfos.get("company") != "null") {
                                                 out.println(platformInfos.get("company"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Description : </B>");
-                                            if(platformInfos.get("deck") != null  &&  platformInfos.get("deck") != "null")
+                                            if (platformInfos.get("deck") != null && platformInfos.get("deck") != "null") {
                                                 out.println(platformInfos.get("deck"));
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Original release date : </B>");
-                                            if(platformInfos.get("release_date") != null  &&  platformInfos.get("release_date") != "null")
+                                            if (platformInfos.get("release_date") != null && platformInfos.get("release_date") != "null") {
                                                 out.println(platformInfos.get("release_date"));
+                                            }
                                         out.println("</div>");
                                     out.println("</div>");  
                                 out.println("</div>");
                                 
-                                // Add platform
+                                // Add/delete form
                                 out.println("</br><div class=\"row\">");
-                                    out.println("<div class=\"col-xs-12 text-center\">");
-                                        out.println("<button type=\"button\" class=\"btn btn-primary\">Ajouter à mes plateformes</button>");
-                                    out.println("</div>");
+                                    Player player = playerDao.getPlayer(username);
+                                    out.println("<form method=\"post\" class=\"col-xs-12 text-center\">");
+                                        out.println(player.getPlatforms().contains(platformName)
+                                                    // Show delete platform
+                                                    ? "<input type=\"submit\" class=\"btn btn-primary\" value=\"Supprimer de mes plateformes\" name=\"" + BTN_DELETE_PLATFORM + "\">"
+                                                    // Show add platform
+                                                    : "<input type=\"submit\" class=\"btn btn-primary\" value=\"Ajouter à mes plateformes\" name=\"" + BTN_ADD_PLATFORM + "\">");
+                                    out.println("</form>");
                                 out.println("</div></br>");
                             
                                 out.println("<div class=\"row\">");
                                     out.println("<div class=\"col-xs-12\">");
                                         out.println("<B>Description : </B>");
-                                        if(platformInfos.get("description") != null  &&  platformInfos.get("description") != "null")
+                                        if (platformInfos.get("description") != null && platformInfos.get("description") != "null") {
                                             out.println(platformInfos.get("description"));
+                                        }
                                     out.println("</div>");
                                 out.println("</div>");
                                 
@@ -295,7 +317,7 @@ public class Platform extends HttpServlet {
         out.print("</html>");
 	}
 	
-    private void performDeleteGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performDeleteGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
@@ -323,7 +345,7 @@ public class Platform extends HttpServlet {
         }
     }
     
-    private void performLeaveGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performLeaveGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
@@ -375,7 +397,7 @@ public class Platform extends HttpServlet {
         }
     }
     
-    private void performJoinGameSession(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void performJoinGameSession(HttpServletRequest request) throws ServletException, IOException {
         try {
             // Get game session that we want to delete
             Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
@@ -425,8 +447,46 @@ public class Platform extends HttpServlet {
         }
     }
     
+    private void performAddPlatform(HttpServletRequest request) throws ServletException, IOException {
+        String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+        Player player = playerDao.getPlayer(username);
+        
+        // Can't add platform as it already has this platform
+        if (player.getPlatforms().contains(lastPlatformName)) {
+            success = false;
+            message = "Vous avez déjà ajouté cette plateforme à votre liste de plateformes.";
+        }
+        else {
+            player.getPlatforms().add(lastPlatformName);
+            playerDao.update(player);
+            
+            success = true;
+            message = "La plateforme a bien été ajoutée à votre liste de plateformes.";
+        }
+    }
+    
+    private void performDeletePlatform(HttpServletRequest request) throws ServletException, IOException {
+        String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+        Player player = playerDao.getPlayer(username);
+        
+        // Can't add platform as it already has this platform
+        if (player.getPlatforms().contains(lastPlatformName)) {
+            player.getPlatforms().remove(lastPlatformName);
+            playerDao.update(player);
+            
+            success = true;
+            message = "La plateforme a bien été supprimée de votre liste de plateformes.";
+
+        }
+        else {
+            success = false;
+            message = "La platforme ne fait pas partie de votre liste de plateformes.";
+        }
+    }
+    
     private void resetStatus() {
         message = null;
         success = null;
     }
+
 }
