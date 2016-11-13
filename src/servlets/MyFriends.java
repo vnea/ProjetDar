@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.PlayerDaoImpl;
-import enums.PageTitle;
-import enums.SessionData;
 import models.Player;
 import models.PlayerDao;
 import utils.HTMLBuilder;
+import dao.PlayerDaoImpl;
+import enums.PageTitle;
+import enums.SessionData;
 
 /**
  * Servlet implementation class MyFriends
@@ -44,19 +44,12 @@ public class MyFriends extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// If session doesn't exists redirect to SigninSignup page
-        HttpSession session = request.getSession(false);
-        String playerUsername;
-        
-        if (session == null) {
+        if (request.getSession(false) == null) {
             response.sendRedirect(".");
             return;
         }
-        else {
-        	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
-        	player = this.playerDao.getPlayer(playerUsername);
-        }
 		
+        request.setCharacterEncoding("UTF-8");
 	    response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -69,8 +62,10 @@ public class MyFriends extends HttpServlet {
         // Body
         out.println("<body>");
             // Menu connection
+            String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+            player = this.playerDao.getPlayer(username);
             out.println(HTMLBuilder.createTopMenu());
-            out.println(HTMLBuilder.createTabsMenu());
+            out.println(HTMLBuilder.createTabsMenu(username));
             
             out.println("<div class=\"container-fluid\">");
     			out.println("<form class=\"form\" method=\"post\">");

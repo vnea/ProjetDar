@@ -11,6 +11,7 @@ public enum PageTitle {
     PLATFORM("Platforme"),
     GAME("Jeu"),
     MY_FRIENDS("Mes amis"),
+    PROFILE("Profil"),
     CREATE_SESSION("Créer une partie"),
     MY_GAME_SESSIONS("Mes parties");
 

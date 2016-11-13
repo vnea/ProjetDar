@@ -124,6 +124,7 @@ public class MainPage extends HttpServlet {
 	}
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    request.setCharacterEncoding("UTF-8");
 	    response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -136,8 +137,9 @@ public class MainPage extends HttpServlet {
         // Body
         out.println("<body class=\"max-height\">");
             // Top menus
+            username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
             out.println(HTMLBuilder.createTopMenu());
-            out.println(HTMLBuilder.createTabsMenu());
+            out.println(HTMLBuilder.createTabsMenu(username));
             
             out.println("<div class=\"row\">");
             

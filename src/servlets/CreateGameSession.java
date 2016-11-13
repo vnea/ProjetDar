@@ -121,6 +121,7 @@ public class CreateGameSession extends HttpServlet {
 	}
 	
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 	    response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -133,8 +134,9 @@ public class CreateGameSession extends HttpServlet {
         // Body
         out.println("<body>");
             // Top menus
+            String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
             out.println(HTMLBuilder.createTopMenu());
-            out.println(HTMLBuilder.createTabsMenu());
+            out.println(HTMLBuilder.createTabsMenu(username));
             
             out.println("<div class=\"container well\">");
                 out.println("<h1 class=\"center\">" + PageTitle.CREATE_SESSION + "</h1>");

@@ -117,8 +117,9 @@ public class Platform extends HttpServlet {
         // Body
         out.println("<body>");
             // Menu connection
+            String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
             out.println(HTMLBuilder.createTopMenu());
-            out.println(HTMLBuilder.createTabsMenu());
+            out.println(HTMLBuilder.createTabsMenu(username));
             String platformName = request.getParameter("platform");
             
             if (success != null) {
@@ -181,7 +182,6 @@ public class Platform extends HttpServlet {
                                         out.println("</h4>");
                                         List<GameSession> gameSessions = gameSessionDao.getGameSessionsByPlatform(platformName);
                                         
-                                        String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
                                         for (GameSession gameSession : gameSessions) {
                                             // Default case : show join btn
                                             String btnName = BTN_JOIN;

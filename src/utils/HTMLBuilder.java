@@ -123,7 +123,7 @@ public class HTMLBuilder {
         return HTMLBuilder.createTopMenu(menu);
     }
     
-    public static String createTabsMenu() {
+    public static String createTabsMenu(String username) {
         String
         menu = "<div class=\"row\">\n";
 	        menu += "<ul class=\"nav nav-pills\">\n";
@@ -158,6 +158,7 @@ public class HTMLBuilder {
 		        menu += "<li class=\"dropdown navbar-right\">\n";
 	        		menu += "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Mes Infos <span class=\"caret\"></span></a>\n";
     				menu += "<ul class=\"dropdown-menu\">\n";
+                        menu += "<li><a href=\"Profil?user=" + username + "\">Mon profil</a></li>\n";
 			          	menu += "<li><a href=\"MyGameSessions\">Mes parties</a></li>\n";
 			            menu += "<li><a href=\"MyGames\">Mes jeux</a></li>\n";
 			            menu += "<li><a href=\"MyPlatforms\">Mes platformes</a></li>\n";
@@ -175,8 +176,16 @@ public class HTMLBuilder {
         return createLabel(id, label) + createInput(id, name, value);
     }
     
+    public static String createLabelInputDisabled(String id, String name, String label, String value) {
+        return createLabel(id, label) + createInputDisabled(id, name, value);
+    }
+    
     public static String createLabelInput(String id, String name, String label, String value, String placeholder) {
         return createLabel(id, label) + createInput(id, name, value, placeholder);
+    }
+    
+    public static String createLabelInputDisabled(String id, String name, String label, String value, String placeholder) {
+        return createLabel(id, label) + createInputDisabled(id, name, value, placeholder);
     }
     
     public static String createLabel(String id, String label) {
@@ -187,8 +196,16 @@ public class HTMLBuilder {
         return "<input class=\"form-control\" type=\"text\" name=\"" + name + "\" id=\"" + id + "\" value=\"" + value + "\">\n";
     }
     
+    public static String createInputDisabled(String id, String name, String value) {
+        return "<input class=\"form-control\" type=\"text\" name=\"" + name + "\" id=\"" + id + "\" value=\"" + value + "\" disabled>\n";
+    }
+    
     public static String createInput(String id, String name, String value, String placeholder) {
         return "<input class=\"form-control\" type=\"text\" name=\"" + name + "\" id=\"" + id + "\" value=\"" + value + "\" placeholder=\"" + placeholder + "\">\n";        
+    }
+    
+    public static String createInputDisabled(String id, String name, String value, String placeholder) {
+        return "<input class=\"form-control\" type=\"text\" name=\"" + name + "\" id=\"" + id + "\" value=\"" + value + "\" placeholder=\"" + placeholder + "\" disabled>\n";        
     }
     
     public static String createInputList(String id, String name, String list, String value, String placeholder) {

@@ -9,13 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import models.Player;
-import models.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
-import dao.PlayerDaoImpl;
 import enums.PageTitle;
 import enums.SessionData;
 
@@ -23,10 +19,8 @@ import enums.SessionData;
  * Servlet implementation class SearchGameResults
  */
 public class SearchGameResult extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
-	
-	private PlayerDao playerDao;
-	private Player player;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,27 +33,17 @@ public class SearchGameResult extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        playerDao = new PlayerDaoImpl();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// If session doesn't exists redirect to SigninSignup page
-        HttpSession session = request.getSession(false);
-        String playerUsername;
-        String gameName = null;
-        
-        if (session == null) {
+        if (request.getSession(false) == null) {
             response.sendRedirect(".");
             return;
         }
-        else {
-        	playerUsername = (String) session.getAttribute(SessionData.PLAYER_USERNAME.toString());
-        	player = this.playerDao.getPlayer(playerUsername);
-        }
-		
+        
         request.setCharacterEncoding("UTF-8");
 	    response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
@@ -73,9 +57,11 @@ public class SearchGameResult extends HttpServlet {
         // Body
         out.println("<body>");
             // Menu connection
+            String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
             out.println(HTMLBuilder.createTopMenu());
-            out.println(HTMLBuilder.createTabsMenu());
+            out.println(HTMLBuilder.createTabsMenu(username));
             
+            String gameName = null;
             if (request.getParameter("game") == null) {
 		        out.println("error");
 		    } else {

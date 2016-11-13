@@ -100,6 +100,7 @@ public class MyGameSessions extends HttpServlet {
 	}
 	
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 	    response.setCharacterEncoding("UTF-8");
 	    response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
@@ -112,8 +113,9 @@ public class MyGameSessions extends HttpServlet {
         // Body
         out.println("<body>");
             // Top menus
+            String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
             out.println(HTMLBuilder.createTopMenu());
-            out.println(HTMLBuilder.createTabsMenu());
+            out.println(HTMLBuilder.createTabsMenu(username));
             
             // MAIN CONTENT
             if (success != null) {
@@ -132,7 +134,6 @@ public class MyGameSessions extends HttpServlet {
                         out.println("<h1>Parties hébergées</h1>");
                         out.println("<hr>");
                         
-                        String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
                         Player player = playerDao.getPlayer(username);
                         
                         List<GameSession> gameSessionsCreated = gameSessionDao.getGameSessionsCreatedByRoot(player);

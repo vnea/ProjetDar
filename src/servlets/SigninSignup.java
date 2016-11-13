@@ -232,7 +232,7 @@ public class SigninSignup extends HttpServlet {
                                                                             " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_POSTCODE)) + "\"" +
                                                                             " placeholder=\"Code postal\">");
                             
-                            // Email
+                            // Phone
                             out.println("<input type=\"tel\" name=\"" + INPUT_NAME_SIGNUP_PHONENUMBER + "\"" +
                                                              " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_PHONENUMBER)) + "\"" +
                                                              " placeholder=\"Tél.\">");
@@ -403,20 +403,20 @@ public class SigninSignup extends HttpServlet {
    }
    
    private void performSignup(HttpServletRequest request, HttpServletResponse response) throws IOException {
-       String login = request.getParameter(INPUT_NAME_SIGNUP_LOGIN).trim();
-       String firstname = request.getParameter(INPUT_NAME_SIGNUP_FIRSTNAME).trim();
-       String lastname = request.getParameter(INPUT_NAME_SIGNUP_LASTNAME).trim();
+       String login = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_LOGIN));
+       String firstname = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_FIRSTNAME));
+       String lastname = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_LASTNAME));
        
-       String sex = request.getParameter(INPUT_NAME_SIGNUP_SEX).trim();
-       String age = request.getParameter(INPUT_NAME_SIGNUP_AGE).trim();
+       String sex = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_SEX));
+       String age = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_AGE));
        
-       String address = request.getParameter(INPUT_NAME_SIGNUP_ADDRESS).trim();
-       String postcode = request.getParameter(INPUT_NAME_SIGNUP_POSTCODE).trim();
+       String address = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_ADDRESS));
+       String postcode = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_POSTCODE));
        
-       String phonenumber = request.getParameter(INPUT_NAME_SIGNUP_PHONENUMBER).trim();
-       String email = request.getParameter(INPUT_NAME_SIGNUP_EMAIL).trim();
-       String password = request.getParameter(INPUT_NAME_SIGNUP_PASSWORD).trim();
-       String confirmPassword = request.getParameter(INPUT_NAME_SIGNUP_CONFRIM_PASSWORD).trim();
+       String phonenumber = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_PHONENUMBER));
+       String email = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_EMAIL));
+       String password = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_PASSWORD));
+       String confirmPassword = StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_CONFRIM_PASSWORD));
 
        // Check if sent values are OK
        if (isLoginValid(login) && isFirstnameValid(firstname) && isLastnameValid(lastname) &&
@@ -456,9 +456,9 @@ public class SigninSignup extends HttpServlet {
    
    private void performSignin(HttpServletRequest request, HttpServletResponse response) throws IOException {
        Player player = playerDao.getPlayer(
-               request.getParameter(INPUT_NAME_SIGNIN_LOGIN).trim(),
+               StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNIN_LOGIN)),
                // Don't forget to encrypt password
-               DigestUtils.sha1Hex(request.getParameter(INPUT_NAME_SIGNIN_PASSWORD.trim()))
+               DigestUtils.sha1Hex(StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNIN_PASSWORD)))
        );
        
        // Login or password invalid
@@ -478,4 +478,5 @@ public class SigninSignup extends HttpServlet {
        errorMessageSignup = null;
        errorMessageSignin = null;
    }
+
 }

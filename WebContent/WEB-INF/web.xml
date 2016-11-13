@@ -154,9 +154,9 @@
 	</servlet-mapping>
 	<servlet>
 		<description></description>
-		<display-name>OtherUser</display-name>
-		<servlet-name>OtherUser</servlet-name>
-		<servlet-class>servlets.OtherUser</servlet-class>
+		<display-name>Profil</display-name>
+		<servlet-name>Profil</servlet-name>
+		<servlet-class>servlets.Profil</servlet-class>
 	</servlet>
 	<servlet>
 		<description>
@@ -168,8 +168,8 @@
 		<async-supported>false</async-supported>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>OtherUser</servlet-name>
-		<url-pattern>/OtherUser</url-pattern>
+		<servlet-name>Profil</servlet-name>
+		<url-pattern>/Profil</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>GiantBombApi</servlet-name>
