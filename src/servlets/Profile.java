@@ -24,7 +24,7 @@ import enums.SessionData;
 /**
  * Servlet implementation class User
  */
-public class Profil extends HttpServlet {
+public class Profile extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -75,7 +75,7 @@ public class Profil extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Profil() {
+    public Profile() {
         super();
     }
     

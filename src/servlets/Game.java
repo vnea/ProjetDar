@@ -314,7 +314,7 @@ public class Game extends HttpServlet {
                         out.println("<div id=\"sidebar-wrapper pull-right\">");
                             out.println("<ul class=\"sidebar-nav\">");
                                 out.println("<h4 class=\"sidebar-brand\">");
-                                    out.println("Latest games added");
+                                    out.println("Derniers jeux ajoutés");
                                 out.println("</h4>");
                                 List<String> recentGames = GiantBombUtils.getMostRecentGames();
                                 for (String recentGame : recentGames) {

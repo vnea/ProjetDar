@@ -148,7 +148,7 @@ public class HTMLBuilder {
 		        menu += "<li class=\"dropdown navbar-right\">\n";
 	        		menu += "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">Mes Infos <span class=\"caret\"></span></a>\n";
     				menu += "<ul class=\"dropdown-menu\">\n";
-                        menu += "<li><a href=\"Profil?user=" + username + "\">Mon profil</a></li>\n";
+                        menu += "<li><a href=\"Profile?user=" + username + "\">Mon profil</a></li>\n";
 			          	menu += "<li><a href=\"MyGameSessions\">Mes parties</a></li>\n";
 			            menu += "<li><a href=\"MyGames\">Mes jeux</a></li>\n";
 			            menu += "<li><a href=\"MyPlatforms\">Mes platformes</a></li>\n";

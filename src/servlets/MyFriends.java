@@ -82,7 +82,7 @@ public class MyFriends extends HttpServlet {
                 out.println("<div class=\"row\">");
                     List<Player> friends = player.getFriends();
                     for (Player friend : friends) {
-                        out.println("<a href=\"Profil?user=" + friend.getUsername() + "\">" + friend.getUsername() + "<a>\n");
+                        out.println("<a href=\"Profile?user=" + friend.getUsername() + "\">" + friend.getUsername() + "<a><br>\n");
                     }
                 out.println("</div>");
             out.println("</div>");

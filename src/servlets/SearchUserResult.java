@@ -98,7 +98,7 @@ public class SearchUserResult extends HttpServlet {
 
                         // Print users
                         for (Player user : users) {
-                            out.println("<a href=\"Profil?user=" + user.getUsername() + "\">" + user.getUsername() + "<a><br>\n");
+                            out.println("<a href=\"Profile?user=" + user.getUsername() + "\">" + user.getUsername() + "<a><br>\n");
                         }
                     } 
                 }
