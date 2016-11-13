@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Player;
+import models.PlayerDao;
 import comparators.ComparatorIgnoreCase;
+import dao.PlayerDaoImpl;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
 import utils.StringUtils;
@@ -25,17 +28,20 @@ public class SearchGameResult extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String PARAM_GAME = "game";
+	
+	private PlayerDao playerDao;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public SearchGameResult() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
     @Override
     public void init() throws ServletException {
+        playerDao = new PlayerDaoImpl();
+        
         super.init();
     }
 
@@ -76,6 +82,8 @@ public class SearchGameResult extends HttpServlet {
             out.println(HTMLBuilder.createTopMenu());
             out.println(HTMLBuilder.createTabsMenu(username));
             
+            Player currentPlayer = playerDao.getPlayer(username);
+
             out.println("<div class=\"row\">");
                 // Show platforms
                 out.println("<section class=\"col-xs-2 well\">");
@@ -93,6 +101,9 @@ public class SearchGameResult extends HttpServlet {
                                             out.println(platform);
                                         out.println("</a>");
                                     out.println("</li>");
+                                    if (currentPlayer.getPlatforms().contains(platform)) {
+                                        out.println("<img src=\"assets/images/star.png\">");
+                                    }
                                 }
                             out.println("</ul>");
                         out.println("</div>");
@@ -124,14 +135,17 @@ public class SearchGameResult extends HttpServlet {
                                             out.println("<B>Nom : </B>");
                                             if (games.get(i).get("name") != null && games.get(i).get("name") != "null") {
                                                 out.println("<a href=\"Game?game=" + games.get(i).get("name") + "\">");
-                                            }
-                                                    out.println(games.get(i).get("name"));
+                                                    out.println(games.get(i).get("name").replace("\"", ""));
                                                 out.println("</a>");
+                                                if (currentPlayer.getGames().contains(games.get(i).get("name").replace("\"", ""))) {
+                                                    out.println("<img src=\"assets/images/star.png\">");
+                                                }
+                                            }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Date de sortie : </B>");
                                             if (games.get(i).get("original_release_date") != null && games.get(i).get("original_release_date") != "null") {
-                                                out.println(games.get(i).get("original_release_date"));
+                                                out.println(games.get(i).get("original_release_date").replace("\"", ""));
                                             }
                                         out.println("</div>");
                                     out.println("</div>");
@@ -155,6 +169,9 @@ public class SearchGameResult extends HttpServlet {
                                         out.println("<a href=\"Game?game=" + recentGame + "\">");
                                             out.println(recentGame);
                                         out.println("</a>");
+                                        if (currentPlayer.getGames().contains(recentGame)) {
+                                            out.println("<img src=\"assets/images/star.png\">");
+                                        }
                                     out.println("</li>");
                                 }
                             out.println("</ul>");

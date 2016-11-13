@@ -142,6 +142,7 @@ public class MainPage extends HttpServlet {
             out.println(HTMLBuilder.createTabsMenu(username));
             
             out.println("<div class=\"row\">");
+                Player currentPlayer = playerDao.getPlayer(username);
             
                 // Show platforms
                 out.println("<section class=\"col-xs-2 well\">");
@@ -158,6 +159,9 @@ public class MainPage extends HttpServlet {
                                         out.println("<a href=\"Platform?platform=" + platform + "\">");
                                             out.println(platform);
                                         out.println("</a>");
+                                        if (currentPlayer.getPlatforms().contains(platform)) {
+                                            out.println("<img src=\"assets/images/star.png\">");
+                                        }
                                     out.println("</li>");
                                 }
                             out.println("</ul>");
@@ -228,6 +232,9 @@ public class MainPage extends HttpServlet {
                                         out.println("<a href=\"Game?game=" + recentGame + "\">");
                                             out.println(recentGame);
                                         out.println("</a>");
+                                        if (currentPlayer.getGames().contains(recentGame)) {
+                                            out.println("<img src=\"assets/images/star.png\">");
+                                        }
                                     out.println("</li>");
                                 }
                             out.println("</ul>");

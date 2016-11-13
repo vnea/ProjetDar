@@ -133,7 +133,8 @@ public class Platform extends HttpServlet {
             out.println(HTMLBuilder.createTopMenu());
             out.println(HTMLBuilder.createTabsMenu(username));
             String platformName = request.getParameter("platform");
-            
+            Player currentPlayer = playerDao.getPlayer(username);
+
             if (success != null) {
                 out.println("<section class=\"col-xs-2 well\">");
                     out.println("<div id=\"wrapper\">");
@@ -226,31 +227,35 @@ public class Platform extends HttpServlet {
                             out.println("<section class=\"col-xs-8 well\">");
                                 out.println("<div class=\"row\">");
                                     out.println("<div class=\"col-xs-5 text-center\">");
-                                        out.println("<img src="+platformInfos.get("image")+" width=\"250px\" height=\"200px\" alt=\"?\"/>");
+                                        out.println("<img src="+platformInfos.get("image") + " width=\"250px\" height=\"200px\" alt=\"?\"/>");
                                     out.println("</div>");
                                     out.println("<div class=\"col-xs-7\">");
                                     out.println("<div class=\"row\">");
                                         out.println("<B>Nom : </B>");
                                             if (platformInfos.get("name") != null && platformInfos.get("name") != "null") {
-                                                out.println(platformInfos.get("name"));
+                                                String platformInfosName = platformInfos.get("name").replace("\"", "");
+                                                out.println(platformInfosName);
+                                                if (currentPlayer.getPlatforms().contains(platformInfosName)) {
+                                                    out.println("<img src=\"assets/images/star.png\">");
+                                                }
                                             }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Compagnie : </B>");
                                             if (platformInfos.get("company") != null && platformInfos.get("company") != "null") {
-                                                out.println(platformInfos.get("company"));
+                                                out.println(platformInfos.get("company").replace("\"", ""));
                                             }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Description : </B>");
                                             if (platformInfos.get("deck") != null && platformInfos.get("deck") != "null") {
-                                                out.println(platformInfos.get("deck"));
+                                                out.println(platformInfos.get("deck").replace("\"", ""));
                                             }
                                         out.println("</div>");
                                         out.println("<div class=\"row\">");
                                             out.println("<B>Original release date : </B>");
                                             if (platformInfos.get("release_date") != null && platformInfos.get("release_date") != "null") {
-                                                out.println(platformInfos.get("release_date"));
+                                                out.println(platformInfos.get("release_date").replace("\"", ""));
                                             }
                                         out.println("</div>");
                                     out.println("</div>");  
@@ -272,7 +277,7 @@ public class Platform extends HttpServlet {
                                     out.println("<div class=\"col-xs-12\">");
                                         out.println("<B>Description : </B>");
                                         if (platformInfos.get("description") != null && platformInfos.get("description") != "null") {
-                                            out.println(platformInfos.get("description"));
+                                            out.println(platformInfos.get("description").replace("\"", ""));
                                         }
                                     out.println("</div>");
                                 out.println("</div>");
@@ -298,6 +303,9 @@ public class Platform extends HttpServlet {
                                         out.println("<a href=\"Platform?platform=" + platform + "\">");
                                             out.println(platform);
                                         out.println("</a>");
+                                        if (currentPlayer.getPlatforms().contains(platform)) {
+                                            out.println("<img src=\"assets/images/star.png\">");
+                                        }
                                     out.println("</li>");
                                 }
                             out.println("</ul>");
