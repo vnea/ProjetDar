@@ -68,5 +68,17 @@ public class PlayerDaoImpl implements PlayerDao {
         s.close();
         return players.isEmpty() ? null : players.get(0);
 	}
+	
+   @Override
+   public List<Player> getPlayerStartWith(String startUsername, String username) {
+        Session s = HibernateUtils.getSession();
+        List<Player> players = s.createQuery("select p from Player p where lower(p.username) like lower(:startUsername) and lower(p.username) not like lower(:username)", Player.class)
+                                .setParameter("username", username)
+                                .setParameter("startUsername", startUsername + "%")
+                                .getResultList();
+        
+        s.close();
+        return players.isEmpty() ? null : players;
+    }
 
 }

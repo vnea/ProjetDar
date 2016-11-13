@@ -238,7 +238,7 @@ public class Profil extends HttpServlet {
                             out.println("<br>");
                             out.println("<input class=\"form-control\" type=\"number\" min=\"12\" name=\"" + INPUT_NAME_AGE + "\"" +
                                                                                                 " value=\"" + (age.isEmpty() ? player.getAge() : age)+ "\"" +
-                                                                                                " placeholder=\"Entreez votre âge\">");
+                                                                                                " placeholder=\"Indiquez votre âge\">");
                             out.println("<br>");
                             
                             String address = StringUtils.getStr(request.getParameter(INPUT_NAME_ADDRESS));

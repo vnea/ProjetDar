@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 public interface PlayerDao {
 	
 	public void insert(Player p);
@@ -11,5 +13,7 @@ public interface PlayerDao {
 	public Player getPlayer(String username, String password);
 	
 	public Player getPlayer(String username);
+	
+    public List<Player> getPlayerStartWith(String startUsername, String username);
 	
 }

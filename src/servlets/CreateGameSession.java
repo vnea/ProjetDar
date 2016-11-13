@@ -288,6 +288,9 @@ public class CreateGameSession extends HttpServlet {
                                     
             // Scripts
             out.println(HTMLBuilder.createScriptsTags());
+            out.println("<script src=\"assets/js/moment-with-locales.min.js\"></script>\n");
+            out.println("<script src=\"assets/js/bootstrap-datetimepicker.min.js\"></script>\n");
+
             out.println("<script src=\"assets/js/giantbomb.js\"></script>\n");
             out.println("<script src=\"assets/js/create-game-session.js\"></script>\n");
         out.println("</body>");

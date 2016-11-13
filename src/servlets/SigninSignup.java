@@ -187,22 +187,23 @@ public class SigninSignup extends HttpServlet {
                             // Nickname
                             out.println("<input type=\"text\" name=\"" + INPUT_NAME_SIGNUP_LOGIN + "\"" +
                                                             " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_LOGIN)) + "\"" +
-                                                            " placeholder=\"Pseudo\">");
+                                                            " placeholder=\"Entrez un pseudo\">");
                             
                             // First name
                             out.println("<input type=\"text\" name=\"" + INPUT_NAME_SIGNUP_FIRSTNAME + "\"" +
                                                             " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_FIRSTNAME)) + "\"" +
-                                                            " placeholder=\"Prénom\">");
+                                                            " placeholder=\"Entrez votre prénom\">");
                             
                             // Last name
                             out.println("<input type=\"text\" name=\"" + INPUT_NAME_SIGNUP_LASTNAME + "\"" +
                                                             " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_LASTNAME)) + "\"" +
-                                                            " placeholder=\"Nom\">");
+                                                            " placeholder=\"Entrez votre nom\">");
                             
                             String sex = request.getParameter(INPUT_NAME_SIGNUP_SEX);
                             // In case if sex is different from Sex.H or Sex.F
                             sex = Player.Sex.H.toString().equals(sex) || Player.Sex.F.toString().equals(sex) ? sex : null;
                             
+                            out.println("<label class=\"white\" for=\"" + INPUT_NAME_SIGNUP_SEX + "\">Sexe : </label>\n");
                             // Man
                             out.println("<label class=\"radio-inline white\"><input class=\"inputGender\" type=\"radio\"" +
                                                                                                         " name=\"" + INPUT_NAME_SIGNUP_SEX + "\"" + 
@@ -220,32 +221,32 @@ public class SigninSignup extends HttpServlet {
                             // Age
                             out.println("<input type=\"number\" min=\"12\" name=\"" + INPUT_NAME_SIGNUP_AGE + "\"" +
                                                                          " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_AGE)) + "\"" +
-                                                                         " placeholder=\"Age\">");
+                                                                         " placeholder=\"Indiquez votre âge\">");
 
                             // Address
                             out.println("<input type=\"text\" name=\"" + INPUT_NAME_SIGNUP_ADDRESS + "\"" +
                                                             " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_ADDRESS)) + "\"" +
-                                                            " placeholder=\"Adresse\">");
+                                                            " placeholder=\"Entrez votre adresse avec votre ville (ex: 4 place Jussieu Paris)\">");
                             
                             // Post code
                             out.println("<input type=\"text\" maxlength=\"5\" name=\"" + INPUT_NAME_SIGNUP_POSTCODE + "\"" +
                                                                             " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_POSTCODE)) + "\"" +
-                                                                            " placeholder=\"Code postal\">");
+                                                                            " placeholder=\"Entrez votre code postal\">");
                             
                             // Phone
                             out.println("<input type=\"tel\" name=\"" + INPUT_NAME_SIGNUP_PHONENUMBER + "\"" +
                                                              " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_PHONENUMBER)) + "\"" +
-                                                             " placeholder=\"Tél.\">");
+                                                             " placeholder=\"Entrez votre n° de téléphone\">");
                             // Email
                             out.println("<input type=\"email\" name=\"" + INPUT_NAME_SIGNUP_EMAIL + "\"" +
                                                              " value=\"" + StringUtils.getStr(request.getParameter(INPUT_NAME_SIGNUP_EMAIL)) + "\"" +
-                                                             " placeholder=\"Email\">");
+                                                             " placeholder=\"Entrez votre adresse e-mail\">");
                             
                             // Password
-                            out.println("<input type=\"password\" name=\"" + INPUT_NAME_SIGNUP_PASSWORD + "\" placeholder=\"Mot de passe\">");
+                            out.println("<input type=\"password\" name=\"" + INPUT_NAME_SIGNUP_PASSWORD + "\" placeholder=\"Entrez un mot de passe\">");
 
                             // Confirm password
-                            out.println("<input type=\"password\" class=\"last-input\" name=\"" + INPUT_NAME_SIGNUP_CONFRIM_PASSWORD + "\" placeholder=\"Confrimation du mot de passe\">");
+                            out.println("<input type=\"password\" class=\"last-input\" name=\"" + INPUT_NAME_SIGNUP_CONFRIM_PASSWORD + "\" placeholder=\"Confirmer le mot de passe\">");
                             
                             // Create account
                             out.println("<input type=\"submit\" name=\"" + BTN_NAME_SIGNUP + "\" value=\"Créer un compte\">");

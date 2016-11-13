@@ -21,15 +21,7 @@ public class HTMLBuilder {
             head += "<title>" + pageTitle +"</title>\n\n";
             
             // CSS
-            head += "<link href=\"assets/css/bootstrap.min.css\" rel=\"stylesheet\">\n";
-            head += "<link href=\"assets/css/bootstrap-datetimepicker.min.css\" rel=\"stylesheet\">\n";
-            head += "<link href=\"assets/css/animate.css\" rel=\"stylesheet\">\n";
-            head += "<link href=\"assets/css/icomoon.css\" rel=\"stylesheet\">\n";
-            head += "<link href=\"assets/css/magnific-popup.css\" rel=\"stylesheet\">\n";
-            head += "<link href=\"assets/css/salvattore.css\" rel=\"stylesheet\">\n";
-            head += "<link href=\"assets/css/font-awesome.min.css\" rel=\"stylesheet\">\n";
-            head += "<link href=\"assets/css/ie10-viewport-bug-workaround.css\" rel=\"stylesheet\">\n";
-            head += "<link href=\"assets/css/style.css\" rel=\"stylesheet\">\n\n";
+            head += "<link href=\"assets/css/master.css\" rel=\"stylesheet\">\n\n";
             
             head += " <script src=\"assets/js/modernizr-2.6.2.min.js\"></script>\n\n";
 
@@ -50,9 +42,7 @@ public class HTMLBuilder {
         
         // Bootstrap core JavaScript
         scripts = "<script src=\"assets/js/jquery-3.1.1.min.js\"></script>\n";
-        scripts += "<script src=\"assets/js/moment-with-locales.min.js\"></script>\n";
         scripts += "<script src=\"assets/js/bootstrap.min.js\"></script>\n";
-        scripts += "<script src=\"assets/js/bootstrap-datetimepicker.min.js\"></script>\n\n";
         
         // IE10 viewport hack for Surface/desktop Windows 8 bug
         scripts += "<script src=\"assets/js/ie10-viewport-bug-workaround.js\"></script>\n";
@@ -131,11 +121,11 @@ public class HTMLBuilder {
 	            menu += "<li>";
     		        menu += "<form class=\"navbar-form navbar-left inline-form\" action=\"SearchUserResult\" method=\"get\">\n";
     		            menu += "<div class=\"form-group\">\n";
-    		                menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"utilisateur\" name=\"user\">\n";
+    		                menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"Rechercher un utilisateur\" name=\"user\">\n";
     	                menu += "</div>\n";
     	                menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
     	                    menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
-    	                    menu += "Voir profil";
+    	                    menu += "Rechercher";
     	                menu += "</button>\n";
     		        menu += "</form>\n";
 		        menu += "</li>\n";
@@ -143,7 +133,7 @@ public class HTMLBuilder {
 	            menu += "<li>";
     		        menu += "<form class=\"navbar-form navbar-right inline-form\" action=\"SearchGameResult\" method=\"get\">\n";
     	                menu += "<div class=\"form-group\">\n";
-    	                    menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"jeux\" name=\"game\">\n";
+    	                    menu += "<input type=\"search\" class=\"input-sm form-control\" placeholder=\"Rechercher un jeu\" name=\"game\">\n";
     	                    menu += "<button type=\"submit\" class=\"btn btn-primary btn-sm\">\n";
     	                        menu += "<span class=\"glyphicon glyphicon-eye-open\"></span>\n";
     	                        menu += "Rechercher";
