@@ -1,5 +1,5 @@
 var GiantBomb = {
-	url: "GiantBombApi",
+	url: "api/GiantBombApi",
 	
 	resource: {
 		platforms: "platforms",
