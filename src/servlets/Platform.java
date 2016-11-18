@@ -19,9 +19,7 @@ import models.Player;
 import models.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
-
 import comparators.ComparatorIgnoreCase;
-
 import dao.GameSessionDaoImpl;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
@@ -341,6 +339,10 @@ public class Platform extends HttpServlet {
                     success = true;
                     message = "La partie " + lastDeletedGameSession + " a bien été supprimée";
                 }
+                else {
+                    success = false;
+                    message = "Impossible de supprimer la partie.";
+                }
             }
             else {
                 success = false;
@@ -362,37 +364,44 @@ public class Platform extends HttpServlet {
             
             if (gs != null) {
                 final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
-               
-                boolean playerJoinedGs = false;
-                List<Player> players = gs.getPlayers();
-                for (Player player : players) {
-                    if (player.getUsername().equals(username)) {
-                        playerJoinedGs = true;
-                        
-                        // Need to change this ugly code...
-                        Predicate<Player> pred = new Predicate<Player>() {
-                            @Override
-                            public boolean test(Player arg0) {
-                                return username.equals(arg0.getUsername());
-                            }
-                        };
-                        players.removeIf(pred);
-                        // End of ugly code
-                        
-                        // This line is maybe useless, need to check more info about Hibernate
-                        gs.setPlayers(players);
-
-                        gameSessionDao.update(gs);
-                        
-                        success = true;
-                        message = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
-                        break;
-                    }
-                }
                 
-                if (!playerJoinedGs) {
+                // Authenticated user can't leave its own game session
+                if (username.equals(gs.getRoot().getUsername())) {
                     success = false;
-                    message = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
+                    message = "Vous ne pouvez pas quittez la partie " + gs.getLabel() + " comme vous êtes l'hébergeur de cette partie.";
+                }
+                else {
+                    boolean playerJoinedGs = false;
+                    List<Player> players = gs.getPlayers();
+                    for (Player player : players) {
+                        if (player.getUsername().equals(username)) {
+                            playerJoinedGs = true;
+                            
+                            // Need to change this ugly code...
+                            Predicate<Player> pred = new Predicate<Player>() {
+                                @Override
+                                public boolean test(Player arg0) {
+                                    return username.equals(arg0.getUsername());
+                                }
+                            };
+                            players.removeIf(pred);
+                            // End of ugly code
+                            
+                            // This line is maybe useless, need to check more info about Hibernate
+                            gs.setPlayers(players);
+    
+                            gameSessionDao.update(gs);
+                            
+                            success = true;
+                            message = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
+                            break;
+                        }
+                    }
+                    
+                    if (!playerJoinedGs) {
+                        success = false;
+                        message = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
+                    }
                 }
             }
             else {
@@ -413,36 +422,43 @@ public class Platform extends HttpServlet {
             GameSession gs = gameSessionDao.getGameSession(gameSessionId);
             
             if (gs != null) {
-                // The game session is held after today
-                if (new Date().before(gs.getMeetingDate())) {
-                    String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
-                    boolean playerAlreadyJoinedGs = false;
-                    List<Player> players = gs.getPlayers();
-                    for (Player player : players) {
-                        if (player.getUsername().equals(username)) {
-                            playerAlreadyJoinedGs = true;
+                String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+                // Authenticated user can't join its own game session
+                if (username.equals(gs.getRoot().getUsername())) {
+                    success = false;
+                    message = "Vous participez déjà à la partie " + gs.getLabel() + " comme vous êtes l'hébergeur de cette partie.";
+                }
+                else {
+                    // The game session is held after today
+                    if (new Date().before(gs.getMeetingDate())) {
+                        boolean playerAlreadyJoinedGs = false;
+                        List<Player> players = gs.getPlayers();
+                        for (Player player : players) {
+                            if (player.getUsername().equals(username)) {
+                                playerAlreadyJoinedGs = true;
+                                
+                                success = false;
+                                message = "Vous participez déjà à la partie " + gs.getLabel() + ".";
+                                break;
+                            }
+                        }
+                        
+                        if (!playerAlreadyJoinedGs) {
+                            players.add(playerDao.getPlayer(username));
+                            // This line is maybe useless, need to check more info about Hibernate
+                            gs.setPlayers(players);
+        
+                            gameSessionDao.update(gs);
                             
-                            success = false;
-                            message = "Vous participez déjà à la partie " + gs.getLabel() + ".";
-                            break;
+                            success = true;
+                            message = "Vous participation à la partie " + gs.getLabel() + " a bien été confirmée.";
                         }
                     }
-                    
-                    if (!playerAlreadyJoinedGs) {
-                        players.add(playerDao.getPlayer(username));
-                        // This line is maybe useless, need to check more info about Hibernate
-                        gs.setPlayers(players);
-    
-                        gameSessionDao.update(gs);
-                        
-                        success = true;
-                        message = "Vous participation à la partie " + gs.getLabel() + " a bien été confirmée.";
+                    // Can't join cause of invalid date
+                    else {
+                        success = false;
+                        message = "Vous ne pouvez pas participer à la partie " + gs.getLabel() + " car la date est déjà passée.";
                     }
-                }
-                // Can't join cause of invalid date
-                else {
-                    success = false;
-                    message = "Vous ne pouvez pas participer à la partie " + gs.getLabel() + " car la date est déjà passée.";
                 }
             }
             else {

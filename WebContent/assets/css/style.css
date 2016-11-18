@@ -1,37 +1,38 @@
 /* GLOBAL */
 
 @font-face {
-	font-family: customFont;
-	src: url("../fonts/AldotheApache.ttf");
+    font-family: customFont;
+    src: url("../fonts/AldotheApache.ttf");
 }
 
 html {
-	height: 100%;
-	font-family: "Segoe UI", Arial, sans-serif;
+    height: 100%;
+    font-family: "Segoe UI", Arial, sans-serif;
 }
 
 body {
-	padding-top: 50px;
-	background: url('../images/background.jpg') no-repeat;
-	background-size: cover;
-	background-attachment: fixed;
+    padding-top: 50px;
+    background: url('../images/background.jpg') no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .starter-template {
-	padding: 50px 15px;
-	text-align: center;
+    padding: 50px 15px;
+    text-align: center;
 }
 
 /* BARRE DE NAVIGATION */
 
 .navbar {
-	background-color: #cccccc;
-	border-width: 0;
+    background-color: #cccccc;
+    border-width: 0;
 }
 
 .navbar-brand {
-	font-family: customFont;
-	font-size: 30px;
+    font-family: customFont;
+    font-size: 30px;
+    padding-top: 0px;
 }
 
 .navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover {
@@ -43,7 +44,7 @@ body {
 }
 
 .navbar-inverse .navbar-nav>li>a {
-	font-size: 18px;
+    font-size: 18px;
 }
 
 @media (min-width: 1200px) {
@@ -52,46 +53,52 @@ body {
    }
 }
 
+#logo-brand {
+    display: inline;
+    padding-right: 10px;
+}
+
+
 /* ECRAN DE CREATION DE COMPTE / ACCUEIL */
 #home-content {
-	padding-top: 80px;
-	display: flex;
-	width: 70%;
-	margin: auto;
+    padding-top: 80px;
+    display: flex;
+    width: 70%;
+    margin: auto;
 }
 
 #container-presentation {
-	width: 60%;
-	padding-right: 40px;
-	font-size: 22px;
-	color: white;
+    width: 60%;
+    padding-right: 40px;
+    font-size: 22px;
+    color: white;
 }
 
 #container-presentation p {
-	margin-top: 10px;
+    margin-top: 10px;
 }
 
 #container-presentation p:first-child {
-	margin-top: 0px;
+    margin-top: 0px;
 }
 
 .icon-line {
-	text-align: center;
+    text-align: center;
 }
 
 #container-subscription-form {
-	margin-top: 70px;
-	width: 40%;
-	float: right;
-	font-size: 18px;
+    margin-top: 70px;
+    width: 40%;
+    float: right;
+    font-size: 18px;
 }
 
 #container-subscription-form form {
-	margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 #container-subscription-form input {
-	font-family: "Segoe UI", Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
     width: 100%;
     padding: 8px 20px;
     display: inline-block;
@@ -99,11 +106,11 @@ body {
 }
 
 #container-subscription-form input:first-child {
-	border-radius: 6px 6px 0px 0px;
+    border-radius: 6px 6px 0px 0px;
 }
 
 #container-subscription-form .last-input {
-	border-radius: 0px 0px 6px 6px;
+    border-radius: 0px 0px 6px 6px;
 }
 
 #container-subscription-form input[type=submit] {
@@ -122,7 +129,7 @@ body {
 }
 
 .errorMessage {
-	color: red;
+    color: red;
 }
 
 .successMessage {
@@ -130,7 +137,7 @@ body {
 }
 
 .white {
-	color: white;
+    color: white;
 }
 
 .inputGender {
@@ -138,11 +145,11 @@ body {
 }
 
 .center {
-	text-align: center;
+    text-align: center;
 }
 
 .max-width {
-	width: 100%;
+    width: 100%;
 }
 
 .max-height {
@@ -154,9 +161,9 @@ body {
 }
 
 #gmaps {
-	height:100%;
-	width: 100%;
-	position: relative;
+    height:100%;
+    width: 100%;
+    position: relative;
 }
 
 #legend {

@@ -207,6 +207,10 @@ public class MyGameSessions extends HttpServlet {
 	                success = true;
 	                message = "La partie " + lastDeletedGameSession + " a bien été supprimée";
 	            }
+                else {
+                    success = false;
+                    message = "Impossible de supprimer la partie.";
+                }
 	        }
 	        else {
 	            success = false;
@@ -220,57 +224,64 @@ public class MyGameSessions extends HttpServlet {
 	    }
 	}
 	
-    private void performLeaveGameSession(HttpServletRequest request) throws ServletException, IOException {
-        try {
-            // Get game session that we want to delete
-            Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
-            GameSession gs = gameSessionDao.getGameSession(gameSessionId);
-            
-            if (gs != null) {
-                final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
-               
-                boolean playerJoinedGs = false;
-                List<Player> players = gs.getPlayers();
-                for (Player player : players) {
-                    if (player.getUsername().equals(username)) {
-                        playerJoinedGs = true;
-                        
-                        // Need to change this ugly code...
-                        Predicate<Player> pred = new Predicate<Player>() {
-                            @Override
-                            public boolean test(Player arg0) {
-                                return username.equals(arg0.getUsername());
-                            }
-                        };
-                        players.removeIf(pred);
-                        // End of ugly code
-                        
-                        // This line is maybe useless, need to check more info about Hibernate
-                        gs.setPlayers(players);
-
-                        gameSessionDao.update(gs);
-                        
-                        success = true;
-                        message = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
-                        break;
-                    }
-                }
-                
-                if (!playerJoinedGs) {
-                    success = false;
-                    message = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
-                }
-            }
-            else {
-                success = false;
-                message = "La partie n'existe pas.";
-            }
-        }
-        catch (NumberFormatException e) {
-            success = false;
-            message = "L'identifiant de la partie est invalide.";
-        }
-    }
+	 private void performLeaveGameSession(HttpServletRequest request) throws ServletException, IOException {
+	        try {
+	            // Get game session that we want to delete
+	            Integer gameSessionId = Integer.parseInt(request.getParameter(INPUT_NAME_VALUE));
+	            GameSession gs = gameSessionDao.getGameSession(gameSessionId);
+	            
+	            if (gs != null) {
+	                final String username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
+	                
+	                // Authenticated user can't leave its own game session
+	                if (username.equals(gs.getRoot().getUsername())) {
+	                    success = false;
+	                    message = "Vous ne pouvez pas quittez la partie " + gs.getLabel() + " comme vous êtes l'hébergeur de cette partie.";
+	                }
+	                else {
+	                    boolean playerJoinedGs = false;
+	                    List<Player> players = gs.getPlayers();
+	                    for (Player player : players) {
+	                        if (player.getUsername().equals(username)) {
+	                            playerJoinedGs = true;
+	                            
+	                            // Need to change this ugly code...
+	                            Predicate<Player> pred = new Predicate<Player>() {
+	                                @Override
+	                                public boolean test(Player arg0) {
+	                                    return username.equals(arg0.getUsername());
+	                                }
+	                            };
+	                            players.removeIf(pred);
+	                            // End of ugly code
+	                            
+	                            // This line is maybe useless, need to check more info about Hibernate
+	                            gs.setPlayers(players);
+	    
+	                            gameSessionDao.update(gs);
+	                            
+	                            success = true;
+	                            message = "Vous avez bien quitté la partie " + gs.getLabel() + ".";
+	                            break;
+	                        }
+	                    }
+	                    
+	                    if (!playerJoinedGs) {
+	                        success = false;
+	                        message = "Vous ne particpez à la partie " + gs.getLabel() + " donc vous ne pouvez pas la quitter.";
+	                    }
+	                }
+	            }
+	            else {
+	                success = false;
+	                message = "La partie n'existe pas.";
+	            }
+	        }
+	        catch (NumberFormatException e) {
+	            success = false;
+	            message = "L'identifiant de la partie est invalide.";
+	        }
+	    }
 	
     private void resetStatus() {
         message = null;

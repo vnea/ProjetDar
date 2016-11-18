@@ -62,7 +62,9 @@ public class HTMLBuilder {
 	                    menu += "<span class=\"icon-bar\"></span>\n";
 	                    menu += "<span class=\"icon-bar\"></span>\n";
 	                menu += "</button>\n";
-	                menu += "<a class=\"navbar-brand\" href=\"MainPage\">PlayersToPlayers</a>\n";
+	                menu += "<a class=\"navbar-brand\" href=\"MainPage\">";
+	                menu += "<img id=\"logo-brand\" src=\"assets/images/logo-brand.png\" alt=\"logo\">";
+	                menu += "PlayersToPlayers</a>\n";
 	            menu += "</div>\n\n";
 	            
 	            menu += "<div id=\"navbar-collapse-target\" class=\"collapse navbar-collapse\">\n";

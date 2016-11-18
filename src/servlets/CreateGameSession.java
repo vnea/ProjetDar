@@ -354,7 +354,7 @@ public class CreateGameSession extends HttpServlet {
 	    
 	    // Check format
 	    if (!label.matches(LABEl_REGEX)) {
-	        errorMessage = "Le label ne peut contenir que des caractères alphanumériques.";
+	        errorMessage = "Le label ne peut contenir que des caractères alphanumériques et des espaces.";
 	        return false;
 	    }
 	    

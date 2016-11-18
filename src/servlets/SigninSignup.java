@@ -25,26 +25,26 @@ import enums.SessionData;
  * Servlet implementation class Home
  */
 public class SigninSignup extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	
+    private static final long serialVersionUID = 1L;
+    
     private PlayerDao playerDao;
 
-	
-	/**
-	 *  Signin
-	 */
-	// Names for HTML tags
+    
+    /**
+     *  Signin
+     */
+    // Names for HTML tags
     private static final String INPUT_NAME_SIGNIN_LOGIN = "login-signin";
     private static final String INPUT_NAME_SIGNIN_PASSWORD = "password-signin";
     private static final String BTN_NAME_SIGNIN = "btn-signin";
 
-	
-	/**
-	 *  Singup
-	 */
+    
+    /**
+     *  Singup
+     */
     
     // Names for HTML tags
-	private static final String INPUT_NAME_SIGNUP_LOGIN = "login-signup";
+    private static final String INPUT_NAME_SIGNUP_LOGIN = "login-signup";
     private static final String INPUT_NAME_SIGNUP_FIRSTNAME = "firstname-signup";
     private static final String INPUT_NAME_SIGNUP_LASTNAME = "lastname-signup";
     
@@ -101,11 +101,11 @@ public class SigninSignup extends HttpServlet {
         resetErrorMessages();
     }
     
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    // If session exists redirect to main page
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // If session exists redirect to main page
         if (request.getSession(false) != null) {
             response.sendRedirect("MainPage");
             return;
@@ -113,36 +113,36 @@ public class SigninSignup extends HttpServlet {
         
         resetErrorMessages();
         processRequest(request, response);
-	}
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    request.setCharacterEncoding("UTF-8");
-	    
-	    // If session exists redirect to main page
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        
+        // If session exists redirect to main page
         if (request.getSession(false) != null) {
             response.sendRedirect("MainPage");
             return;
         }
-	    
+        
         resetErrorMessages();
-	    
-	    // Login button pressed
-	    if (request.getParameter(BTN_NAME_SIGNIN) != null) {
-	        performSignin(request, response);
-	    }
-	    
-	    // Signup button pressed
-	    else if (request.getParameter(BTN_NAME_SIGNUP) != null) {
-	        performSignup(request, response);
-	    }
-	    
-	    processRequest(request, response);
-	}
+        
+        // Login button pressed
+        if (request.getParameter(BTN_NAME_SIGNIN) != null) {
+            performSignin(request, response);
+        }
+        
+        // Signup button pressed
+        else if (request.getParameter(BTN_NAME_SIGNUP) != null) {
+            performSignup(request, response);
+        }
+        
+        processRequest(request, response);
+    }
 
-	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -262,9 +262,9 @@ public class SigninSignup extends HttpServlet {
             out.println(HTMLBuilder.createScriptsTags());
         out.println("</body>");
         out.print("</html>");
-	}
-	
-	private boolean isLoginValid(String login) {
+    }
+    
+    private boolean isLoginValid(String login) {
         // Check length
         if (login.length() < MIN_CHAR_LOGIN) {
             errorMessageSignup = "Le pseudo doit contenir au moins " + MIN_CHAR_LOGIN + " caractères.";
@@ -282,26 +282,26 @@ public class SigninSignup extends HttpServlet {
             errorMessageSignup = "Le pseudo " + login + " existe déjà.";
             return false;
         }
-	    
-	    return true;
-	}
-	
-	private boolean isFirstnameValid(String firstname) {
-	    // Check if first name is not empty
+        
+        return true;
+    }
+    
+    private boolean isFirstnameValid(String firstname) {
+        // Check if first name is not empty
        if (firstname.isEmpty()) {
             errorMessageSignup = "Vous devez spécifier votre prénom.";
             return false;
         }
-	
+    
        // Check if first name is valid
-	    if (!firstname.matches(NAME_REGEX)) {
+        if (!firstname.matches(NAME_REGEX)) {
             errorMessageSignup = "Le prénom est invalide.";
             return false;
-	    }
+        }
         
         return true;
-	}
-	
+    }
+    
    private boolean isLastnameValid(String lastname) {
        // Check if last name is not empty
        if (lastname.isEmpty()) {
@@ -327,7 +327,7 @@ public class SigninSignup extends HttpServlet {
         
         return true;
     }
-	
+    
    private boolean isAgeValid(String age) {
        try {
            // Check min age
