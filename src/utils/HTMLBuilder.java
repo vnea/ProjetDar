@@ -5,6 +5,9 @@ import java.util.List;
 
 import models.GameSession;
 import models.Player;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import enums.PageTitle;
 
 public class HTMLBuilder {
@@ -223,7 +226,7 @@ public class HTMLBuilder {
         return panel;
     }
     
-    public static String createModalGameSession(GameSession gameSession, String inputNameValue, String btnName, String btnValue) {
+    public static String createModalGameSession(String csrfToken, GameSession gameSession, String inputNameValue, String btnName, String btnValue) {
         String
         modal = "<div class=\"modal fade\" id=\"myModal" + gameSession.getIdSession() + "\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">\n";
             modal += "<div class=\"modal-dialog\" role=\"document\">\n";
@@ -240,8 +243,8 @@ public class HTMLBuilder {
                         modal += "<span class=\"glyphicon glyphicon-user\" aria-hidden=\"true\">&nbsp;Hébergé par : " + gameSession.getRoot().getUsername() + "</span>\n";
                         modal += "<hr>\n";
     
-                        // Desc
-                        modal += "<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\">&nbsp;Description : " + gameSession.getDescription() + "</span>\n";
+                        // Input description : gameSession.getDescription() == <script>alert("XSS vulnerability detected");</script>
+                        modal += "<span class=\"glyphicon glyphicon-pencil\" aria-hidden=\"true\">&nbsp;Description : " + StringEscapeUtils.escapeHtml4(gameSession.getDescription()) + "</span>\n";
                         modal += "<hr>\n";
                         
                         // Platforms
@@ -283,8 +286,9 @@ public class HTMLBuilder {
                     // Footer
                     modal += "<div class=\"modal-footer\">\n";
                         modal += "<form method=\"post\">";
-                            modal += "<input type=\"hidden\" name=\"" +  inputNameValue + "\" value=\"" + gameSession.getIdSession() + "\">\n";
-                                modal += "<button type=\"submit\" name=\"" + btnName + "\" class=\"btn btn-primary\">" + btnValue + "</button>\n";
+                            modal += "<input type=\"hidden\" name=\"" + TokenUtils.CSRF_TOKEN + "\" value=\"" + csrfToken + "\">\n";
+                            modal += "<input type=\"hidden\" name=\"" + inputNameValue + "\" value=\"" + gameSession.getIdSession() + "\">\n";
+                            modal += "<button type=\"submit\" name=\"" + btnName + "\" class=\"btn btn-primary\">" + btnValue + "</button>\n";
                         modal += "</form>\n";
                     modal += "</div>\n";
                 modal += "</div>\n";

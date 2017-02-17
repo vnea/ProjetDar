@@ -19,6 +19,7 @@ import models.Player;
 import models.PlayerDao;
 import utils.GiantBombUtils;
 import utils.HTMLBuilder;
+import utils.TokenUtils;
 import comparators.ComparatorIgnoreCase;
 import dao.GameSessionDaoImpl;
 import dao.PlayerDaoImpl;
@@ -116,6 +117,10 @@ public class Platform extends HttpServlet {
 	}
 
 	private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    // Generate a unique token and store it session
+        String uniqueToken = TokenUtils.generateUniqueToken();
+        request.getSession().setAttribute(TokenUtils.CSRF_TOKEN, uniqueToken);
+	    
 	    request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html");
@@ -216,7 +221,7 @@ public class Platform extends HttpServlet {
                                                 }
                                             }
                                             out.println(HTMLBuilder.createPanelGameSession(gameSession));
-                                            out.println(HTMLBuilder.createModalGameSession(gameSession, INPUT_NAME_VALUE, btnName, btnValue));
+                                            out.println(HTMLBuilder.createModalGameSession(uniqueToken, gameSession, INPUT_NAME_VALUE, btnName, btnValue));
                                         }
                                     out.println("</div>");
                                 out.println("</div>");
